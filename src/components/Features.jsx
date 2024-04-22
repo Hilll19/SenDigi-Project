@@ -18,7 +18,7 @@ function Features() {
                         <p className='mx-8'>kids when usage</p>
                         <p className='mx-8'>app in gadget</p>
                     </div>
-                    <Link to="/time-usage" className='justify-center items-center text-center' >
+                    <Link to="/Time-Usage" className='justify-center items-center text-center' >
                         <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>Details</button>
                     </Link>
                 </div>
@@ -31,7 +31,7 @@ function Features() {
                         <p className='mx-8'>secure your kids</p>
                         <p className='mx-8'>from adicted app</p>
                     </div>
-                    <Link to="/lock-app" className='justify-center items-center text-center' >
+                    <Link to="/Lock-App" className='justify-center items-center text-center' >
                         <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>Details</button>
                     </Link>
                 </div>
@@ -44,7 +44,7 @@ function Features() {
                         <p className='mx-8'>scheduling your kids</p>
                         <p className='mx-8'>when usage app</p>
                     </div>
-                    <Link to="/time-usage" className='justify-center items-center text-center' >
+                    <Link to="/Scheduling" className='justify-center items-center text-center' >
                         <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>Details</button>
                     </Link>
                 </div>

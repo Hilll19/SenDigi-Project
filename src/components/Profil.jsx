@@ -13,7 +13,7 @@ function Profil() {
           <p className='md:text-4xl sm:text-3xl text-2xl font-bold py-2'>Company SenDigi</p>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel provident tenetur modi accusamus eum eius eos minus incidunt officia dolorem. Ratione totam eum facere quia. Cumque repudiandae cum at labore.</p>
           {/* Ganti button dengan Link */}
-          <Link to="/profile-detail">
+          <Link to="/Profile-Detail">
             <button className='bg-black text-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto md:mx-0 py-3'>More Details</button>
           </Link>
         </div>
