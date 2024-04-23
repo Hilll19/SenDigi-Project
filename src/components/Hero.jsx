@@ -33,11 +33,13 @@ const Hero = ({ isLoggedIn }) => {
         <p className='md:text-2xl text-xl font-bold text-gray-500'>
           Monitor and guard your kids digital activity from gadget negative effect{" "}
         </p>
-        <button
-          onClick={handleGetStarted}
-          className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto py-3 text-black'>
-          {isLoggedIn ? "Go to Dashboard" : "Get Started"}
-        </button>
+        <div className=' mx-auto py-3'>
+          <button
+            onClick={handleGetStarted}
+            className='bg-[#00df9a] w-full h-full mx-auto my-4 px-6 rounded-md font-medium text-black'>
+            {isLoggedIn ? "Go to Dashboard" : "Get Started"}
+          </button>
+        </div>
       </div>
     </div>
   )
