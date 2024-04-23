@@ -73,7 +73,7 @@ function ProfileDetail() {
             <h2 className='text-3xl font-bold text-center py-6'>Web Developer</h2>
             <p className='text-center text-2xl font-bold'>Hilmy Febrian</p>
             <div className='text-center font-medium'>
-              <p className='mx-8 mt-8'>Fronetend & Backend Web</p>
+              <p className='mx-8 mt-8'>Frontend & Backend Web</p>
               <p className='mx-8'>Handle UI & UX Web</p>
               <p className='mx-8'>Pentes Website</p>
             </div>

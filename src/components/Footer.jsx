@@ -7,9 +7,11 @@ function Footer() {
       <div>
         <h1 className='w-full text-3xl font-bold text-[#00df9a]'>SinDigi</h1>
         <p className='py-4'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur quo explicabo corporis debitis suscipit sint
-          labore ipsa, molestiae et consequuntur asperiores, officiis, soluta perspiciatis atque! Quos ullam sint
-          voluptas modi.
+          We are your trusted solution for parents to monitor and manage children's gadget usage in the digital age.
+          With our user-friendly platform accessible via web and mobile devices, we provide extensive access for parents
+          to monitor children's online activities in real-time. With SenDigi, you can mitigate the risks of exposure to
+          inappropriate content, screen addiction, and the dangers of gadget dependency. Join us at SenDigi and be part
+          of the effort to safeguard the digital well-being of the next generation!.
         </p>
         <div className='flex justify-between md:w-[75%] my-6'>
           <FaFacebookSquare size={30} />
