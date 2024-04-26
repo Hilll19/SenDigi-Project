@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { FaFacebookSquare, FaInstagram, FaTwitterSquare } from "react-icons/fa";
 import styled, { keyframes } from "styled-components"; // Tambahkan import ini
-import Chart from "chart.js/auto"; // Import Chart.js
+import Chart from "chart.js/auto"; 
 
 // Animasi fadeInUp
 const fadeInUpAnimation = keyframes`

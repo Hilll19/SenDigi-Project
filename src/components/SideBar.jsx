@@ -1,15 +1,20 @@
-// Sidebar.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaChartLine, FaUser, FaLock, FaSignInAlt, FaHome } from 'react-icons/fa';
 
-const Sidebar = () => {
+const SideBar = () => {
+    const [showMenu, setShowMenu] = useState(false);
+
+    const handleMenuToggle = () => {
+        setShowMenu(!showMenu);
+    };
+
     return (
-        <div className="bg-gray-900 h-screen w-64 flex flex-col">
-            <div className="py-8 px-4 bg-gray-800">
-                <h2 className="text-white text-2xl font-bold">Navigation</h2>
+        <div className="bg-gray-900 md:h-screen w-90 flex flex-col">
+            <div className="py-8 px-4 bg-gray-800 ">
+                <h2 className="text-[#00df9a] text-2xl font-bold">SenDigi</h2>
             </div>
-            <ul className="flex-1">
+            <ul className={`${showMenu ? 'block' : 'hidden'} md:flex-1 md:block`}>
                 <SidebarItem icon={<FaChartLine />} text="Dashboard" to="/dashboard" />
                 <SidebarItem icon={<FaUser />} text="Profile Detail" to="/profile-detail" />
                 <SidebarItem icon={<FaChartLine />} text="Time Usage" to="/time-usage" />
@@ -17,6 +22,11 @@ const Sidebar = () => {
                 <SidebarItem icon={<FaSignInAlt />} text="Login Page" to="/login-page" />
                 <SidebarItem icon={<FaHome />} text="Home" to="/" />
             </ul>
+            <div className="md:hidden">
+                <button onClick={handleMenuToggle} className="text-white flex items-center px-4 py-2 mt-auto bg-gray-800 hover:bg-gray-700 focus:outline-none">
+                    {showMenu ? 'Hide Menu' : 'Show Menu'}
+                </button>
+            </div>
         </div>
     );
 };
@@ -32,4 +42,4 @@ const SidebarItem = ({ icon, text, to }) => {
     );
 };
 
-export default Sidebar;
+export default SideBar;
