@@ -1,33 +1,48 @@
 // Navbar.js
 
-import React, { useState, useEffect } from "react"
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai"
-import { CgProfile } from "react-icons/cg"
-import { Link, useNavigate } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [nav, setNav] = useState(true)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const navigate = useNavigate()
+  const [nav, setNav] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   // Check if user is logged in when the component mounts
   useEffect(() => {
-    const loggedInStatus = localStorage.getItem("isLoggedIn")
-    if (loggedInStatus === "true") {
-      setIsLoggedIn(true)
-    }
-  }, [])
+    checkLoginStatus();
+  }, []);
+
+  // Function to check login status
+  const checkLoginStatus = () => {
+    fetch("http://localhost:8888/auth/check", {
+      credentials: 'include' // Mengirim kredensial (cookie) bersama permintaan
+    })
+    .then((response) => {
+      if (response.ok) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    })
+    .catch((error) => {
+      console.error("Error checking login status:", error);
+      setIsLoggedIn(false);
+    });
+  };
 
   // Function to handle logout
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn")
-    setIsLoggedIn(false)
-    navigate("/LoginPage")
-  }
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    navigate("/LoginPage");
+  };
 
   const handleNav = () => {
-    setNav(!nav)
-  }
+    setNav(!nav);
+  };
 
   return (
     <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white'>
@@ -39,7 +54,11 @@ const Navbar = () => {
           <Link to='/'>Home</Link>
         </li>
         <li className='p-4'>
-          {isLoggedIn ? <button onClick={handleLogout}>Logout</button> : <Link to='/LoginPage'>Login</Link>}
+          {isLoggedIn ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <Link to='/LoginPage'>Login</Link>
+          )}
         </li>
         {isLoggedIn ? <CgProfile className='ml-6' size={50} /> : null}
       </ul>
@@ -67,7 +86,7 @@ const Navbar = () => {
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
