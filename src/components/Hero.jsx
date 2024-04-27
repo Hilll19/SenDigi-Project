@@ -1,19 +1,41 @@
 // Hero.jsx
 
-import React from "react"
-import { useNavigate } from "react-router-dom"
-import { ReactTyped } from "react-typed"
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ReactTyped } from "react-typed";
 
-const Hero = ({ isLoggedIn }) => {
-  const navigate = useNavigate()
+const Hero = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const checkLoginStatus = () => {
+    fetch("http://localhost:8888/auth/check", {
+      credentials: 'include'
+    })
+      .then((response) => {
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking login status:", error);
+        setIsLoggedIn(false);
+      });
+  };
 
   const handleGetStarted = () => {
     if (isLoggedIn) {
-      navigate("/Dashboard")
+      navigate("/Dashboard");
     } else {
-      navigate("/LoginPage")
+      navigate("/LoginPage");
     }
-  }
+  };
 
   return (
     <div className='text-white'>
@@ -42,7 +64,7 @@ const Hero = ({ isLoggedIn }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;
