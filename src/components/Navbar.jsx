@@ -1,43 +1,74 @@
-// Navbar.js
-
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [nav, setNav] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
   const navigate = useNavigate();
 
-  // Check if user is logged in when the component mounts
   useEffect(() => {
     checkLoginStatus();
+    fetchProfilePicture();
   }, []);
 
-  // Function to check login status
   const checkLoginStatus = () => {
     fetch("http://localhost:8888/auth/check", {
-      credentials: 'include' // Mengirim kredensial (cookie) bersama permintaan
+      credentials: 'include'
     })
-    .then((response) => {
-      if (response.ok) {
-        setIsLoggedIn(true);
-      } else {
+      .then((response) => {
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking login status:", error);
         setIsLoggedIn(false);
-      }
-    })
-    .catch((error) => {
-      console.error("Error checking login status:", error);
-      setIsLoggedIn(false);
-    });
+      });
   };
 
-  // Function to handle logout
+  const fetchProfilePicture = () => {
+    fetch("http://localhost:8888/user/profile", {
+      credentials: 'include'
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Failed to fetch profile picture');
+      })
+      .then(data => {
+        if (data.PictureURL) {
+          setProfilePicture(data.PictureURL);
+        } else {
+          throw new Error('Profile picture URL not found');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching profile picture:', error);
+      });
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
-    navigate("/LoginPage");
+    fetch("http://localhost:8888/auth/logout", {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then((response) => {
+        if (response.ok) {
+          localStorage.removeItem("isLoggedIn");
+          setIsLoggedIn(false);
+          navigate("/LoginPage");
+        } else {
+          console.error("Logout failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error logging out:", error);
+      });
   };
 
   const handleNav = () => {
@@ -60,9 +91,20 @@ const Navbar = () => {
             <Link to='/LoginPage'>Login</Link>
           )}
         </li>
-        {isLoggedIn ? <CgProfile className='ml-6' size={50} /> : null}
+        {isLoggedIn && profilePicture && (
+          <img
+            src={profilePicture}
+            alt="Profile"
+            className="h-10 w-10 rounded-full mt-3 ml-4"
+            style={{
+              objectFit: 'cover',
+              objectPosition: '50% 50%',
+              width: '40px', // Atur lebar gambar secara eksplisit
+              height: '40px' // Atur tinggi gambar secara eksplisit
+            }}
+          />
+        )}
       </ul>
-      {/* Handle hamburger menu display */}
       <div onClick={handleNav} className='block md:hidden'>
         {!nav ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
       </div>
