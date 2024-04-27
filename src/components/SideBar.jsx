@@ -15,11 +15,11 @@ const SideBar = () => {
                 <h2 className="text-[#00df9a] text-2xl font-bold">SenDigi</h2>
             </div>
             <ul className={`${showMenu ? 'block' : 'hidden'} md:flex-1 md:block`}>
-                <SidebarItem icon={<FaChartLine />} text="Dashboard" to="/dashboard" />
                 <SidebarItem icon={<FaUser />} text="Profile Detail" to="/profile-detail" />
                 <SidebarItem icon={<FaChartLine />} text="Time Usage" to="/time-usage" />
                 <SidebarItem icon={<FaLock />} text="Lock App" to="/lock-app" />
-                <SidebarItem icon={<FaSignInAlt />} text="Login Page" to="/login-page" />
+                <SidebarItem icon={<FaChartLine />} text="Scheduling" to="/Scheduling" />
+                {/* <SidebarItem icon={<FaSignInAlt />} text="Login Page" to="/login-page" /> */}
                 <SidebarItem icon={<FaHome />} text="Home" to="/" />
             </ul>
             <div className="md:hidden">
