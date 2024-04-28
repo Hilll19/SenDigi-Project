@@ -98,10 +98,10 @@ function DetailLock() {
             </h2>
             <div className="text-center font-medium">
               <p className="mx-8 mt-8">
-                1. Provide time analyze data from aplication
+                1. Provides time analysis data for the number of times locks and unlocks occur
               </p>
-              <p className="mx-8">2. From data daily, weekly, and months</p>
-              <p className="mx-8">3. Provide Chart persentase</p>
+              <p className="mx-8">2. soon...</p>
+              <p className="mx-8">3. soon...</p>
             </div>
           </div>
           <div className="w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300">
@@ -111,16 +111,16 @@ function DetailLock() {
               alt="#"
             />
             <h2 className="text-3xl font-bold text-center py-6">
-              App List monitoring
+              App Lock monitoring
             </h2>
             <div className="text-center font-medium">
               <p className="mx-8 mt-8">
-                1. Provide application data from mobile
+                1. Provides actions to lock and unlock
               </p>
               <p className="mx-8">
-                2. Provides estimated time data for application usage
+                2. Provides status data whether the application is in lock and unlock mode
               </p>
-              <p className="mx-8">3. Realtime App list data from Mobile</p>
+              <p className="mx-8">3. Provides statistical data on how many times the application is locked and unlocked</p>
             </div>
           </div>
         </div>
