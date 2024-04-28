@@ -1,7 +1,7 @@
 import React from "react"
 import hilPic from "../assets/hilPic.jpeg"
 import resPic from "../assets/resPic.jpeg"
-import schedulePic from "../assets/schedule.png"
+import natPic from "../assets/natPic.jpg"
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import Pic2 from "../assets/pic2.jpg"
@@ -95,7 +95,7 @@ function ProfileDetail() {
             </button>
           </div>
           <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
-            <img className='w-20 mx-auto mt-[-3rem] bg-white' src={schedulePic} alt='#' />
+            <img className='w-20 mx-auto mt-[-3rem] bg-white' src={natPic} alt='#' />
             <h2 className='text-3xl font-bold text-center py-6'>Mobile Developer</h2>
             <p className='text-center text-2xl font-bold'>Nathan Dwipasca</p>
             <div className='text-center font-medium'>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaChartLine, FaUser, FaLock, FaSignInAlt, FaHome } from 'react-icons/fa';
+import { FaChartLine, FaUser, FaLock, FaHome } from 'react-icons/fa';
 
 const SideBar = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -19,7 +19,6 @@ const SideBar = () => {
                 <SidebarItem icon={<FaChartLine />} text="Time Usage" to="/time-usage" />
                 <SidebarItem icon={<FaLock />} text="Lock App" to="/lock-app" />
                 <SidebarItem icon={<FaChartLine />} text="Scheduling" to="/Scheduling" />
-                {/* <SidebarItem icon={<FaSignInAlt />} text="Login Page" to="/login-page" /> */}
                 <SidebarItem icon={<FaHome />} text="Home" to="/" />
             </ul>
             <div className="md:hidden">

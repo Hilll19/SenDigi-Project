@@ -15,7 +15,7 @@ function Features() {
           <div className='text-center font-medium'>
             <p className='mx-8 mt-8 px-20'>Monitor your kids app usage on gadget</p>
           </div>
-          <Link to='/Time-Usage' className='justify-center items-center text-center'>
+          <Link to='/DetailUsage' className='justify-center items-center text-center'>
             <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>
               Details
             </button>
@@ -28,7 +28,7 @@ function Features() {
           <div className='text-center font-medium'>
             <p className='mx-8 mt-8 px-16'>Lock specific app to secure your kids from app addiction</p>
           </div>
-          <Link to='/Lock-App' className='justify-center items-center text-center'>
+          <Link to='/DetailLock' className='justify-center items-center text-center'>
             <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>
               Details
             </button>
