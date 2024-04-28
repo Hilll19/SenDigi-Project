@@ -11,6 +11,8 @@ import Dashboard from './page/Dashboard/Dashboard';
 import SchedulingByTime from './page/SchedulingByTime';
 import Scheduling from './page/Scheduling';
 import SchedulingByDates from './page/SchedulingByDates';
+import DetailUsage from './page/DetailUsage';
+import DetailLock from './page/DetailLock';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,7 +30,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
         <Route path="/Profile-Detail" element={<ProfileDetail />} />
+        <Route path="/DetailUsage" element={<DetailUsage />} />
         <Route path="/Time-Usage" element={<TimeUsage />} />
+        <Route path="/DetailLock" element={<DetailLock />} />
         <Route path="/Lock-App" element={<LockApp />} />
         <Route path="/Scheduling" element={<Scheduling />} />
         <Route path="/SchedulingByDates" element={<SchedulingByDates />} />
