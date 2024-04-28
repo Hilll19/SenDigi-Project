@@ -41,7 +41,7 @@ function Features() {
           <div className='text-center font-medium'>
             <p className='mx-8 mt-8 px-16'>Set app time scheduling for your kids</p>
           </div>
-          <Link to='/Scheduling' className='justify-center items-center text-center'>
+          <Link to='/DetailScheduling' className='justify-center items-center text-center'>
             <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>
               Details
             </button>

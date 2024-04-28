@@ -15,7 +15,7 @@ const SideBar = () => {
                 <h2 className="text-[#00df9a] text-2xl font-bold">SenDigi</h2>
             </div>
             <ul className={`${showMenu ? 'block' : 'hidden'} md:flex-1 md:block`}>
-                <SidebarItem icon={<FaUser />} text="Profile Detail" to="/profile-detail" />
+                <SidebarItem icon={<FaUser />} text="Profile Device" to="/ProfileDevice" />
                 <SidebarItem icon={<FaChartLine />} text="Time Usage" to="/time-usage" />
                 <SidebarItem icon={<FaLock />} text="Lock App" to="/lock-app" />
                 <SidebarItem icon={<FaChartLine />} text="Scheduling" to="/Scheduling" />
