@@ -15,7 +15,7 @@ const Dashboard = () => {
   }, []);
 
   const fetchData = () => {
-    fetch("http://localhost:8888/api/apps", {
+    fetch(process.env.REACT_APP_API_APPS, {
       credentials: "include", // If needed
     })
       .then((response) => response.json())

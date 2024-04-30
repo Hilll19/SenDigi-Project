@@ -14,7 +14,7 @@ const Navbar = () => {
   }, []);
 
   const checkLoginStatus = () => {
-    fetch("http://localhost:8888/auth/check", {
+    fetch(process.env.REACT_APP_AUTH_CHECK_URL, {
       credentials: 'include'
     })
       .then((response) => {
@@ -31,7 +31,7 @@ const Navbar = () => {
   };
 
   const fetchProfilePicture = () => {
-    fetch("http://localhost:8888/user/profile", {
+    fetch(process.env.REACT_APP_GET_PICTURE_URL, {
       credentials: 'include'
     })
       .then(response => {
@@ -53,7 +53,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    fetch("http://localhost:8888/auth/logout", {
+    fetch(process.env.REACT_APP_LOGOUT_USER, {
       method: 'GET',
       credentials: 'include'
     })

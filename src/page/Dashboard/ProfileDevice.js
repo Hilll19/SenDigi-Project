@@ -55,7 +55,7 @@ function ProfileDevice() {
   }, []);
 
   const fetchDeviceData = () => {
-    fetch("http://localhost:8888/api/devices", {
+    fetch(process.env.REACT_APP_API_DEVICES, {
       method: "GET",
       credentials: "include",
     })
@@ -71,7 +71,7 @@ function ProfileDevice() {
   };
 
   const fetchProfilePicture = () => {
-    fetch("http://localhost:8888/user/profile", {
+    fetch(process.env.REACT_APP_GET_PICTURE_URL, {
       credentials: "include",
     })
       .then((response) => {

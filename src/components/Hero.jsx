@@ -13,7 +13,7 @@ const Hero = () => {
   }, []);
 
   const checkLoginStatus = () => {
-    fetch("http://localhost:8888/auth/check", {
+    fetch(process.env.REACT_APP_AUTH_CHECK_URL, {
       credentials: 'include'
     })
       .then((response) => {
