@@ -6,7 +6,7 @@ import '../LoginPage.css'; // Import file CSS untuk animasi
 
 function LoginPage() {
 
-  const authRedirectUrl = process.env.AUTH_REDIRECT_URL;
+  const authRedirectUrl = process.env.REACT_APP_AUTH_REDIRECT_URL;
   return (
     <div className="min-h-screen">
       <Navbar />
