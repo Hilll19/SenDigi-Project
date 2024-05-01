@@ -26,18 +26,18 @@ function TimeUsage() {
   }, []);
 
   const fetchData = () => {
-    fetch("http://localhost:8888/api/apps", {
+    fetch(process.snv.REACT_APP_API_APPS, {
       credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
         const apps = data.data.map((app) => ({
           name: app.Name,
-          dailyHour: app.TimeUsage / 60, // Convert minutes to hours
-          icon: `data:image/png;base64, ${app.Icon}`, // Use base64 image from endpoint
+          dailyHour: app.TimeUsage / 60, 
+          icon: `data:image/png;base64, ${app.Icon}`, 
         }));
 
-        // Sort the apps based on dailyHour in descending order
+        
         apps.sort((a, b) => b.dailyHour - a.dailyHour);
 
         setAppList(apps);
