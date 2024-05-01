@@ -26,7 +26,7 @@ function TimeUsage() {
   }, []);
 
   const fetchData = () => {
-    fetch(process.snv.REACT_APP_API_APPS, {
+    fetch(process.env.REACT_APP_API_APPS, {
       credentials: "include",
     })
       .then((response) => response.json())
@@ -36,14 +36,14 @@ function TimeUsage() {
           dailyHour: app.TimeUsage / 60, 
           icon: `data:image/png;base64, ${app.Icon}`, 
         }));
-
-        
+  
         apps.sort((a, b) => b.dailyHour - a.dailyHour);
-
+  
         setAppList(apps);
       })
       .catch((error) => console.error("Error fetching app data:", error));
   };
+  
 
   useEffect(() => {
     // Initialize daily chart
