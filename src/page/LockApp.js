@@ -1,153 +1,164 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import {
-  FaFacebookSquare,
-  FaInstagram,
-  FaTwitterSquare,
-  FaLock,
-  FaUnlock,
-} from "react-icons/fa";
-import styled, { keyframes } from "styled-components";
-
-const fadeInUpAnimation = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const AnimatedDiv = styled.div`
-  animation: 1s ${fadeInUpAnimation};
-`;
-
-const lockedAndUnlockedApps = [
-  { name: "Facebook", locked: false, unlockCount: 0, lockCount: 0 },
-  { name: "Instagram", locked: false, unlockCount: 0, lockCount: 0 },
-  { name: "Twitter", locked: false, unlockCount: 0, lockCount: 0 },
-  { name: "LinkedIn", locked: false, unlockCount: 0, lockCount: 0 },
-  // Add more app data as needed
-];
 
 function LockApp() {
   const [showAnimation, setShowAnimation] = useState(false);
-  const [appStatus, setAppStatus] = useState([...lockedAndUnlockedApps]);
-  const [totalUnlockCount, setTotalUnlockCount] = useState(0);
-  const [totalLockCount, setTotalLockCount] = useState(0);
+  const [appList, setAppList] = useState([]);
 
   useEffect(() => {
     setShowAnimation(true);
+    showListOfInstalledApplication();
+    const interval = setInterval(showListOfInstalledApplication, 60000); // Set interval to 1 minute
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
-  useEffect(() => {
-    // Calculate total unlock and lock count when appStatus changes
-    let unlockCount = 0;
-    let lockCount = 0;
-    appStatus.forEach((app) => {
-      unlockCount += app.unlockCount;
-      lockCount += app.lockCount;
-    });
-    setTotalUnlockCount(unlockCount);
-    setTotalLockCount(lockCount);
-  }, [appStatus]);
+  function showListOfInstalledApplication() {
+    fetch(process.env.REACT_APP_API_APPS, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const apps = data.data.map((app) => ({
+          name: app.Name,
+          locked: app.LockStatus,
+          icon: app.Icon,
+          timeUsage: app.TimeUsage,
+          packageName: app.PackageName,
+        }));
 
-  const toggleAppLock = (appName) => {
-    const updatedStatus = appStatus.map((app) => {
-      if (app.name === appName) {
-        if (app.locked) {
-          app.lockCount++;
-        } else {
-          app.unlockCount++;
-        }
-        return { ...app, locked: !app.locked };
-      }
-      return app;
-    });
-    setAppStatus(updatedStatus);
-  };
+        setAppList(apps);
+      })
+      .catch((error) => console.error("Error fetching app data:", error));
+  }
 
-  const selectIcon = (appName) => {
-    switch (appName) {
-      case "Facebook":
-        return <FaFacebookSquare size={35} />;
-      case "Instagram":
-        return <FaInstagram size={35} />;
-      case "Twitter":
-        return <FaTwitterSquare size={35} />;
-      default:
-        return null;
+  const handleLockToggle = (packageName, newLockStatus) => {
+    const updatedAppList = appList.map((app) =>
+      app.packageName === packageName ? { ...app, locked: newLockStatus } : app
+    );
+    setAppList(updatedAppList);
+  
+    const appToUpdate = appList.find((app) => app.packageName === packageName);
+  
+    if (!appToUpdate) {
+      console.error(`App with packageName ${packageName} not found.`);
+      return;
     }
+  
+    const updatedAppData = {
+      ...appToUpdate,
+      lockStatus: newLockStatus,
+    };
+  
+    fetch(`http://localhost:8888/api/apps/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedAppData),
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+  
+
+      })
+      .catch((error) => {
+        console.error("Error updating lock status:", error.message);
+  
+        const revertedAppList = appList.map((app) =>
+          app.packageName === packageName ? { ...app, locked: !newLockStatus } : app
+        );
+        setAppList(revertedAppList);
+      });
+  };
+  
+  const renderUsageStatistics = () => {
+    return (
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
+        <ul>
+          {appList.map((app, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between py-2 border-b border-gray-700"
+            >
+              <div className="flex items-center">
+                {app.icon && (
+                  <img
+                    src={`data:image/png;base64, ${app.icon}`}
+                    alt={app.name}
+                    className="h-8 w-8 mr-2 rounded-full"
+                  />
+                )}
+                <span className="text-white">{app.name}</span>
+              </div>
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  app.locked ? "bg-red-500" : "bg-green-500"
+                }`}
+              ></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   };
 
-  const renderUsageStatistics = () => {
-    const appStats = appStatus.map((app, index) => (
-      <AnimatedDiv
-        key={index}
-        className="bg-white p-4 rounded-lg shadow-md mb-4"
-      >
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center">
-            <div className="mr-2">{selectIcon(app.name)}</div>
-            <h2 className="text-lg font-semibold">{app.name}</h2>
-          </div>
-          <div>
-            {app.locked ? (
-              <FaLock
-                size={20}
-                onClick={() => toggleAppLock(app.name)}
-                className="cursor-pointer text-red-500 mr-2"
-              />
-            ) : (
-              <FaUnlock
-                size={20}
-                onClick={() => toggleAppLock(app.name)}
-                className="cursor-pointer text-green-500 mr-2"
-              />
-            )}
-          </div>
-        </div>
-        <p>Status: {app.locked ? "Locked" : "Unlocked"}</p>
-        <p>Unlock count: {app.unlockCount}</p>
-        <p>Lock count: {app.lockCount}</p>
-      </AnimatedDiv>
-    ));
-
+  const renderAppList = () => {
     return (
-      <>
-        {appStats}
-        {/* <div className="bg-white p-4 rounded-lg shadow-md mb-4">
-          <h2 className="text-lg font-semibold">Total Usage Statistics</h2>
-          <p>Total Unlock count: {totalUnlockCount}</p>
-          <p>Total Lock count: {totalLockCount}</p>
-        </div> */}
-      </>
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
+        <ul>
+          {appList.map((app, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between py-2 border-b border-gray-700"
+            >
+              <div className="flex items-center">
+                {app.icon && (
+                  <img
+                    src={`data:image/png;base64, ${app.icon}`}
+                    alt={app.name}
+                    className="h-8 w-8 mr-2 rounded-full"
+                  />
+                )}
+                <span className="text-white">{app.name}</span>
+              </div>
+              <button
+                className={`px-3 py-1 rounded-md transition-colors duration-300 ${
+                  app.locked
+                    ? "bg-red-500 hover:bg-red-600 text-white"
+                    : "bg-green-500 hover:bg-green-600 text-white"
+                }`}
+                onClick={() => handleLockToggle(app.packageName, !app.locked)}
+              >
+                {app.locked ? "Unlock" : "Lock"}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   };
 
   return (
-    <div>
+    <div className="bg-gray-900 min-h-screen">
       <Navbar />
-      <div className="container mx-auto mt-10">
+      <div className="container mx-auto mt-10 px-4">
         <h1 className="text-2xl font-bold mb-4 text-white">
           Monitor Lock App System
         </h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Analyze Data</h2>
-            <div className="bg-white p-4 rounded-lg shadow-md mb-4">
-              <h2 className="text-lg font-semibold">Total Usage Statistics</h2>
-              <p>Total Unlock count: {totalUnlockCount}</p>
-              <p>Total Lock count: {totalLockCount}</p>
+          <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-2 text-white">Lock App</h2>
+            <div className="bg-gray-800 p-4 rounded-lg shadow-md mb-4">
+              {showAnimation && renderAppList()}
             </div>
           </div>
-          <div
-            className="bg-white p-4 rounded-lg shadow-md"
-            style={{ maxHeight: "400px", overflowY: "auto" }}
-          >
-            <h2 className="text-lg font-semibold mb-2">App Lock</h2>
+          <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-2 text-white">
+              App Status
+            </h2>
             {showAnimation && renderUsageStatistics()}
           </div>
         </div>
