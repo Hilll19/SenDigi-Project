@@ -10,9 +10,9 @@ const SideBar = () => {
     };
 
     return (
-        <div className="bg-gray-900 md:h-screen w-90 flex flex-col">
-            <div className="py-8 px-4 bg-gray-800 ">
-                <h2 className="text-[#00df9a] text-2xl font-bold">SenDigi</h2>
+        <div className="bg-gray-900 md:h-screen w-64 flex flex-col">
+            <div className="py-8 px-4 bg-gray-800">
+                <h2 className="text-[#00df9a] text-2xl font-bold ml-10">SenDigi</h2>
             </div>
             <ul className={`${showMenu ? 'block' : 'hidden'} md:flex-1 md:block`}>
                 <SidebarItem icon={<FaUser />} text="Profile Device" to="/ProfileDevice" />
