@@ -44,15 +44,13 @@ const SchedulingByTime = () => {
         lockStatus: true,
         TimeStartLocked: {
           String: startTime,
-          Valid: true,
         },
         TimeEndLocked: {
           String: endTime,
-          Valid: true,
         },
 
       };
-      console.log(updatedAppData)
+      // console.log(updatedAppData)
 
       fetch(process.env.REACT_APP_API_APPS_UPDATE, {
         method: 'POST',

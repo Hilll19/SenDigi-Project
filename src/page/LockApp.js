@@ -49,7 +49,7 @@ function LockApp() {
       lockStatus: newLockStatus,
     };
   
-    fetch(`http://localhost:8888/api/apps/update`, {
+    fetch(process.env.REACT_APP_API_APPS_UPDATE, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
