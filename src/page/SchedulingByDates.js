@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-// import Navbar from '../components/Navbar';
+import React, { useState, useEffect } from 'react';
+import DatePicker from "react-multi-date-picker";
 
 const SchedulingByDates = () => {
-  // Dummy data untuk daftar aplikasi
-  const [appList] = useState([
-    { id: 1, name: 'WhatsApp' },
-    { id: 2, name: 'Instagram' },
-    { id: 3, name: 'Facebook' },
-    // Tambahkan data aplikasi lainnya sesuai kebutuhan
-  ]);
-
-  // State untuk menyimpan tanggal mulai dan selesai
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // State untuk menyimpan daftar aplikasi
+  const [appList, setAppList] = useState([]);
   // State untuk menyimpan id aplikasi yang dipilih
   const [selectedAppId, setSelectedAppId] = useState('');
   // State untuk menyimpan daftar aplikasi yang telah dijadwalkan beserta jadwalnya
   const [scheduledApps, setScheduledApps] = useState([]);
+  // State untuk menyimpan tanggal yang dipilih
+  const [dates, setDates] = useState([]);
 
-  // Fungsi untuk menyimpan tanggal mulai yang diinput oleh pengguna
-  const handleStartDateChange = (event) => {
-    setStartDate(event.target.value);
-  };
-
-  // Fungsi untuk menyimpan tanggal selesai yang diinput oleh pengguna
-  const handleEndDateChange = (event) => {
-    setEndDate(event.target.value);
-  };
+  // Fetch data aplikasi dari endpoint
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API_APPS, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const apps = data.data.map((app) => ({
+          id: app.ID,
+          name: app.Name,
+          packageName: app.PackageName,
+        }));
+        setAppList(apps);
+      })
+      .catch((error) => console.error("Error fetching app data:", error));
+  }, []);
 
   // Fungsi untuk menyimpan id aplikasi yang dipilih
   const handleAppChange = (event) => {
@@ -34,86 +34,99 @@ const SchedulingByDates = () => {
   };
 
   // Fungsi untuk menyimpan pengaturan waktu dan aplikasi yang dipilih
-  const saveSchedule = () => {
-    // Lakukan sesuatu dengan tanggal mulai, tanggal selesai, dan id aplikasi yang dipilih, seperti menyimpan data ke backend
-    console.log('Selected App Id:', selectedAppId);
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-    // Temukan aplikasi yang dipilih berdasarkan id
-    const selectedApp = appList.find((app) => app.id === parseInt(selectedAppId));
-    if (selectedApp) {
-      // Tambahkan aplikasi yang dijadwalkan beserta jadwalnya ke dalam daftar scheduledApps
-      setScheduledApps([...scheduledApps, { app: selectedApp.name, startDate, endDate }]);
-      // Reset nilai input setelah disimpan
-      setStartDate('');
-      setEndDate('');
-      setSelectedAppId('');
+  const saveScheduleByDates = () => {
+    const selectedApp = appList.find((app) => app.id === selectedAppId);
+
+    if (selectedApp && dates.length > 0) {
+      const selectedDates = dates.join(", ");
+
+      const updatedAppData = {
+        ...selectedApp,
+        lockStatus: true,
+        dateLocked: selectedDates,
+      };
+
+      fetch(process.env.REACT_APP_API_APPS_UPDATE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedAppData),
+        credentials: 'include',
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          // Handle success by adding the app to the scheduledApps list
+          setScheduledApps([...scheduledApps, {
+            app: selectedApp.name,
+            dates: selectedDates,
+          }]);
+          // Clear the selection
+          setSelectedAppId('');
+          setDates([]);
+        })
+        .catch((error) => {
+          console.error('Error updating lock status:', error.message);
+        });
     }
   };
 
   return (
-    <div>
-      {/* <Navbar /> */}
-      <div className="container mx-auto mt-10">
-        <h1 className="text-2xl font-bold mb-4 text-white">Lock App Scheduling</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Lock App by Dates</h2>
-            <div className="mb-4">
-              <label htmlFor="app-select" className="block text-sm font-medium text-gray-700">Select App:</label>
-              <select
-                id="app-select"
-                name="app-select"
-                value={selectedAppId}
-                onChange={handleAppChange}
-                className="mt-1 p-2 border rounded-md w-full"
-              >
-                <option value="">Select App</option>
-                {appList.map((app) => (
-                  <option key={app.id} value={app.id}>{app.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="start-date" className="block text-sm font-medium text-gray-700">Start Date:</label>
-              <input
-                type="date"
-                id="start-date"
-                name="start-date"
-                value={startDate}
-                onChange={handleStartDateChange}
-                className="mt-1 p-2 border rounded-md w-full"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="end-date" className="block text-sm font-medium text-gray-700">End Date:</label>
-              <input
-                type="date"
-                id="end-date"
-                name="end-date"
-                value={endDate}
-                onChange={handleEndDateChange}
-                className="mt-1 p-2 border rounded-md w-full"
-              />
-            </div>
-            <button
-              onClick={saveSchedule}
-              className="bg-[#00df9a] text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
-            >
-              Save Schedule
-            </button>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-md mt-6">
-            <h2 className="text-lg font-semibold mb-2">Scheduled Apps</h2>
-            <ul>
-              {scheduledApps.map((scheduledApp, index) => (
-                <li key={index} className="mb-2">
-                  <span className="font-semibold">App:</span> {scheduledApp.app}, <span className="font-semibold">Start Date:</span> {scheduledApp.startDate}, <span className="font-semibold">End Date:</span> {scheduledApp.endDate}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800" style={{ fontFamily: 'Montserrat, sans-serif' }}>Lock App by Dates</h2>
+        <div className="mb-6">
+          <label htmlFor="app-select" className="block text-base font-medium text-gray-700 mb-2" style={{ fontFamily: 'Roboto, sans-serif' }}>Select App:</label>
+          <select
+            id="app-select"
+            name="app-select"
+            value={selectedAppId}
+            onChange={handleAppChange}
+            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            style={{ fontFamily: 'Roboto, sans-serif', color: '#4b5563' }}
+          >
+            <option value="" style={{ color: '#4b5563' }}>Select App</option>
+            {appList.map((app, index) => (
+              <option key={index} value={app.id} style={{ color: '#4b5563' }}>
+                {app.name}
+              </option>
+            ))}
+          </select>
         </div>
+        <div className="mb-6">
+          <label htmlFor="dates" className="block text-base font-medium text-gray-700 mb-2" style={{ fontFamily: 'Roboto, sans-serif' }}>Select Dates:</label>
+          <DatePicker
+            multiple
+            format="YYYY-MM-DD"
+            value={dates}
+            onChange={setDates}
+            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            style={{ fontFamily: 'Roboto, sans-serif', color: '#4b5563' }}
+          />
+        </div>
+        <button
+          onClick={saveScheduleByDates}
+          className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors font-semibold"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+        >
+          Save Schedule
+        </button>
+      </div>
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800" style={{ fontFamily: 'Montserrat, sans-serif' }}>History Scheduling</h2>
+        <ul className="list-disc list-inside">
+          {scheduledApps.map((scheduledApp, index) => (
+            <li key={index} className="mb-4">
+              <div className="bg-gray-100 p-4 rounded-md">
+                <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.app}
+                <br />
+                <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Dates:</span> {scheduledApp.dates}
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

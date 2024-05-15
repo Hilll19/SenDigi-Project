@@ -4,22 +4,19 @@ import SchedulingByDates from './SchedulingByDates';
 import SchedulingByTime from './SchedulingByTime';
 
 function Scheduling() {
-  // State untuk menyimpan pilihan pengguna antara SchedulingByDates atau SchedulingByTime
   const [selectedOption, setSelectedOption] = useState('ByDates');
 
-  // Fungsi untuk mengubah pilihan pengguna
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900 text-gray-200">
       <Navbar />
-      <div className="container mx-auto mt-10">
-        <h1 className="text-2xl font-bold mb-4 text-white">Lock App Scheduling</h1>
-        {/* Dropdown untuk memilih jenis fitur */}
-        <div className="mb-4">
-          <label htmlFor="scheduling-type" className="block text-sm font-medium text-gray-700">
+      <div className="container mx-auto py-10">
+        <h1 className="text-3xl font-bold mb-6 text-center">Lock App Scheduling</h1>
+        <div className="mb-6 ml-3">
+          <label htmlFor="scheduling-type" className="block text-lg font-medium mb-2">
             Select Scheduling Type:
           </label>
           <select
@@ -27,13 +24,12 @@ function Scheduling() {
             name="scheduling-type"
             value={selectedOption}
             onChange={handleOptionChange}
-            className="mt-1 p-2 border rounded-md w-full"
+            className="block w-[400px] p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200"
           >
             <option value="ByDates">By Dates</option>
             <option value="ByTime">By Time</option>
           </select>
         </div>
-        {/* Menampilkan komponen yang dipilih berdasarkan pilihan pengguna */}
         {selectedOption === 'ByDates' ? <SchedulingByDates /> : <SchedulingByTime />}
       </div>
     </div>
