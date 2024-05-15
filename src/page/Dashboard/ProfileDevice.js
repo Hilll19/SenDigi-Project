@@ -31,7 +31,9 @@ function BatteryInfo({ deviceData }) {
   }
 
   return (
-    <div className={`mb-4 mt-6 text-blueGray-600 flex items-center justify-center`}>
+    <div
+      className={`mb-4 mt-6 text-blueGray-600 flex items-center justify-center`}
+    >
       {batteryIcon}
       <span className="ml-2 text-lg font-bold">Battery Level:</span>
       <span className={`ml-2 text-${batteryColor}-500 text-lg font-bold`}>
@@ -48,13 +50,13 @@ function ProfileDevice() {
   const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect(() => {
-    fetchDeviceData();
+    showDeviceInformation();
     fetchProfilePicture();
-    const interval = setInterval(fetchDeviceData, 60000); // Set interval to 1 minute
+    const interval = setInterval(showDeviceInformation, 60000); // Set interval to 1 minute
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
-  const fetchDeviceData = () => {
+  function showDeviceInformation() {
     fetch(process.env.REACT_APP_API_DEVICES, {
       method: "GET",
       credentials: "include",
@@ -68,7 +70,7 @@ function ProfileDevice() {
         setError(error);
         setLoading(false);
       });
-  };
+  }
 
   const fetchProfilePicture = () => {
     fetch(process.env.REACT_APP_GET_PICTURE_URL, {
@@ -169,11 +171,14 @@ function ProfileDevice() {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-9/12 px-4">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                        A versatile device capable of meeting a variety of
+                        needs, the [DeviceName] is a sophisticated tool for
+                        modern living. With its [AndroidVersion] operating
+                        system and [APILevel] API level, it offers a seamless
+                        user experience. Manufactured by [Manufacturer] and part
+                        of the [DeviceBrand] series, it combines functionality
+                        with style, making it an essential companion for both
+                        work and leisure.
                       </p>
                     </div>
                   </div>
