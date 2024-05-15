@@ -122,9 +122,15 @@ const Navbar = () => {
           <li className='p-4 border-b border-gray-600'>
             <Link to='/Profile-Detail'>Company</Link>
           </li>
-          <li className='p-4 border-b border-gray-600'>Resources</li>
           <li className='p-4 border-b border-gray-600'>About</li>
-          <li className='p-4'>Contact</li>
+          <li className='p-4 border-b border-gray-600'>Contact</li>
+          <li className='p-4'>
+          {isLoggedIn ? (
+            <button onClick={handleLogout}>LOGOUT</button>
+          ) : (
+            <Link to='/LoginPage'>Login</Link>
+          )}
+        </li>
         </ul>
       </div>
     </div>
