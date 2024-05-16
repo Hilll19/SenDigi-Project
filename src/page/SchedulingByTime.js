@@ -22,6 +22,7 @@ const SchedulingByTime = () => {
       })
       .catch((error) => console.error("Error fetching app data:", error));
   }, []);
+  
 
   const handleStartTimeChange = (event) => {
     setStartTime(event.target.value);
@@ -42,15 +43,9 @@ const SchedulingByTime = () => {
       const updatedAppData = {
         ...selectedApp,
         lockStatus: true,
-        TimeStartLocked: {
-          String: startTime,
-        },
-        TimeEndLocked: {
-          String: endTime,
-        },
-
+        TimeStartLocked: startTime,
+        TimeEndLocked: endTime,
       };
-      // console.log(updatedAppData)
 
       fetch(process.env.REACT_APP_API_APPS_UPDATE, {
         method: 'POST',

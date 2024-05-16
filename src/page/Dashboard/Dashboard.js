@@ -84,7 +84,7 @@ const Dashboard = () => {
                   <div className="flex items-center">
                     {app.icon && (
                       <img
-                        src={`data:image/png;base64, ${app.icon}`}
+                        src={app.icon}
                         alt={app.name}
                         className="h-8 w-8 mr-2 rounded-full"
                       />
@@ -112,18 +112,13 @@ const Dashboard = () => {
                 <div className="flex items-center">
                   {app.icon && (
                     <img
-                      src={`data:image/png;base64, ${app.icon}`}
+                      src={app.icon}
                       alt={app.name}
                       className="h-8 w-8 mr-2 rounded-full"
                     />
                   )}
                   <span className="text-white">{app.name}</span>
                 </div>
-                <div
-                  className={`w-3 h-3 rounded-full bg-white transform transition-duration-300 ease-in-out ${
-                    app.locked ? "" : "translate-x-full"
-                  }`}
-                ></div>
               </li>
             ))}
           </ul>

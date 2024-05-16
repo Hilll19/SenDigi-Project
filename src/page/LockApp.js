@@ -86,7 +86,7 @@ function LockApp() {
               <div className="flex items-center">
                 {app.icon && (
                   <img
-                    src={`data:image/png;base64, ${app.icon}`}
+                    src={app.icon}
                     alt={app.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />
@@ -117,7 +117,7 @@ function LockApp() {
               <div className="flex items-center">
                 {app.icon && (
                   <img
-                    src={`data:image/png;base64, ${app.icon}`}
+                    src={app.icon}
                     alt={app.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />

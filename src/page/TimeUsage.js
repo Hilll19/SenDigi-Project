@@ -36,7 +36,7 @@ function TimeUsage() {
         const apps = data.data.map((app) => ({
           name: app.Name,
           dailyHour: app.TimeUsage / 60,
-          icon: `data:image/png;base64, ${app.Icon}`,
+          icon: app.Icon,
         }));
 
         apps.sort((a, b) => b.dailyHour - a.dailyHour);
