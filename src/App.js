@@ -1,6 +1,4 @@
-// App.js
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './page/Home';
 import ProfileDetail from './page/ProfileDetail';
@@ -17,20 +15,16 @@ import DetailScheduling from './page/DetailScheduling';
 import ProfileDevice from './page/Dashboard/ProfileDevice';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState('Dashboard'); // Default to Dashboard
 
-  // Check if user is logged in when the app loads
-  useEffect(() => {
-    const loggedInStatus = localStorage.getItem('isLoggedIn');
-    if (loggedInStatus === 'true') {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  const handleComponentChange = (component) => {
+    setSelectedComponent(component);
+  };
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
+        <Route path="/" element={<Home />} />
         <Route path="/Profile-Detail" element={<ProfileDetail />} />
         <Route path="/ProfileDevice" element={<ProfileDevice />} />
         <Route path="/DetailUsage" element={<DetailUsage />} />
@@ -41,8 +35,11 @@ function App() {
         <Route path="/Scheduling" element={<Scheduling />} />
         <Route path="/SchedulingByDates" element={<SchedulingByDates />} />
         <Route path="/SchedulingByTime" element={<SchedulingByTime />} />
-        <Route path="/LoginPage" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/Dashboard" element={<Dashboard isLoggedIn={isLoggedIn} />} />
+        <Route path="/LoginPage" element={<LoginPage />} />
+        <Route
+          path="/Dashboard"
+          element={<Dashboard selectedComponent={selectedComponent} handleComponentChange={handleComponentChange} />}
+        />
       </Routes>
     </Router>
   );
