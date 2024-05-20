@@ -17,13 +17,15 @@ const SchedulingByTime = () => {
           id: app.ID,
           name: app.Name,
           packageName: app.PackageName,
+          timeStartLocked: app.TimeStartLocked.String,
+          timeEndLocked: app.TimeEndLocked.String,
         }));
         setAppList(apps);
+        setScheduledApps(apps.filter(app => app.timeStartLocked && app.timeEndLocked));
       })
       .catch((error) => console.error("Error fetching app data:", error));
   }, []);
   
-
   const handleStartTimeChange = (event) => {
     setStartTime(event.target.value);
   };
@@ -36,15 +38,15 @@ const SchedulingByTime = () => {
     setSelectedAppId(event.target.value);
   };
 
-  const GetTimeRange = () => {
+  const SaveState = () => {
     const selectedApp = appList.find((app) => app.id === selectedAppId);
 
     if (selectedApp && startTime && endTime) {
       const updatedAppData = {
         ...selectedApp,
         lockStatus: true,
-        TimeStartLocked: startTime,
-        TimeEndLocked: endTime,
+        timeStartLocked: startTime,
+        timeEndLocked: endTime,
       };
 
       fetch(process.env.REACT_APP_API_APPS_UPDATE, {
@@ -61,9 +63,9 @@ const SchedulingByTime = () => {
           }
           // Handle success by adding the app to the scheduledApps list
           setScheduledApps([...scheduledApps, {
-            app: selectedApp.name,
-            startTime,
-            endTime,
+            name: selectedApp.name,
+            timeStartLocked: startTime,
+            timeEndLocked: endTime,
           }]);
           // Clear the selection
           setSelectedAppId('');
@@ -100,7 +102,7 @@ const SchedulingByTime = () => {
         </div>
         <div className="grid grid-cols-2 gap-6">
           <div className="mb-6">
-            <label htmlFor="start-time" className="block text-base font-medium text-gray-700 mb-2" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</label>
+            <label htmlFor="start-time" className="block text-base font-medium text-gray-700 mb-2"style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</label>
             <input
               type="time"
               id="start-time"
@@ -125,7 +127,7 @@ const SchedulingByTime = () => {
           </div>
         </div>
         <button
-          onClick={GetTimeRange}
+          onClick={SaveState}
           className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors font-semibold"
           style={{ fontFamily: 'Montserrat, sans-serif' }}
         >
@@ -139,11 +141,11 @@ const SchedulingByTime = () => {
             {scheduledApps.map((scheduledApp, index) => (
               <li key={index} className="mb-4">
                 <div className="bg-gray-100 p-4 rounded-md">
-                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.app}
+                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.name}
                   <br />
-                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.startTime}
+                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.timeStartLocked}
                   <br />
-                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</span> {scheduledApp.endTime}
+                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</span> {scheduledApp.timeEndLocked}
                 </div>
               </li>
             ))}
