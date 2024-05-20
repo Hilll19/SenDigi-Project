@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
+import logoSendigi from "../assets/logoSendigi.png"
 
 const Navbar = () => {
   const [nav, setNav] = useState(true);
@@ -77,8 +78,13 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white'>
-      <h1 className='w-full text-3xl font-bold text-[#00df9a]'>
-        <Link to='/'>SenDigi</Link>
+      <h1 className='w-full text-3xl font-bold text-[#00df9a] flex items-center'>
+        <img
+          className="w-[80px]"
+          src={logoSendigi}
+          alt="SenDigi"
+        />
+        <h1 className='text-3xl font-bold text-[#00df9a]'>SenDigi</h1>
       </h1>
       <ul className='hidden md:flex'>
         <li className='p-4'>
@@ -125,12 +131,12 @@ const Navbar = () => {
           <li className='p-4 border-b border-gray-600'>About</li>
           <li className='p-4 border-b border-gray-600'>Contact</li>
           <li className='p-4'>
-          {isLoggedIn ? (
-            <button onClick={handleLogout}>LOGOUT</button>
-          ) : (
-            <Link to='/LoginPage'>Login</Link>
-          )}
-        </li>
+            {isLoggedIn ? (
+              <button onClick={handleLogout}>LOGOUT</button>
+            ) : (
+              <Link to='/LoginPage'>Login</Link>
+            )}
+          </li>
         </ul>
       </div>
     </div>
