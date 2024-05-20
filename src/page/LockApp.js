@@ -24,14 +24,17 @@ function LockApp() {
           icon: app.Icon,
           timeUsage: app.TimeUsage,
           packageName: app.PackageName,
-        }));
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+        
 
         setAppList(apps);
       })
       .catch((error) => console.error("Error fetching app data:", error));
   }
 
-  const handleLockToggle = (packageName, newLockStatus) => {
+  const SaveState = (packageName, newLockStatus) => {
     const updatedAppList = appList.map((app) =>
       app.packageName === packageName ? { ...app, locked: newLockStatus } : app
     );
@@ -130,7 +133,7 @@ function LockApp() {
                     ? "bg-red-500 hover:bg-red-600 text-white"
                     : "bg-green-500 hover:bg-green-600 text-white"
                 }`}
-                onClick={() => handleLockToggle(app.packageName, !app.locked)}
+                onClick={() => SaveState(app.packageName, !app.locked)}
               >
                 {app.locked ? "Unlock" : "Lock"}
               </button>
