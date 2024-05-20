@@ -36,7 +36,7 @@ const SchedulingByTime = () => {
     setSelectedAppId(event.target.value);
   };
 
-  const saveScheduleByTime = () => {
+  const GetTimeRange = () => {
     const selectedApp = appList.find((app) => app.id === selectedAppId);
 
     if (selectedApp && startTime && endTime) {
@@ -125,7 +125,7 @@ const SchedulingByTime = () => {
           </div>
         </div>
         <button
-          onClick={saveScheduleByTime}
+          onClick={GetTimeRange}
           className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors font-semibold"
           style={{ fontFamily: 'Montserrat, sans-serif' }}
         >
@@ -134,19 +134,21 @@ const SchedulingByTime = () => {
       </div>
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800" style={{ fontFamily: 'Montserrat, sans-serif' }}>History Scheduling</h2>
-        <ul className="list-disc list-inside">
-          {scheduledApps.map((scheduledApp, index) => (
-            <li key={index} className="mb-4">
-              <div className="bg-gray-100 p-4 rounded-md">
-                <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.app}
-                <br />
-                <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.startTime}
-                <br />
-                <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</span> {scheduledApp.endTime}
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="bg-gray-100 p-4 rounded-md max-h-96 overflow-y-auto">
+          <ul className="list-disc list-inside text-black">
+            {scheduledApps.map((scheduledApp, index) => (
+              <li key={index} className="mb-4">
+                <div className="bg-gray-100 p-4 rounded-md">
+                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.app}
+                  <br />
+                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.startTime}
+                  <br />
+                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</span> {scheduledApp.endTime}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
