@@ -10,8 +10,9 @@ function ActivityStatus() {
     showActivityStatus();
     const interval = setInterval(() => {
       showActivityStatus();
-    }, 60000); // Set interval to 1 minute
-    return () => clearInterval(interval); // Cleanup interval on unmount
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   function showActivityStatus() {
