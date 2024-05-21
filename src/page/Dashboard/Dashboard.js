@@ -16,7 +16,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <Sidebar handleMenuClick={setSelectedComponent} />
-      <div className="flex flex-col flex-grow overflow-y-auto bg-gray-900 px-6 py-4 md:px-10 md:py-8">
+      <div className="flex flex-col flex-grow bg-gray-900 px-6 py-4 md:px-10 md:py-8">
         
         
         {selectedComponent === 'Dashboard' && <DetailDasboard/>}
