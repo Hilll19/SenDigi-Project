@@ -35,9 +35,31 @@ function ActivityStatus() {
       .catch((error) => console.error("Error fetching activity status data:", error));
   }
 
+  const formatDateTime = (isoString) => {
+    const date = new Date(isoString);
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit', 
+      timeZone: 'Asia/Jakarta' 
+    };
+    const formattedDate = date.toLocaleDateString('id-ID', options);
+    const time = date.toLocaleTimeString('id-ID', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit', 
+      timeZone: 'Asia/Jakarta' 
+    });
+    return `${formattedDate} pukul ${time} WIB`;
+  };
+
   const renderActivityStatus = () => {
     return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-108">
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-106">
         <ul>
           {activityStatusList.map((activity, index) => (
             <li
@@ -58,8 +80,7 @@ function ActivityStatus() {
                 <span>{activity.name}</span>
               </div>
               <p className="mt-2">
-                {new Date(activity.createdAt).toLocaleDateString()}{" "}
-                {new Date(activity.createdAt).toLocaleTimeString()}
+                {formatDateTime(activity.createdAt)}
               </p>
               <p className="mt-2 bg-yellow-200 p-2 rounded-md font-semibold">
                 Device ID: {activity.deviceId}
