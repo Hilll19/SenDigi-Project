@@ -7,7 +7,7 @@ const Sidebar = ({ handleMenuClick }) => {
   return (
     <div className="bg-gray-900 h-screen w-64 flex flex-col">
   <div className="py-8 px-4 bg-gray-800">
-    <h2 className="text-[#00df9a] text-2xl font-bold">SenDigi</h2>
+    <h2 className="text-[#00df9a] text-2xl font-bold">Dashboard</h2>
   </div>
   <nav>
     <ul className="mt-4">
