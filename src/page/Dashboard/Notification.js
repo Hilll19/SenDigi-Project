@@ -35,11 +35,12 @@ function Notification() {
 
   const updateNotificationSettings = (field, value) => {
     const updatedSettings = { ...notificationSettings, [field]: value };
-
+  
     if (field === "Whatsapp") {
       updatedSettings.Whatsapp = { String: value, Valid: value !== "" };
+      updatedSettings.WhatsappStatus = value !== ""; // Update WhatsappStatus based on the new value of Whatsapp
     }
-
+  
     fetch(process.env.REACT_APP_API_APPS_NOTIFICATION_UPDATE, {
       method: "POST",
       headers: {
@@ -58,6 +59,7 @@ function Notification() {
         console.error("Error updating notification settings:", error.message);
       });
   };
+  
 
   const renderNotificationSettings = () => {
     return (
@@ -142,12 +144,6 @@ function Notification() {
                   )
                 }
               />
-              {/* <label
-                htmlFor="toggleWhatsapp"
-                className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${
-                  notificationSettings.WhatsappStatus ? "active" : "inactive"
-                }`}
-              ></label> */}
               <label className="toggle-switch">
                 <input
                   type="checkbox"
@@ -156,7 +152,7 @@ function Notification() {
                   checked={notificationSettings.WhatsappStatus}
                   onChange={() =>
                     updateNotificationSettings(
-                      "WhatsappStatus",
+                      "EmailStatus",
                       !notificationSettings.WhatsappStatus
                     )
                   }
