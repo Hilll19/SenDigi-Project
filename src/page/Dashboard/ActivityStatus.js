@@ -36,24 +36,20 @@ function ActivityStatus() {
       })
       .catch((error) => console.error("Error fetching activity status data:", error));
   }
+  // const activities = data.data.map((activity) => ({
+  //   name: "YouTube",
+  //   description: `[Warning] Attempt to open locked application`,
+  //   createdAt: activity.CreatedAt,
+  // }));
 
   const renderActivityStatus = () => {
     return (
       <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
         <ul>
           {activityStatusList.map((activity, index) => (
-            <li
-              key={index}
-              className="flex items-center justify-between py-2 border-b border-gray-700"
-            >
+            <li key={index} className="flex items-center justify-between py-2 border-b border-gray-700">
               <div className="flex items-center">
-                {activity.icon && (
-                  <img
-                    src={activity.icon}
-                    alt={activity.name}
-                    className="h-8 w-8 mr-2 rounded-full"
-                  />
-                )}
+                <img src="/youtube-icon.png" alt="YouTube" className="h-8 w-8 mr-2 rounded-full" />
                 <div className="text-white">
                   <p>{activity.name}</p>
                   <p className="text-sm text-gray-400">{activity.description}</p>
