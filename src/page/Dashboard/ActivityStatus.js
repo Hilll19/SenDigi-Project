@@ -14,8 +14,6 @@ function ActivityStatus() {
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
-  
-
   function showActivityStatus() {
     fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, {
       credentials: "include",
@@ -36,7 +34,6 @@ function ActivityStatus() {
       })
       .catch((error) => console.error("Error fetching activity status data:", error));
   }
-  
 
   const renderActivityStatus = () => {
     return (
@@ -45,23 +42,28 @@ function ActivityStatus() {
           {activityStatusList.map((activity, index) => (
             <li
               key={index}
-              className="flex items-center justify-between py-2 border-b border-gray-700"
+              className="bg-white p-4 rounded-md mb-4 shadow-md"
             >
-              <h2 className="text-sm text-gray-400"><strong>{activity.description}</strong></h2>
+              <h2 className="text-lg font-semibold mb-2">
+                {activity.description}
+              </h2>
               <div className="flex items-center">
                 {activity.icon && (
                   <img
                     src={activity.icon}
                     alt={activity.name}
-                    className="h-8 w-8 mr-2 rounded-full"
+                    className="h-8 w-8 mr-2"
                   />
                 )}
-                <div className="text-white">
-                  <p>{activity.name}</p>
-                  {/* <p className="text-sm text-gray-400">{activity.description}</p> */}
-                  <p className="text-sm text-gray-400">{new Date(activity.createdAt).toLocaleString()}</p>
-                </div>
+                <span>{activity.name}</span>
               </div>
+              <p className="mt-2">
+                {new Date(activity.createdAt).toLocaleDateString()}{" "}
+                {new Date(activity.createdAt).toLocaleTimeString()}
+              </p>
+              <p className="mt-2 bg-yellow-200 p-2 rounded-md font-semibold">
+                Device ID: {activity.deviceId}
+              </p>
             </li>
           ))}
         </ul>
@@ -76,13 +78,8 @@ function ActivityStatus() {
         <h1 className="text-2xl font-bold mb-4 text-white">
           Device Activity Status
         </h1>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-800 p-4 rounded-lg shadow-md col-span-2">
-            <h2 className="text-lg font-semibold mb-2 text-white">
-              Activity Status
-            </h2>
-            {showAnimation && renderActivityStatus()}
-          </div>
+        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+          {showAnimation && renderActivityStatus()}
         </div>
       </div>
     </div>
