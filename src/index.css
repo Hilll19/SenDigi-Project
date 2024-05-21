@@ -43,7 +43,7 @@ body {
 }
 
 input:checked + .toggle-slider {
-  background-color: #4CAF50; /* Hijau */
+  background-color: #F44336; /* Hijau */
 }
 
 input:checked + .toggle-slider:before {
@@ -51,5 +51,5 @@ input:checked + .toggle-slider:before {
 }
 
 input:not(:checked) + .toggle-slider {
-  background-color: #F44336; /* Merah */
+  background-color:  #4CAF50; /* Merah */
 }

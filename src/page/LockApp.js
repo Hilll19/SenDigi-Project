@@ -98,7 +98,7 @@ function LockApp() {
               </div>
               <div
                 className={`w-3 h-3 rounded-full ${
-                  app.locked ? "bg-red-500" : "bg-green-500"
+                  app.locked ? "bg-red-500" : "bg-green-500" 
                 }`}
               ></div>
             </li>
@@ -127,22 +127,22 @@ function LockApp() {
                 )}
                 <span className="text-white">{app.name}</span>
               </div>
-              <button
-                className={`px-3 py-1 rounded-md transition-colors duration-300 ${
-                  app.locked
-                    ? "bg-red-500 hover:bg-red-600 text-white"
-                    : "bg-green-500 hover:bg-green-600 text-white"
-                }`}
-                onClick={() => SaveState(app.packageName, !app.locked)}
-              >
-                {app.locked ? "Unlock" : "Lock"}
-              </button>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={app.locked}
+                  onChange={() => SaveState(app.packageName, !app.locked)}
+                  className="sr-only"
+                />
+                <span className="toggle-slider"></span>
+              </label>
             </li>
           ))}
         </ul>
       </div>
     );
   };
+  
 
   return (
     <div className="bg-gray-900 min-h-screen">
