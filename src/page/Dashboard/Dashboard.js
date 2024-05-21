@@ -7,6 +7,8 @@ import TimeUsage from '../TimeUsage';
 import LockApp from '../LockApp';
 import Scheduling from '../Scheduling';
 import DetailDasboard from './DetailDashboard'
+import ActivityStatus from './ActivityStatus';
+import Notification from './Notification';
 
 const Dashboard = () => {
   const [selectedComponent, setSelectedComponent] = useState('Dashboard');
@@ -22,6 +24,8 @@ const Dashboard = () => {
         {selectedComponent === 'TimeUsage' && <TimeUsage />}
         {selectedComponent === 'LockApp' && <LockApp />}
         {selectedComponent === 'Scheduling' && <Scheduling />}
+        {selectedComponent === 'ActivityStatus' && <ActivityStatus />}
+        {selectedComponent === 'Notification' && <Notification />}
       </div>
     </div>
   );

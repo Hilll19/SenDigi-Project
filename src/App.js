@@ -13,6 +13,7 @@ import DetailUsage from './page/DetailUsage';
 import DetailLock from './page/DetailLock';
 import DetailScheduling from './page/DetailScheduling';
 import ProfileDevice from './page/Dashboard/ProfileDevice';
+import ActivityStatus from './page/Dashboard/ActivityStatus';
 
 function App() {
   const [selectedComponent, setSelectedComponent] = useState('Dashboard'); // Default to Dashboard
@@ -35,6 +36,7 @@ function App() {
         <Route path="/Scheduling" element={<Scheduling />} />
         <Route path="/SchedulingByDates" element={<SchedulingByDates />} />
         <Route path="/SchedulingByTime" element={<SchedulingByTime />} />
+        <Route path="/ActivityStatus" element={<ActivityStatus />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route
           path="/Dashboard"
