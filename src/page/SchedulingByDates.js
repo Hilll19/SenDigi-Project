@@ -80,7 +80,7 @@ const SchedulingByDates = () => {
             ))}
           </select>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 text-black">
           <label htmlFor="dates" className="block text-base font-medium text-gray-700 mb-2">Select Dates:</label>
           <DatePicker
             multiple

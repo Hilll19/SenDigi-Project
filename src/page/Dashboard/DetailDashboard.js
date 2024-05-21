@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import Navbar from "../../components/Navbar";
+// import DatePicker from "react-multi-date-picker";
 
-const Dashboard = () => {
+const DetailDashboard = () => {
+  const [showAnimation, setShowAnimation] = useState(false);
   const [appList, setAppList] = useState([]);
+  const [scheduledApps, setScheduledApps] = useState([]);
+  const [scheduledTime, setScheduledTime] = useState([]);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [],
   });
 
   useEffect(() => {
+    setShowAnimation(true);
     showListOfInstalledApplication();
+    fetchScheduledApps();
     const interval = setInterval(showListOfInstalledApplication, 60000); // Set interval to 1 minute
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
-  function showListOfInstalledApplication() {
+  const showListOfInstalledApplication = () => {
     fetch(process.env.REACT_APP_API_APPS, {
-      credentials: "include", // If needed
+      credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
@@ -55,73 +62,175 @@ const Dashboard = () => {
         });
       })
       .catch((error) => console.error("Error fetching app data:", error));
-  }
+  };
+
+  const fetchScheduledApps = () => {
+    fetch(process.env.REACT_APP_API_APPS, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const apps = data.data.map((app) => ({
+          id: app.ID,
+          icon: app.Icon,
+          name: app.Name,
+          packageName: app.PackageName,
+          dateLocked: app.DateLocked.String,
+          timeStartLocked: app.TimeStartLocked.String, 
+          timeEndLocked: app.TimeEndLocked.String, 
+        }));
+        setScheduledApps(apps.filter((app) => app.dateLocked));
+        setScheduledTime(apps.filter((app) => app.timeStartLocked && app.timeEndLocked ));
+      })
+      .catch((error) => console.error("Error fetching scheduled apps data:", error));
+  };
+
+  const renderScheduling = () => {
+    return (
+      <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-64">
+        <ul className="list-disc list-inside text-white">
+          {scheduledApps.map((scheduledApp, index) => (
+            <li key={index} className="mb-4">
+              <div className="bg-gray-800 p-4 rounded-md">
+              {scheduledApp.icon && (
+                  <img
+                    src={scheduledApp.icon}
+                    alt={scheduledApp.name}
+                    className="h-8 w-8 mr-2 rounded-full"
+                  />
+                )}
+                <br/>
+                <span className="font-semibold text-gray-400">App:</span> {scheduledApp.name}
+                <br />
+                {scheduledApp.dateLocked && (
+                  <>
+                    <span className="font-semibold text-gray-400">Dates:</span> {scheduledApp.dateLocked}
+                  </>
+                )}
+                <br />
+              </div>
+            </li>
+          ))}
+          {scheduledTime.map((scheduledTime, index) => (
+            <li key={index} className="mb-4">
+              <div className="bg-gray-800 p-4 rounded-md">
+              {scheduledTime.icon && (
+                  <img
+                    src={scheduledTime.icon}
+                    alt={scheduledTime.name}
+                    className="h-8 w-8 mr-2 rounded-full"
+                  />
+                )}
+                <br/>
+                <span className="font-semibold text-gray-400">App:</span> {scheduledTime.name}
+                <br />
+                {scheduledTime.timeStartLocked && (
+                  <>
+                    <span className="font-semibold text-gray-400">Start Time:</span> {scheduledTime.timeStartLocked}
+                  </>
+                )}
+                <br />
+                {scheduledTime.timeEndLocked && (
+                  <>
+                    <span className="font-semibold text-gray-400">End Time:</span> {scheduledTime.timeEndLocked}
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  const renderLockApp = () => {
+    return (
+      <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-64">
+        <ul>
+          {appList.map((app, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between py-2 border-b border-gray-700"
+            >
+              <div className="flex items-center">
+                {app.icon && (
+                  <img
+                    src={app.icon}
+                    alt={app.name}
+                    className="h-8 w-8 mr-2 rounded-full"
+                  />
+                )}
+                <span className="text-white">{app.name}</span>
+              </div>
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  app.locked ? "bg-red-500" : "bg-green-500"
+                }`}
+              ></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  const renderListApp = () => {
+    return (
+      <div className="mt-8 bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-72">
+        <ul>
+          {appList.map((app, index) => (
+            <li
+              key={index}
+              className="flex items-center justify-between py-2 border-b border-gray-700"
+            >
+              <div className="flex items-center">
+                {app.icon && (
+                  <img
+                    src={app.icon}
+                    alt={app.name}
+                    className="h-8 w-8 mr-2 rounded-full"
+                  />
+                )}
+                <span className="text-white">{app.name}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
-      <div className="flex flex-col flex-grow overflow-y-auto bg-gray-900 px-6 py-4 md:px-10 md:py-8">
-        <div className={`grid ${window.innerWidth > 768 ? 'grid-cols-3' : 'grid-cols-1'} gap-6`}>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md h-64"> 
-            <h2 className="text-xl font-bold mb-4 text-white">Time Usage</h2>
-            <Line data={chartData} />
+    <div className="min-h-screen bg-gray-900">
+      <Navbar />
+      <div className="flex flex-col md:flex-row h-screen">
+        <div className="flex flex-col flex-grow overflow-y-auto bg-gray-900 px-6 py-4 md:px-10 md:py-8">
+          <div
+            className={`grid ${
+              window.innerWidth > 768 ? "grid-cols-3" : "grid-cols-1"
+            } gap-6`}
+          >
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md h-68">
+              <h2 className="text-xl font-bold mb-4 text-white">Time Usage</h2>
+              <Line data={chartData} />
+            </div>
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md h-68">
+              <h2 className="text-xl font-bold mb-4 text-white">Scheduling</h2>
+              {showAnimation && renderScheduling()}
+            </div>
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md max-h-68">
+              <h2 className="text-xl font-bold mb-4 text-white">Lock App</h2>
+              {showAnimation && renderLockApp()}
+            </div>
           </div>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md h-64"> 
-            <h2 className="text-xl font-bold mb-4 text-white">Scheduling</h2>
-            {/* Konten untuk Scheduling */}
+          <div className="mt-8 bg-gray-800 p-6 rounded-lg shadow-md max-h-102">
+            <h2 className="text-xl font-bold mb-4 text-white">App List</h2>
+            {showAnimation && renderListApp()}
           </div>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-64"> 
-            <h2 className="text-xl font-bold mb-4 text-white">Lock App</h2>
-            <ul>
-              {appList.map((app, index) => (
-                <li
-                  key={index}
-                  className="flex items-center justify-between py-2 border-b border-gray-700"
-                >
-                  <div className="flex items-center">
-                    {app.icon && (
-                      <img
-                        src={app.icon}
-                        alt={app.name}
-                        className="h-8 w-8 mr-2 rounded-full"
-                      />
-                    )}
-                    <span className="text-white">{app.name}</span>
-                  </div>
-                  <div
-                    className={`w-3 h-3 rounded-full ${
-                      app.locked ? "bg-red-500" : "bg-green-500"
-                    }`}
-                  ></div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className="mt-8 bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-96">
-          <h2 className="text-xl font-bold mb-4 text-white">App List</h2>
-          <ul>
-            {appList.map((app, index) => (
-              <li
-                key={index}
-                className="flex items-center justify-between py-2 border-b border-gray-700"
-              >
-                <div className="flex items-center">
-                  {app.icon && (
-                    <img
-                      src={app.icon}
-                      alt={app.name}
-                      className="h-8 w-8 mr-2 rounded-full"
-                    />
-                  )}
-                  <span className="text-white">{app.name}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default DetailDashboard;
