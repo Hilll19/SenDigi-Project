@@ -96,38 +96,32 @@ function ProfileDevice() {
   return (
     <div className="min-h-screen bg-gray-900">
       <Navbar />
-      <div className="container mx-auto mt-10 px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="text-center mt-12">
-              <img
-                src={profilePicture}
-                alt="Profile"
-                className="shadow-xl rounded-full h-auto align-middle border-none mx-auto mb-4 max-w-150-px"
-              />
-              <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
-                {deviceData ? deviceData.DeviceName : "Unknown"}
-              </h3>
-              <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase flex items-center justify-center">
-                <FaAndroid className="mr-2 text-lg text-blueGray-400" />
-                {deviceData ? `${deviceData.Manufacturer}, ${deviceData.AndroidVersion}` : "Unknown"}
-              </div>
-              <div className="mb-2 text-blueGray-600 flex items-center justify-center">
-                <FaBriefcase className="mr-2 text-lg text-blueGray-400" />
-                {deviceData ? `${deviceData.DeviceBrand} - ${deviceData.ProductName}` : "Unknown"}
-              </div>
-              <div className="mb-2 text-blueGray-600 flex items-center justify-center">
-                <FaCode className="mr-2 text-lg text-blueGray-400" />
-                API Level: {deviceData ? deviceData.APILevel : "Unknown"}
-              </div>
-              <div className="mb-2 text-blueGray-600 flex items-center justify-center">
-              <BatteryInfo deviceData={deviceData} />
-              </div>
+      <div className="container mx-auto mt-16 px-4 flex justify-center items-center">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+          <div className="text-center mt-12">
+            <img
+              src={profilePicture}
+              alt="Profile"
+              className="shadow-xl rounded-full h-auto align-middle border-none mx-auto mb-4 max-w-150-px"
+            />
+            <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
+              {deviceData ? deviceData.DeviceName : "Unknown"}
+            </h3>
+            <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase flex items-center justify-center">
+              <FaAndroid className="mr-2 text-lg text-blueGray-400" />
+              {deviceData ? `${deviceData.Manufacturer}, ${deviceData.AndroidVersion}` : "Unknown"}
             </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2>Device Connected</h2>
+            <div className="mb-2 text-blueGray-600 flex items-center justify-center">
+              <FaBriefcase className="mr-2 text-lg text-blueGray-400" />
+              {deviceData ? `${deviceData.DeviceBrand} - ${deviceData.ProductName}` : "Unknown"}
+            </div>
+            <div className="mb-2 text-blueGray-600 flex items-center justify-center">
+              <FaCode className="mr-2 text-lg text-blueGray-400" />
+              API Level: {deviceData ? deviceData.APILevel : "Unknown"}
+            </div>
+            <div className="mb-2 text-blueGray-600 flex items-center justify-center">
+              <BatteryInfo deviceData={deviceData} />
+            </div>
           </div>
         </div>
       </div>
