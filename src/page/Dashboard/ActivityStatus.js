@@ -59,7 +59,7 @@ function ActivityStatus() {
 
   const renderActivityStatus = () => {
     return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-106">
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-102">
         <ul>
           {activityStatusList.map((activity, index) => (
             <li
