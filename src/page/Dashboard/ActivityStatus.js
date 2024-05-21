@@ -3,140 +3,63 @@ import Navbar from "../../components/Navbar";
 
 function ActivityStatus() {
   const [showAnimation, setShowAnimation] = useState(false);
-  const [appList, setAppList] = useState([]);
+  const [activityStatusList, setActivityStatusList] = useState([]);
 
   useEffect(() => {
     setShowAnimation(true);
-    showListOfInstalledApplication();
-    const interval = setInterval(showListOfInstalledApplication, 60000); // Set interval to 1 minute
+    showActivityStatus();
+    const interval = setInterval(() => {
+      showActivityStatus();
+    }, 60000); // Set interval to 1 minute
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
-  function showListOfInstalledApplication() {
-    fetch(process.env.REACT_APP_API_APPS, {
+  
+
+  function showActivityStatus() {
+    fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, {
       credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
-        const apps = data.data.map((app) => ({
-          name: app.Name,
-          locked: app.LockStatus,
-          icon: app.Icon,
-          timeUsage: app.TimeUsage,
-          packageName: app.PackageName,
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name));
+        const activities = data.data.map((activity) => ({
+          id: activity.ID,
+          name: activity.Name,
+          icon: activity.Icon,
+          description: activity.Description.String,
+          packageName: activity.PackageName,
+          deviceId: activity.DeviceID,
+          createdAt: activity.CreatedAt,
+        }));
 
-        
-
-        setAppList(apps);
+        setActivityStatusList(activities);
       })
-      .catch((error) => console.error("Error fetching app data:", error));
+      .catch((error) => console.error("Error fetching activity status data:", error));
   }
 
-  const SaveState = (packageName, newLockStatus) => {
-    const updatedAppList = appList.map((app) =>
-      app.packageName === packageName ? { ...app, locked: newLockStatus } : app
-    );
-    setAppList(updatedAppList);
-  
-    const appToUpdate = appList.find((app) => app.packageName === packageName);
-  
-    if (!appToUpdate) {
-      console.error(`App with packageName ${packageName} not found.`);
-      return;
-    }
-  
-    const updatedAppData = {
-      ...appToUpdate,
-      lockStatus: newLockStatus,
-    };
-  
-    fetch(process.env.REACT_APP_API_APPS_UPDATE, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedAppData),
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-  
-
-      })
-      .catch((error) => {
-        console.error("Error updating lock status:", error.message);
-  
-        const revertedAppList = appList.map((app) =>
-          app.packageName === packageName ? { ...app, locked: !newLockStatus } : app
-        );
-        setAppList(revertedAppList);
-      });
-  };
-  
-  const renderUsageStatistics = () => {
+  const renderActivityStatus = () => {
     return (
       <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
         <ul>
-          {appList.map((app, index) => (
+          {activityStatusList.map((activity, index) => (
             <li
               key={index}
               className="flex items-center justify-between py-2 border-b border-gray-700"
             >
               <div className="flex items-center">
-                {app.icon && (
+                {activity.icon && (
                   <img
-                    src={app.icon}
-                    alt={app.name}
+                    src={activity.icon}
+                    alt={activity.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <span className="text-white">{app.name}</span>
+                <div className="text-white">
+                  <p>{activity.name}</p>
+                  <p className="text-sm text-gray-400">{activity.description}</p>
+                  <p className="text-sm text-gray-400">{new Date(activity.createdAt).toLocaleString()}</p>
+                </div>
               </div>
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  app.locked ? "bg-red-500" : "bg-green-500"
-                }`}
-              ></div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
-  const renderAppList = () => {
-    return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
-        <ul>
-          {appList.map((app, index) => (
-            <li
-              key={index}
-              className="flex items-center justify-between py-2 border-b border-gray-700"
-            >
-              <div className="flex items-center">
-                {app.icon && (
-                  <img
-                    src={app.icon}
-                    alt={app.name}
-                    className="h-8 w-8 mr-2 rounded-full"
-                  />
-                )}
-                <span className="text-white">{app.name}</span>
-              </div>
-              <button
-                className={`px-3 py-1 rounded-md transition-colors duration-300 ${
-                  app.locked
-                    ? "bg-red-500 hover:bg-red-600 text-white"
-                    : "bg-green-500 hover:bg-green-600 text-white"
-                }`}
-                onClick={() => SaveState(app.packageName, !app.locked)}
-              >
-                {app.locked ? "Unlock" : "Lock"}
-              </button>
             </li>
           ))}
         </ul>
@@ -149,20 +72,14 @@ function ActivityStatus() {
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
         <h1 className="text-2xl font-bold mb-4 text-white">
-          Monitor Lock App System
+          Device Activity Status
         </h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 text-white">Lock App</h2>
-            <div className="bg-gray-800 p-4 rounded-lg shadow-md mb-4">
-              {showAnimation && renderAppList()}
-            </div>
-          </div>
-          <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+          <div className="bg-gray-800 p-4 rounded-lg shadow-md col-span-2">
             <h2 className="text-lg font-semibold mb-2 text-white">
-              App Status
+              Activity Status
             </h2>
-            {showAnimation && renderUsageStatistics()}
+            {showAnimation && renderActivityStatus()}
           </div>
         </div>
       </div>
