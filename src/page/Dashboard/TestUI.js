@@ -9,9 +9,7 @@ const TestUI = () => {
   const [totalTimeUsage, setTotalTimeUsage] = useState(0);
   const [totalLockedApps, setTotalLockedApps] = useState([]);
   const [totalScheduledApps, setTotalScheduledApps] = useState([]);
-  const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState(
-    []
-  );
+  const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState([]);
   const [mostOpenedLockedApp, setMostOpenedLockedApp] = useState(null);
 
   useEffect(() => {
@@ -22,25 +20,13 @@ const TestUI = () => {
 
   const fetchData = async () => {
     try {
-      const deviceResponse = await fetch(process.env.REACT_APP_API_DEVICES, {
-        credentials: "include",
-      });
-      const deviceData = await deviceResponse.json();
+      const [deviceData, appsData, activitiesData] = await Promise.all([
+        fetchDataFromAPI(process.env.REACT_APP_API_DEVICES),
+        fetchDataFromAPI(process.env.REACT_APP_API_APPS),
+        fetchDataFromAPI(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS),
+      ]);
       setDeviceInfo(deviceData.data[0]);
-
-      const appsResponse = await fetch(process.env.REACT_APP_API_APPS, {
-        credentials: "include",
-      });
-      const appsData = await appsResponse.json();
       setAppInfo(appsData.data);
-
-      const activitiesResponse = await fetch(
-        process.env.REACT_APP_API_APPS_ACTIVITY_STATUS,
-        {
-          credentials: "include",
-        }
-      );
-      const activitiesData = await activitiesResponse.json();
       setActivityInfo(activitiesData.data);
 
       calculateTotalTimeUsage(appsData.data);
@@ -51,6 +37,11 @@ const TestUI = () => {
     }
   };
 
+  const fetchDataFromAPI = async (url) => {
+    const response = await fetch(url, { credentials: "include" });
+    return response.json();
+  };
+
   const calculateTotalTimeUsage = (apps) => {
     const totalTime = apps.reduce((acc, app) => acc + app.TimeUsage, 0);
     setTotalTimeUsage(totalTime);
@@ -59,10 +50,7 @@ const TestUI = () => {
   const calculateLockedAndScheduledApps = (apps) => {
     const lockedApps = apps.filter((app) => app.LockStatus);
     const scheduledApps = apps.filter(
-      (app) =>
-        app.DateLocked.String ||
-        app.TimeStartLocked.String ||
-        app.TimeEndLocked.String
+      (app) => app.DateLocked.String || app.TimeStartLocked.String || app.TimeEndLocked.String
     );
     setTotalLockedApps(lockedApps);
     setTotalScheduledApps(scheduledApps);
@@ -81,12 +69,8 @@ const TestUI = () => {
       );
     });
 
-    const mostOpenedLockedPackageName = Array.from(
-      occurrences.entries()
-    ).reduce(
-      (max, current) => (current[1] > max[1] ? current : max),
-      [null, 0]
-    )[0];
+    const mostOpenedLockedPackageName = Array.from(occurrences.entries())
+      .reduce((max, current) => (current[1] > max[1] ? current : max), [null, 0])[0];
     const mostOpenedLockedApp = apps.find(
       (app) => app.PackageName === mostOpenedLockedPackageName
     );
@@ -121,9 +105,7 @@ const TestUI = () => {
     }
 
     return (
-      <div
-        className={`mb-4 mt-6 text-blueGray-600 flex items-center justify-center`}
-      >
+      <div className="mb-4 mt-6 text-blueGray-600 flex items-center justify-center">
         {batteryIcon}
         <span className="ml-2 text-lg font-bold">Battery Level:</span>
         <span className={`ml-2 text-${batteryColor}-500 text-lg font-bold`}>
@@ -134,7 +116,7 @@ const TestUI = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="flex">
         <main className="flex-1 p-4 grid md:grid-cols-3 gap-3">
@@ -192,7 +174,7 @@ const TestUI = () => {
                   </div>
                 ))}
               </div>
-            ) : (
+                            ) : (
               <p>You don't have any locked applications</p>
             )}
           </Card>
@@ -239,25 +221,28 @@ const TestUI = () => {
             title="Last Device Activity"
             className="md:col-span-2 md:row-span-2"
           >
-            {activityInfo.slice(0, 4).map((activity) => (
-              <div
-                key={activity.ID}
-                className="flex flex-col border-b border-gray-100 py-4"
-              >
-                <p className="font-bold">{activity.Description.String}</p>
-                <div className="flex items-center gap-2 mb-2">
-                  <img src={activity.Icon} alt={activity.Name} width="20" />
-                  <p className="font-semibold">{activity.Name}</p>
+            <div className="overflow-y-auto max-h-80">
+              {activityInfo.slice(0, 4).map((activity) => (
+                <div
+                  key={activity.ID}
+                  className="flex flex-col border-b border-gray-100 py-4"
+                >
+                  <p className="font-bold">{activity.Description.String}</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <img src={activity.Icon} alt={activity.Name} width="20" />
+                    <p className="font-semibold">{activity.Name}</p>
+                  </div>
+                  <p>
+                    {new Intl.DateTimeFormat("id-ID", {
+                      dateStyle: "full",
+                      timeStyle: "long",
+                    }).format(new Date(activity.CreatedAt))}
+                  </p>
                 </div>
-                <p>
-                  {new Intl.DateTimeFormat("id-ID", {
-                    dateStyle: "full",
-                    timeStyle: "long",
-                  }).format(new Date(activity.CreatedAt))}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </Card>
+
           <Card href="/activity" title="Total Opened Locked Application">
             {totalOpenedLockApplication.length} Times
           </Card>
@@ -278,10 +263,10 @@ const TestUI = () => {
 const Card = ({ href, title, children, className = "" }) => (
   <a
     href={href}
-    className={`bg-gray-800 p-4 rounded-lg shadow-md ${className}`}
+    className={`bg-gray-200 p-4 rounded-lg shadow-md ${className}`}
   >
-    <p className="text-sm text-gray-400">{title}</p>
-    <h5 className="mt-2 text-2xl font-bold text-white">{children}</h5>
+    <p className="text-sm text-black">{title}</p>
+    <h5 className="mt-2 text-2xl font-bold text-black">{children}</h5>
   </a>
 );
 
