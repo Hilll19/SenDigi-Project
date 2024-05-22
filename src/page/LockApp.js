@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 
 function LockApp() {
   const [showAnimation, setShowAnimation] = useState(false);
-  const [appList, setAppList] = useState([]);
+  const [appList, setAppList] = useState(null);
 
   useEffect(() => {
     setShowAnimation(true);
@@ -18,20 +18,26 @@ function LockApp() {
     })
       .then((response) => response.json())
       .then((data) => {
-        const apps = data.data.map((app) => ({
-          name: app.Name,
-          locked: app.LockStatus,
-          icon: app.Icon,
-          timeUsage: app.TimeUsage,
-          packageName: app.PackageName,
-        }))
-        .sort((a, b) => a.name.localeCompare(b.name));
+        if (data && data.data) {
+          const apps = data.data
+            .map((app) => ({
+              name: app.Name,
+              locked: app.LockStatus,
+              icon: app.Icon,
+              timeUsage: app.TimeUsage,
+              packageName: app.PackageName,
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
 
-        
-
-        setAppList(apps);
+          setAppList(apps);
+        } else {
+          setAppList([]);
+        }
       })
-      .catch((error) => console.error("Error fetching app data:", error));
+      .catch((error) => {
+        console.error("Error fetching app data:", error);
+        setAppList([]);
+      });
   }
 
   const SaveState = (packageName, newLockStatus) => {
@@ -39,19 +45,19 @@ function LockApp() {
       app.packageName === packageName ? { ...app, locked: newLockStatus } : app
     );
     setAppList(updatedAppList);
-  
+
     const appToUpdate = appList.find((app) => app.packageName === packageName);
-  
+
     if (!appToUpdate) {
       console.error(`App with packageName ${packageName} not found.`);
       return;
     }
-  
+
     const updatedAppData = {
       ...appToUpdate,
       lockStatus: newLockStatus,
     };
-  
+
     fetch(process.env.REACT_APP_API_APPS_UPDATE, {
       method: "POST",
       headers: {
@@ -64,20 +70,22 @@ function LockApp() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-  
-
       })
       .catch((error) => {
         console.error("Error updating lock status:", error.message);
-  
+
         const revertedAppList = appList.map((app) =>
           app.packageName === packageName ? { ...app, locked: !newLockStatus } : app
         );
         setAppList(revertedAppList);
       });
   };
-  
+
   const renderUsageStatistics = () => {
+    if (!appList) {
+      return <div>Loading data...</div>;
+    }
+
     return (
       <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
         <ul>
@@ -98,7 +106,7 @@ function LockApp() {
               </div>
               <div
                 className={`w-3 h-3 rounded-full ${
-                  app.locked ? "bg-red-500" : "bg-green-500" 
+                  app.locked ? "bg-red-500" : "bg-green-500"
                 }`}
               ></div>
             </li>
@@ -109,6 +117,10 @@ function LockApp() {
   };
 
   const renderAppList = () => {
+    if (!appList) {
+      return <div>Loading data...</div>;
+    }
+
     return (
       <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
         <ul>
@@ -142,19 +154,18 @@ function LockApp() {
       </div>
     );
   };
-  
 
   return (
     <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-white">
+        <h1 className="text-2xl font-bold mb-4 text-black">
           Monitor Lock App System
         </h1>
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-gray-200 p-4 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-2 text-black">Lock App</h2>
-              {showAnimation && renderAppList()}
+            {showAnimation && renderAppList()}
           </div>
           <div className="bg-gray-200 p-4 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-2 text-black">
