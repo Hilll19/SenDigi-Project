@@ -217,13 +217,13 @@ function Notification() {
           {notificationSettings.Telegram ? (
             <a
               href="javascript:void(0);"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
+              className="bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-md mt-4"
               onClick={(e) => {
                 e.preventDefault();
                 handleUnlinkTelegram();
               }}
             >
-              Unlock telegram from SenDigi
+              Unlink telegram from SenDigi
             </a>
           ) : (
             <a
