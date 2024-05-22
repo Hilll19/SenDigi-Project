@@ -14,11 +14,10 @@ function Notification() {
     Strategy: "",
   });
   const [whatsappInput, setWhatsappInput] = useState("");
-  const [deviceId, setDeviceId] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     setShowAnimation(true);
-    fetchDeviceId();
     fetchNotificationSettings();
   }, []);
 
@@ -67,26 +66,24 @@ function Notification() {
       });
   };
 
-  const fetchDeviceId = () => {
-    fetch(process.env.REACT_APP_API_DEVICES, {
-      method: "GET",
+  useEffect(() => {
+    fetch(process.env.REACT_APP_GET_PICTURE_URL, {
       credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.data.length > 0) {
-          setDeviceId(data.data[0].ID);
-        }
+        setUserId(data.ID);
       })
-      .catch((error) => console.error("Error fetching device ID:", error));
-  };
+      .catch((error) => console.error("Error fetching user ID:", error));
+  }, []);
 
-  const copyTextToClipboard = async (text) => {
+  const handleTelegramLinkClick = async () => {
+    const command = `/save ${userId}`;
     try {
-      await navigator.clipboard.writeText(text);
-      console.log("Text copied to clipboard:", text);
+      await navigator.clipboard.writeText(command);
+      console.log("Command copied to clipboard:", command);
     } catch (err) {
-      console.error("Failed to copy text: ", err);
+      console.error("Failed to copy command to clipboard:", err);
     }
   };
 
@@ -195,13 +192,13 @@ function Notification() {
         <div className="mb-4">
           <label className="block text-white mb-1">Send over Telegram</label>
           <div className="bg-gray-700 p-4 rounded-md">
-          <a
-            href="https://t.me/SenDigi_bot"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
-            onClick={() => copyTextToClipboard(`/save ${deviceId}`)}
-          >
-            Click here to copy command & set up Telegram
-          </a>
+            <a
+              href="https://t.me/SenDigi_bot"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
+              onClick={handleTelegramLinkClick}
+            >
+              Click here to copy command & set up Telegram
+            </a>
           </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-white">
