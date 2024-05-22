@@ -9,9 +9,7 @@ const TestUI = () => {
   const [totalTimeUsage, setTotalTimeUsage] = useState(0);
   const [totalLockedApps, setTotalLockedApps] = useState([]);
   const [totalScheduledApps, setTotalScheduledApps] = useState([]);
-  const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState(
-    []
-  );
+  const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState([]);
   const [mostOpenedLockedApp, setMostOpenedLockedApp] = useState(null);
 
   useEffect(() => {
@@ -22,26 +20,32 @@ const TestUI = () => {
 
   const fetchData = async () => {
     try {
-      const [deviceData, appsData, activitiesData] = await Promise.all([
-        fetchDataFromAPI(process.env.REACT_APP_API_DEVICES),
-        fetchDataFromAPI(process.env.REACT_APP_API_APPS),
-        fetchDataFromAPI(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS),
+      const [deviceRes, appRes, activityRes] = await Promise.allSettled([
+        fetch(process.env.REACT_APP_API_DEVICES, { credentials: "include" }),
+        fetch(process.env.REACT_APP_API_APPS, { credentials: "include" }),
+        fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, { credentials: "include" })
       ]);
-      setDeviceInfo(deviceData.data[0]);
-      setAppInfo(appsData.data);
-      setActivityInfo(activitiesData.data);
 
-      calculateTotalTimeUsage(appsData.data);
-      calculateLockedAndScheduledApps(appsData.data);
-      calculateOpenedLockApplication(activitiesData.data, appsData.data);
+      if (deviceRes.status === "fulfilled" && deviceRes.value.ok) {
+        const deviceData = await deviceRes.value.json();
+        setDeviceInfo(deviceData.data[0]);
+      }
+
+      if (appRes.status === "fulfilled" && appRes.value.ok) {
+        const appsData = await appRes.value.json();
+        setAppInfo(appsData.data);
+        calculateTotalTimeUsage(appsData.data);
+        calculateLockedAndScheduledApps(appsData.data);
+      }
+
+      if (activityRes.status === "fulfilled" && activityRes.value.ok) {
+        const activitiesData = await activityRes.value.json();
+        setActivityInfo(activitiesData.data);
+        calculateOpenedLockApplication(activitiesData.data, appRes.value.data);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
-
-  const fetchDataFromAPI = async (url) => {
-    const response = await fetch(url, { credentials: "include" });
-    return response.json();
   };
 
   const calculateTotalTimeUsage = (apps) => {
@@ -96,12 +100,12 @@ const TestUI = () => {
 
   const renderBatteryIcon = () => {
     if (!deviceInfo || !deviceInfo.BatteryLevel) return null;
-  
+
     const { BatteryLevel, IsCharging } = deviceInfo;
-  
+
     let batteryIcon;
     let batteryColor;
-  
+
     if (IsCharging || BatteryLevel >= 50) {
       batteryIcon = <FaBatteryFull className="text-green-500 text-4xl" />;
       batteryColor = "green";
@@ -112,7 +116,7 @@ const TestUI = () => {
       batteryIcon = <FaBatteryEmpty className="text-red-500 text-4xl" />;
       batteryColor = "red";
     }
-  
+
     return (
       <div className="mb-4 mt-6 text-blueGray-600 flex items-center justify-center">
         {batteryIcon}
@@ -231,7 +235,7 @@ const TestUI = () => {
             className="md:col-span-2 md:row-span-2"
           >
             <div className="overflow-y-auto max-h-80">
-              {activityInfo && activityInfo.slice(0, 4).map((activity) =>  (
+              {activityInfo && activityInfo.slice(0, 4).map((activity) => (
                 <div
                   key={activity.ID}
                   className="flex flex-col border-b border-gray-100 py-4"
