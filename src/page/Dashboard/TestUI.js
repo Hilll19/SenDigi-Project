@@ -69,44 +69,29 @@ const TestUI = () => {
   };
 
   const calculateOpenedLockApplication = (activities, apps) => {
-    // Filter unique package names
-    const uniquePackageNames = new Set(
-      activities.map((activity) => activity.PackageName)
-    );
-
-    // Filter activities based on unique package names
-    const uniqueActivities = activities.filter((activity) =>
-      uniquePackageNames.has(activity.PackageName)
-    );
-
-    const openedLockActivities = uniqueActivities.filter((activity) =>
+    const openedLockActivities = activities.filter((activity) =>
       activity.Description.String.startsWith("[Warning]")
     );
-
-    const uniqueOpenedLockApps = new Set();
+    const occurrences = new Map();
 
     openedLockActivities.forEach((activity) => {
-      uniqueOpenedLockApps.add(activity.PackageName);
+      occurrences.set(
+        activity.PackageName,
+        (occurrences.get(activity.PackageName) || 0) + 1
+      );
     });
 
-    setTotalOpenedLockApplication(uniqueOpenedLockApps.size);
-
-    const mostOpenedLockedPackageName = Array.from(uniqueOpenedLockApps).reduce(
-      (max, current) =>
-        openedLockActivities.filter(
-          (activity) => activity.PackageName === current
-        ).length >
-        openedLockActivities.filter((activity) => activity.PackageName === max)
-          .length
-          ? current
-          : max,
-      null
-    );
-
+    const mostOpenedLockedPackageName = Array.from(
+      occurrences.entries()
+    ).reduce(
+      (max, current) => (current[1] > max[1] ? current : max),
+      [null, 0]
+    )[0];
     const mostOpenedLockedApp = apps.find(
       (app) => app.PackageName === mostOpenedLockedPackageName
     );
 
+    setTotalOpenedLockApplication(openedLockActivities);
     setMostOpenedLockedApp(mostOpenedLockedApp);
   };
 
@@ -277,6 +262,7 @@ const TestUI = () => {
               ))}
             </div>
           </Card>
+
           <Card href="/activity" title="Total Opened Locked Application">
             {totalOpenedLockApplication.length} Times
           </Card>
