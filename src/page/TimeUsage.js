@@ -19,7 +19,8 @@ const AnimatedDiv = styled.div`
 `;
 
 function TimeUsage() {
-  const [appList, setAppList] = useState([]);
+  const [appList, setAppList] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     ShowChartOfDeviceUsage();
@@ -33,22 +34,32 @@ function TimeUsage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        const apps = data.data.map((app) => ({
-          name: app.Name,
-          dailyHour: app.TimeUsage / 60,
-          dailyMinute: app.TimeUsage % 60,
-          icon: app.Icon,
-        }));
+        if (data && data.data) {
+          const apps = data.data.map((app) => ({
+            name: app.Name,
+            dailyHour: Math.floor(app.TimeUsage / 60),
+            dailyMinute: app.TimeUsage % 60,
+            icon: app.Icon,
+          }));
 
-        apps.sort((a, b) => b.dailyHour - a.dailyHour);
+          apps.sort((a, b) => b.dailyHour - a.dailyHour);
 
-        setAppList(apps);
+          setAppList(apps);
+        } else {
+          setAppList([]);
+        }
+        setLoading(false);
       })
-      .catch((error) => console.error("Error fetching app data:", error));
+      .catch((error) => {
+        console.error("Error fetching app data:", error);
+        setAppList([]);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
-    // Initialize daily chart
+    if (!appList) return;
+
     const dailyCtx = document.getElementById("dailyChart").getContext("2d");
     const dailyChart = new Chart(dailyCtx, {
       type: "bar",
@@ -57,7 +68,7 @@ function TimeUsage() {
         datasets: [
           {
             label: "Daily Usage (hours)",
-            data: appList.map((app) => app.dailyHour.toFixed(2)),
+            data: appList.map((app) => app.dailyHour + app.dailyMinute / 60),
             backgroundColor: "blue",
             borderWidth: 1,
           },
@@ -72,13 +83,20 @@ function TimeUsage() {
       },
     });
 
-    // Return a cleanup function to destroy the chart when the component unmounts
     return () => {
       dailyChart.destroy();
     };
   }, [appList]);
 
   const renderUsageStatistics = () => {
+    if (loading) {
+      return <div>Loading data...</div>;
+    }
+
+    if (!appList || appList.length === 0) {
+      return <div>No app usage data available.</div>;
+    }
+
     return appList.map((app, index) => (
       <AnimatedDiv
         key={index}
@@ -99,7 +117,7 @@ function TimeUsage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-white">
+        <h1 className="text-2xl font-bold mb-4 text-black">
           Application Usage Statistics
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -112,7 +130,7 @@ function TimeUsage() {
               </div>
             </div>
           </div>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto" style={{ maxHeight: "500px" }}> {/* Menambahkan style maxHeight */}
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto" style={{ maxHeight: "500px" }}>
             <h2 className="text-lg font-semibold mb-2 text-white">App Usage</h2>
             {renderUsageStatistics()}
           </div>
