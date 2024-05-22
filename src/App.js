@@ -16,7 +16,7 @@ import ProfileDevice from './page/Dashboard/ProfileDevice';
 import ActivityStatus from './page/Dashboard/ActivityStatus';
 
 function App() {
-  const [selectedComponent, setSelectedComponent] = useState('Dashboard'); // Default to Dashboard
+  const [selectedComponent, setSelectedComponent] = useState('Dashboard');
 
   const handleComponentChange = (component) => {
     setSelectedComponent(component);

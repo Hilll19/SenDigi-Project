@@ -87,6 +87,28 @@ function Notification() {
     }
   };
 
+  const handleUnlinkTelegram = () => {
+    const updatedSettings = { ...notificationSettings, Telegram: "" };
+  
+    fetch(process.env.REACT_APP_API_APPS_NOTIFICATION_UPDATE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedSettings),
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        setNotificationSettings(updatedSettings);
+      })
+      .catch((error) => {
+        console.error("Error updating notification settings:", error.message);
+      });
+  };
+
   const renderNotificationSettings = () => {
     return (
       <div className="bg-gray-800 p-4 rounded-lg shadow-md">
@@ -192,6 +214,18 @@ function Notification() {
         <div className="mb-4">
           <label className="block text-white mb-1">Send over Telegram</label>
           <div className="bg-gray-700 p-4 rounded-md">
+          {notificationSettings.Telegram ? (
+            <a
+              href="javascript:void(0);"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleUnlinkTelegram();
+              }}
+            >
+              Unlock telegram from SenDigi
+            </a>
+          ) : (
             <a
               href="https://t.me/SenDigi_bot"
               className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
@@ -199,14 +233,15 @@ function Notification() {
             >
               Click here to copy command & set up Telegram
             </a>
-          </div>
+          )}
+        </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-white">
               You need to set up Telegram using a designated number before we
               are able to send notifications to you.
             </span>
             <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-              <input
+              {/* <input
                 type="checkbox"
                 name="toggleTelegram"
                 id="toggleTelegram"
@@ -217,6 +252,36 @@ function Notification() {
                 htmlFor="toggleTelegram"
                 className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
               ></label>
+               */}
+               <input
+                type="checkbox"
+                name="toggleTelegram"
+                id="toggleTelegram"
+                className="toggle-checkbox absolute hidden w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+                checked={notificationSettings.TelegramStatus}
+                onChange={() =>
+                  updateNotificationSettings(
+                    "WhatsappStatus",
+                    !notificationSettings.TelegramStatus
+                  )
+                }
+              />
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  name="toggleTelegram"
+                  id="toggleTelegram"
+                  checked={notificationSettings.TelegramStatus}
+                  onChange={() =>
+                    updateNotificationSettings(
+                      "TelegramStatus",
+                      !notificationSettings.TelegramStatus
+                    )
+                  }
+                  className="sr-only"
+                />
+                <span className="toggle-slider"></span>
+              </label>
             </div>
           </div>
         </div>
