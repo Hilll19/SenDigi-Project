@@ -6,6 +6,7 @@ const SchedulingByTime = () => {
   const [endTime, setEndTime] = useState('');
   const [selectedAppId, setSelectedAppId] = useState('');
   const [scheduledApps, setScheduledApps] = useState([]);
+  const [loading, setLoading] = useState(true); // State untuk indikator loading
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_APPS, {
@@ -13,17 +14,24 @@ const SchedulingByTime = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const apps = data.data.map((app) => ({
-          id: app.ID,
-          name: app.Name,
-          packageName: app.PackageName,
-          timeStartLocked: app.TimeStartLocked.String,
-          timeEndLocked: app.TimeEndLocked.String,
-        }));
-        setAppList(apps);
-        setScheduledApps(apps.filter(app => app.timeStartLocked && app.timeEndLocked));
+        if (data && data.data) {
+          const apps = data.data.map((app) => ({
+            id: app.ID,
+            name: app.Name,
+            packageName: app.PackageName,
+            timeStartLocked: app.TimeStartLocked.String,
+            timeEndLocked: app.TimeEndLocked.String,
+          }));
+          setAppList(apps);
+          setScheduledApps(apps.filter(app => app.timeStartLocked && app.timeEndLocked));
+        } else {
+          throw new Error('Data is null');
+        }
       })
-      .catch((error) => console.error("Error fetching app data:", error));
+      .catch((error) => {
+        console.error("Error fetching app data:", error);
+        setLoading(false); // Set loading menjadi false jika terjadi error
+      });
   }, []);
   
   const handleStartTimeChange = (event) => {
@@ -78,79 +86,20 @@ const SchedulingByTime = () => {
     }
   };
 
+  // Jika loading, tampilkan pesan loading
+  if (loading) {
+    return <div>Loading data...</div>;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800" style={{ fontFamily: 'Montserrat, sans-serif' }}>Lock App by Time</h2>
-        <div className="mb-6">
-          <label htmlFor="app-select" className="block text-base font-medium text-gray-700 mb-2" style={{ fontFamily: 'Roboto, sans-serif' }}>Select App:</label>
-          <select
-            id="app-select"
-            name="app-select"
-            value={selectedAppId}
-            onChange={handleAppChange}
-            className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            style={{ fontFamily: 'Roboto, sans-serif', color: '#4b5563' }}
-          >
-            <option value="" style={{ color: '#4b5563' }}>Select App</option>
-            {appList.map((app) => (
-              <option key={app.id} value={app.id} style={{ color: '#4b5563' }}>
-                {app.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="mb-6">
-            <label htmlFor="start-time" className="block text-base font-medium text-gray-700 mb-2"style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</label>
-            <input
-              type="time"
-              id="start-time"
-              name="start-time"
-              value={startTime}
-              onChange={handleStartTimeChange}
-              className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              style={{ fontFamily: 'Roboto, sans-serif', color: '#4b5563' }}
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="end-time" className="block text-base font-medium text-gray-700 mb-2" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</label>
-            <input
-              type="time"
-              id="end-time"
-              name="end-time"
-              value={endTime}
-              onChange={handleEndTimeChange}
-              className="mt-1 p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              style={{ fontFamily: 'Roboto, sans-serif', color: '#4b5563' }}
-            />
-          </div>
-        </div>
-        <button
-          onClick={SaveState}
-          className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors font-semibold"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
-        >
-          Save Schedule
-        </button>
+        {/* Sisipkan kode render lain di sini */}
       </div>
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800" style={{ fontFamily: 'Montserrat, sans-serif' }}>History Scheduling</h2>
-        <div className="bg-gray-100 p-4 rounded-md max-h-96 overflow-y-auto">
-          <ul className="list-disc list-inside text-black">
-            {scheduledApps.map((scheduledApp, index) => (
-              <li key={index} className="mb-4">
-                <div className="bg-gray-100 p-4 rounded-md">
-                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.name}
-                  <br />
-                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.timeStartLocked}
-                  <br />
-                  <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</span> {scheduledApp.timeEndLocked}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Sisipkan kode render lain di sini */}
       </div>
     </div>
   );

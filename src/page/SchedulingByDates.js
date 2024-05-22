@@ -6,6 +6,7 @@ const SchedulingByDates = () => {
   const [selectedAppId, setSelectedAppId] = useState('');
   const [scheduledApps, setScheduledApps] = useState([]);
   const [dates, setDates] = useState([]);
+  const [loading, setLoading] = useState(true); // State untuk indikator loading
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_APPS, {
@@ -13,16 +14,23 @@ const SchedulingByDates = () => {
     })
       .then(response => response.json())
       .then(data => {
-        const apps = data.data.map(app => ({
-          id: app.ID,
-          name: app.Name,
-          packageName: app.PackageName,
-          dateLocked: app.DateLocked.String,
-        }));
-        setAppList(apps);
-        setScheduledApps(apps.filter(app => app.dateLocked));
+        if (data && data.data) {
+          const apps = data.data.map(app => ({
+            id: app.ID,
+            name: app.Name,
+            packageName: app.PackageName,
+            dateLocked: app.DateLocked.String,
+          }));
+          setAppList(apps);
+          setScheduledApps(apps.filter(app => app.dateLocked));
+        } else {
+          throw new Error('Data is null');
+        }
       })
-      .catch(error => console.error("Error fetching app data:", error));
+      .catch(error => {
+        console.error("Error fetching app data:", error);
+        setLoading(false); // Set loading menjadi false jika terjadi error
+      });
   }, []);
 
   const handleAppChange = event => {
@@ -60,6 +68,11 @@ const SchedulingByDates = () => {
         .catch(error => console.error('Error updating lock status:', error.message));
     }
   };
+
+  // Jika loading, tampilkan pesan loading
+  if (loading) {
+    return <div>Loading data...</div>;
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
