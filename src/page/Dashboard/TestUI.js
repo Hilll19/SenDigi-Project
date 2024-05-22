@@ -69,9 +69,16 @@ const TestUI = () => {
   };
 
   const calculateOpenedLockApplication = (activities, apps) => {
-    const openedLockActivities = activities.filter((activity) =>
+    // Filter unique package names
+    const uniquePackageNames = new Set(activities.map(activity => activity.PackageName));
+
+    // Filter activities based on unique package names
+    const uniqueActivities = activities.filter(activity => uniquePackageNames.has(activity.PackageName));
+
+    const openedLockActivities = uniqueActivities.filter((activity) =>
       activity.Description.String.startsWith("[Warning]")
     );
+
     const occurrences = new Map();
 
     openedLockActivities.forEach((activity) => {
@@ -184,113 +191,114 @@ const TestUI = () => {
               <div className="overflow-y-auto max-h-40">
                 {totalLockedApps.map((app) => (
                   <div
-                    key={app.PackageName}
-                    className="flex items-center gap-2"
-                  >
-                    <img src={app.Icon} alt="icon" width="40" />
-                    <p className="text-lg font-semibold">{app.Name}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>You don't have any locked applications</p>
-            )}
-          </Card>
-          <Card
-            href="/schedule"
-            title="Scheduled Applications"
-            className="md:row-span-2"
-          >
-            {totalScheduledApps.length ? (
-              <div className="overflow-y-auto max-h-40">
-                {totalScheduledApps.map((app) => (
-                  <div key={app.PackageName} className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <img src={app.Icon} alt="icon" width="20" />
-                      <p className="font-bold">{app.Name}</p>
-                    </div>
-                    <div>
-                      {app.DateLocked.String && (
-                        <Badge color="red">{app.DateLocked.String}</Badge>
-                      )}
-                      {app.TimeStartLocked.String && (
-                        <Badge color="blue">
-                          Start Time: {app.TimeStartLocked.String}
-                        </Badge>
-                      )}
-                      {app.TimeEndLocked.String && (
-                        <Badge color="blue">
-                          End Time: {app.TimeEndLocked.String}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>You don't have any scheduled applications</p>
-            )}
-          </Card>
-          <Card href="/schedule" title="Total Scheduled Applications">
-            {totalScheduledApps.length} Scheduled Applications
-          </Card>
-          <Card
-            href="/activity"
-            title="Last Device Activity"
-            className="md:col-span-2 md:row-span-2"
-          >
-            {activityInfo.slice(0, 4).map((activity) => (
-              <div
-                key={activity.ID}
-                className="flex flex-col border-b border-gray-100 py-4"
-              >
-                <p className="font-bold">{activity.Description.String}</p>
-                <div className="flex items-center gap-2 mb-2">
-                  <img src={activity.Icon} alt={activity.Name} width="20" />
-                  <p className="font-semibold">{activity.Name}</p>
+                  key={app.PackageName}
+                  className="flex items-center gap-2"
+                >
+                  <img src={app.Icon} alt="icon" width="40" />
+                  <p className="text-lg font-semibold">{app.Name}</p>
                 </div>
-                <p>
-                  {new Intl.DateTimeFormat("id-ID", {
-                    dateStyle: "full",
-                    timeStyle: "long",
-                  }).format(new Date(activity.CreatedAt))}
-                </p>
+              ))}
+            </div>
+          ) : (
+            <p>You don't have any locked applications</p>
+          )}
+        </Card>
+        <Card
+          href="/schedule"
+          title="Scheduled Applications"
+          className="md:row-span-2"
+        >
+          {totalScheduledApps.length ? (
+            <div className="overflow-y-auto max-h-40">
+              {totalScheduledApps.map((app) => (
+                <div key={app.PackageName} className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <img src={app.Icon} alt="icon" width="20" />
+                    <p className="font-bold">{app.Name}</p>
+                  </div>
+                  <div>
+                    {app.DateLocked.String && (
+                      <Badge color="red">{app.DateLocked.String}</Badge>
+                    )}
+                    {app.TimeStartLocked.String && (
+                      <Badge color="blue">
+                        Start Time: {app.TimeStartLocked.String}
+                      </Badge>
+                    )}
+                    {app.TimeEndLocked.String && (
+                      <Badge color="blue">
+                        End Time: {app.TimeEndLocked.String}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>You don't have any scheduled applications</p>
+          )}
+        </Card>
+        <Card href="/schedule" title="Total Scheduled Applications">
+          {totalScheduledApps.length} Scheduled Applications
+        </Card>
+        <Card
+          href="/activity"
+          title="Last Device Activity"
+          className="md:col-span-2 md:row-span-2"
+        >
+          {activityInfo.slice(0, 4).map((activity) => (
+            <div
+              key={activity.ID}
+              className="flex flex-col border-b border-gray-100 py-4"
+            >
+              <p className="font-bold">{activity.Description.String}</p>
+              <div className="flex items-center gap-2 mb-2">
+                <img src={activity.Icon} alt={activity.Name} width="20" />
+                <p className="font-semibold">{activity.Name}</p>
               </div>
-            ))}
-          </Card>
-          <Card href="/activity" title="Total Opened Locked Application">
-            {totalOpenedLockApplication.length} Times
-          </Card>
-          <Card href="/activity" title="Most Opened Locked Application">
-            {mostOpenedLockedApp && (
-              <div className="flex items-center gap-2">
-                <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
-                <p className="text-lg font-bold">{mostOpenedLockedApp.Name}</p>
-              </div>
-            )}
-          </Card>
-        </main>
-      </div>
+              <p>
+                {new Intl.DateTimeFormat("id-ID", {
+                  dateStyle: "full",
+                  timeStyle: "long",
+                }).format(new Date(activity.CreatedAt))}
+              </p>
+            </div>
+          ))}
+        </Card>
+        <Card href="/activity" title="Total Opened Locked Application">
+          {totalOpenedLockApplication.length} Times
+        </Card>
+        <Card href="/activity" title="Most Opened Locked Application">
+          {mostOpenedLockedApp && (
+            <div className="flex items-center gap-2">
+              <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
+              <p className="text-lg font-bold">{mostOpenedLockedApp.Name}</p>
+            </div>
+          )}
+        </Card>
+      </main>
     </div>
-  );
+  </div>
+);
 };
 
 const Card = ({ href, title, children, className = "" }) => (
-  <a
-    href={href}
-    className={`bg-gray-800 p-4 rounded-lg shadow-md ${className}`}
-  >
-    <p className="text-sm text-gray-400">{title}</p>
-    <h5 className="mt-2 text-2xl font-bold text-white">{children}</h5>
-  </a>
+<a
+  href={href}
+  className={`bg-gray-800 p-4 rounded-lg shadow-md ${className}`}
+>
+  <p className="text-sm text-gray-400">{title}</p>
+  <h5 className="mt-2 text-2xl font-bold text-white">{children}</h5>
+</a>
 );
 
 const Badge = ({ color, children }) => (
-  <span
-    className={`inline-block bg-${color}-200 text-${color}-800 text-xs px-2 rounded-full`}
-  >
-    {children}
-  </span>
+<span
+  className={`inline-block bg-${color}-200 text-${color}-800 text-xs px-2 rounded-full`}
+>
+  {children}
+</span>
 );
 
 export default TestUI;
+                   
