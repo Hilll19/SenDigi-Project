@@ -20,33 +20,43 @@ const TestUI = () => {
 
   const fetchData = async () => {
     try {
-      const [deviceRes, appRes, activityRes] = await Promise.allSettled([
+      const [deviceCheck, appCheck, activityCheck] = await Promise.allSettled([
         fetch(process.env.REACT_APP_API_DEVICES, { credentials: "include" }),
         fetch(process.env.REACT_APP_API_APPS, { credentials: "include" }),
         fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, { credentials: "include" })
       ]);
-
-      if (deviceRes.status === "fulfilled" && deviceRes.value.ok) {
-        const deviceData = await deviceRes.value.json();
+  
+      // Check deviceCheck
+      if (deviceCheck.status === "fulfilled" && deviceCheck.value.ok) {
+        const deviceData = await deviceCheck.value.json();
         setDeviceInfo(deviceData.data[0]);
+      } else {
+        console.error("Device check failed:", deviceCheck.reason || "Unknown error");
       }
-
-      if (appRes.status === "fulfilled" && appRes.value.ok) {
-        const appsData = await appRes.value.json();
+  
+      // Check appCheck
+      if (appCheck.status === "fulfilled" && appCheck.value.ok) {
+        const appsData = await appCheck.value.json();
         setAppInfo(appsData.data);
         calculateTotalTimeUsage(appsData.data);
         calculateLockedAndScheduledApps(appsData.data);
+      } else {
+        console.error("App check failed:", appCheck.reason || "Unknown error");
       }
-
-      if (activityRes.status === "fulfilled" && activityRes.value.ok) {
-        const activitiesData = await activityRes.value.json();
+  
+      // Check activityCheck
+      if (activityCheck.status === "fulfilled" && activityCheck.value.ok) {
+        const activitiesData = await activityCheck.value.json();
         setActivityInfo(activitiesData.data);
-        calculateOpenedLockApplication(activitiesData.data, appRes.value.data);
+        calculateOpenedLockApplication(activitiesData.data, appCheck.value.data);
+      } else {
+        console.error("Activity check failed:", activityCheck.reason || "Unknown error");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
 
   const calculateTotalTimeUsage = (apps) => {
     const totalTime = apps.reduce((acc, app) => acc + app.TimeUsage, 0);
