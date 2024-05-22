@@ -7,14 +7,18 @@ function Notification() {
     ID: null,
     Email: "",
     EmailStatus: false,
-    Whatsapp: { String: "", Valid: false },
+    Whatsapp: "",
     WhatsappStatus: false,
+    Telegram: "",
+    TelegramStatus: false,
     Strategy: "",
   });
   const [whatsappInput, setWhatsappInput] = useState("");
+  const [deviceId, setDeviceId] = useState("");
 
   useEffect(() => {
     setShowAnimation(true);
+    fetchDeviceId();
     fetchNotificationSettings();
   }, []);
 
@@ -25,7 +29,11 @@ function Notification() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched data:", data); // Log the fetched data
-        setNotificationSettings(data.data);
+        setNotificationSettings({
+          ...data.data,
+          Whatsapp: data.data.Whatsapp.String,
+          Telegram: data.data.Telegram.String,
+        });
         setWhatsappInput(data.data.Whatsapp.String);
       })
       .catch((error) =>
@@ -35,12 +43,11 @@ function Notification() {
 
   const updateNotificationSettings = (field, value) => {
     const updatedSettings = { ...notificationSettings, [field]: value };
-  
+
     if (field === "Whatsapp") {
-      updatedSettings.Whatsapp = { String: value, Valid: value !== "" };
-      updatedSettings.WhatsappStatus = value !== ""; // Update WhatsappStatus based on the new value of Whatsapp
+      updatedSettings.Whatsapp = value;
     }
-  
+
     fetch(process.env.REACT_APP_API_APPS_NOTIFICATION_UPDATE, {
       method: "POST",
       headers: {
@@ -59,7 +66,29 @@ function Notification() {
         console.error("Error updating notification settings:", error.message);
       });
   };
-  
+
+  const fetchDeviceId = () => {
+    fetch(process.env.REACT_APP_API_DEVICES, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data.length > 0) {
+          setDeviceId(data.data[0].ID);
+        }
+      })
+      .catch((error) => console.error("Error fetching device ID:", error));
+  };
+
+  const copyTextToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log("Text copied to clipboard:", text);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
 
   const renderNotificationSettings = () => {
     return (
@@ -152,7 +181,7 @@ function Notification() {
                   checked={notificationSettings.WhatsappStatus}
                   onChange={() =>
                     updateNotificationSettings(
-                      "EmailStatus",
+                      "WhatsappStatus",
                       !notificationSettings.WhatsappStatus
                     )
                   }
@@ -166,12 +195,13 @@ function Notification() {
         <div className="mb-4">
           <label className="block text-white mb-1">Send over Telegram</label>
           <div className="bg-gray-700 p-4 rounded-md">
-            <p className="text-white">
-              You have not yet set up Telegram to receive notifications.
-            </p>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-2">
-              Click here to copy command & set up Telegram
-            </button>
+          <a
+            href="https://t.me/SenDigi_bot"
+            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
+            onClick={() => copyTextToClipboard(`/save ${deviceId}`)}
+          >
+            Click here to copy command & set up Telegram
+          </a>
           </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-white">
