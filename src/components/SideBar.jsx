@@ -5,7 +5,7 @@ import { FaChartLine, FaUser, FaLock, FaHome, FaUniversalAccess, FaBell } from '
 
 const Sidebar = ({ handleMenuClick }) => {
   return (
-    <div className="bg-gray-900 h-screen w-64 flex flex-col">
+    <div className="bg-gray-900 w-64 flex flex-col">
   <div className="py-8 px-4 bg-gray-800">
     <h2 className="text-[#00df9a] text-2xl font-bold">Dashboard</h2>
   </div>

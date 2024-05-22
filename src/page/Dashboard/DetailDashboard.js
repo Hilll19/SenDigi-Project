@@ -203,8 +203,8 @@ const DetailDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       <Navbar />
-      <div className="flex flex-col md:flex-row h-screen">
-        <div className="flex flex-col flex-grow overflow-y-auto bg-gray-900 px-6 py-4 md:px-10 md:py-8">
+      <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col flex-grow bg-gray-900 px-6 py-4 md:px-10 md:py-8">
           <div
             className={`grid ${
               window.innerWidth > 768 ? "grid-cols-3" : "grid-cols-1"
