@@ -187,8 +187,8 @@ const TestUI = () => {
                     key={app.PackageName}
                     className="flex items-center gap-2"
                   >
-                    <img src={app.Icon} alt="icon" width="20" />
-                    <p className="text-sm font-semibold">{app.Name}</p>
+                    <img src={app.Icon} alt="icon" width="40" />
+                    <p className="text-lg font-semibold">{app.Name}</p>
                   </div>
                 ))}
               </div>
