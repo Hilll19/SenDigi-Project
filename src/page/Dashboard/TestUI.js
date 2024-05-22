@@ -70,36 +70,43 @@ const TestUI = () => {
 
   const calculateOpenedLockApplication = (activities, apps) => {
     // Filter unique package names
-    const uniquePackageNames = new Set(activities.map(activity => activity.PackageName));
-  
+    const uniquePackageNames = new Set(
+      activities.map((activity) => activity.PackageName)
+    );
+
     // Filter activities based on unique package names
-    const uniqueActivities = activities.filter(activity => uniquePackageNames.has(activity.PackageName));
-  
+    const uniqueActivities = activities.filter((activity) =>
+      uniquePackageNames.has(activity.PackageName)
+    );
+
     const openedLockActivities = uniqueActivities.filter((activity) =>
       activity.Description.String.startsWith("[Warning]")
     );
-  
+
     const uniqueOpenedLockApps = new Set();
-  
+
     openedLockActivities.forEach((activity) => {
       uniqueOpenedLockApps.add(activity.PackageName);
     });
-  
+
     setTotalOpenedLockApplication(uniqueOpenedLockApps.size);
-  
+
     const mostOpenedLockedPackageName = Array.from(uniqueOpenedLockApps).reduce(
       (max, current) =>
-        openedLockActivities.filter(activity => activity.PackageName === current).length >
-        openedLockActivities.filter(activity => activity.PackageName === max).length
+        openedLockActivities.filter(
+          (activity) => activity.PackageName === current
+        ).length >
+        openedLockActivities.filter((activity) => activity.PackageName === max)
+          .length
           ? current
           : max,
       null
     );
-  
+
     const mostOpenedLockedApp = apps.find(
       (app) => app.PackageName === mostOpenedLockedPackageName
     );
-  
+
     setMostOpenedLockedApp(mostOpenedLockedApp);
   };
 
@@ -247,24 +254,28 @@ const TestUI = () => {
             title="Last Device Activity"
             className="md:col-span-2 md:row-span-2"
           >
-            {activityInfo.slice(0, 4).map((activity) => (
-              <div
-                key={activity.ID}
-                className="flex flex-col border-b border-gray-100 py-4"
-              >
-                <p className="font-bold">{activity.Description.String}</p>
-                <div className="flex items-center gap-2 mb-2">
-                  <img src={activity.Icon} alt={activity.Name} width="20" />
-                  <p className="font-semibold">{activity.Name}</p>
+            <div className="overflow-y-auto max-h-80">
+              {" "}
+              {/* Tambahkan className dengan overflow-y-auto dan max-h */}
+              {activityInfo.slice(0, 4).map((activity) => (
+                <div
+                  key={activity.ID}
+                  className="flex flex-col border-b border-gray-100 py-4"
+                >
+                  <p className="font-bold">{activity.Description.String}</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <img src={activity.Icon} alt={activity.Name} width="20" />
+                    <p className="font-semibold">{activity.Name}</p>
+                  </div>
+                  <p>
+                    {new Intl.DateTimeFormat("id-ID", {
+                      dateStyle: "full",
+                      timeStyle: "long",
+                    }).format(new Date(activity.CreatedAt))}
+                  </p>
                 </div>
-                <p>
-                  {new Intl.DateTimeFormat("id-ID", {
-                    dateStyle: "full",
-                    timeStyle: "long",
-                  }).format(new Date(activity.CreatedAt))}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </Card>
           <Card href="/activity" title="Total Opened Locked Application">
             {totalOpenedLockApplication.length} Times
@@ -302,4 +313,3 @@ const Badge = ({ color, children }) => (
 );
 
 export default TestUI;
-                   
