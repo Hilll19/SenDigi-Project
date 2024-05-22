@@ -134,7 +134,7 @@ const TestUI = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="flex">
         <main className="flex-1 p-4 grid md:grid-cols-3 gap-3">
@@ -283,10 +283,10 @@ const TestUI = () => {
 const Card = ({ href, title, children, className = "" }) => (
   <a
     href={href}
-    className={`bg-gray-800 p-4 rounded-lg shadow-md ${className}`}
+    className={`bg-gray-200 p-4 rounded-lg shadow-md ${className}`}
   >
-    <p className="text-sm text-gray-400">{title}</p>
-    <h5 className="mt-2 text-2xl font-bold text-white">{children}</h5>
+    <p className="text-sm text-black">{title}</p>
+    <h5 className="mt-2 text-2xl font-bold text-black">{children}</h5>
   </a>
 );
 

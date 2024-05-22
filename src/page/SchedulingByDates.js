@@ -63,7 +63,7 @@ const SchedulingByDates = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div className="bg-white p-8 rounded-lg shadow-md">
+      <div className="bg-gray-200 p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Lock App by Dates</h2>
         <div className="mb-6">
           <label htmlFor="app-select" className="block text-base font-medium text-gray-700 mb-2">Select App:</label>
@@ -97,7 +97,7 @@ const SchedulingByDates = () => {
           Save Schedule
         </button>
       </div>
-      <div className="bg-white p-8 rounded-lg shadow-md">
+      <div className="bg-gray-200 p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">History Scheduling</h2>
         <div className="bg-gray-100 p-4 rounded-md max-h-96 overflow-y-auto">
           <ul className="list-disc list-inside text-black">

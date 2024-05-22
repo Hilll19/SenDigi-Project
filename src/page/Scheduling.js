@@ -11,7 +11,7 @@ function Scheduling() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-200">
+    <div className="min-h-screen bg-white text-gray-900">
       <Navbar />
       <div className="container mx-auto py-10">
         <h1 className="text-3xl font-bold mb-6 text-center">Lock App Scheduling</h1>
@@ -24,7 +24,7 @@ function Scheduling() {
             name="scheduling-type"
             value={selectedOption}
             onChange={handleOptionChange}
-            className="block w-[400px] p-3 border border-gray-700 rounded-md bg-gray-800 text-gray-200"
+            className="block w-[400px] p-3 border border-gray-700 rounded-md bg-gray-200 text-black"
           >
             <option value="ByDates">By Dates</option>
             <option value="ByTime">By Time</option>

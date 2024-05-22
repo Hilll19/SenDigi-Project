@@ -79,7 +79,7 @@ function LockApp() {
   
   const renderUsageStatistics = () => {
     return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
+      <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
         <ul>
           {appList.map((app, index) => (
             <li
@@ -94,7 +94,7 @@ function LockApp() {
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <span className="text-white">{app.name}</span>
+                <span className="text-black">{app.name}</span>
               </div>
               <div
                 className={`w-3 h-3 rounded-full ${
@@ -110,7 +110,7 @@ function LockApp() {
 
   const renderAppList = () => {
     return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
+      <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
         <ul>
           {appList.map((app, index) => (
             <li
@@ -125,7 +125,7 @@ function LockApp() {
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <span className="text-white">{app.name}</span>
+                <span className="text-black">{app.name}</span>
               </div>
               <label className="toggle-switch">
                 <input
@@ -145,21 +145,19 @@ function LockApp() {
   
 
   return (
-    <div className="bg-gray-900 min-h-screen">
+    <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
         <h1 className="text-2xl font-bold mb-4 text-white">
           Monitor Lock App System
         </h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 text-white">Lock App</h2>
-            <div className="bg-gray-800 p-4 rounded-lg shadow-md mb-4">
+          <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-2 text-black">Lock App</h2>
               {showAnimation && renderAppList()}
-            </div>
           </div>
-          <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 text-white">
+          <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-2 text-black">
               App Status
             </h2>
             {showAnimation && renderUsageStatistics()}

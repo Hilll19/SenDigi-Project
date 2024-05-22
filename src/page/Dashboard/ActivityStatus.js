@@ -60,7 +60,7 @@ function ActivityStatus() {
 
   const renderActivityStatus = () => {
     return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md overflow-y-auto max-h-96">
+      <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-96">
         <ul>
           {activityStatusList.map((activity, index) => (
             <li
@@ -94,7 +94,7 @@ function ActivityStatus() {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen">
+    <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
         <h1 className="text-2xl font-bold mb-4 text-white">

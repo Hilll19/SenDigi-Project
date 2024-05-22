@@ -94,35 +94,36 @@ function ProfileDevice() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto mt-16 px-4 flex justify-center items-center">
-        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-          <div className="text-center mt-12">
+        <div className="bg-white rounded-3xl border-4 border-t-8 border-gray-900 px-4 py-6 shadow-2xl max-w-sm">
+          <div className="text-center">
             <img
               src={profilePicture}
               alt="Profile"
-              className="shadow-xl rounded-full h-auto align-middle border-none mx-auto mb-4 max-w-150-px"
+              className="rounded-full h-auto align-middle border-none mx-auto mb-4 max-w-150-px"
             />
-            <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
-              {deviceData ? deviceData.DeviceName : "Unknown"}
-            </h3>
-            <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase flex items-center justify-center">
-              <FaAndroid className="mr-2 text-lg text-blueGray-400" />
+            <p className="pt-2 text-lg font-medium text-black">@{deviceData ? deviceData.DeviceName : "Unknown"}</p>
+            <p className="text-sm font-extrabold text-gray-900">
               {deviceData ? `${deviceData.Manufacturer}, ${deviceData.AndroidVersion}` : "Unknown"}
-            </div>
-            <div className="mb-2 text-blueGray-600 flex items-center justify-center">
-              <FaBriefcase className="mr-2 text-lg text-blueGray-400" />
-              {deviceData ? `${deviceData.DeviceBrand} - ${deviceData.ProductName}` : "Unknown"}
-            </div>
-            <div className="mb-2 text-blueGray-600 flex items-center justify-center">
-              <FaCode className="mr-2 text-lg text-blueGray-400" />
-              API Level: {deviceData ? deviceData.APILevel : "Unknown"}
-            </div>
-            <div className="mb-2 text-blueGray-600 flex items-center justify-center">
-              <BatteryInfo deviceData={deviceData} />
-            </div>
+            </p>
           </div>
+          <div className="my-3 grid grid-cols-4 items-center gap-4 px-4">
+            {/* Add your social media icons here */}
+          </div>
+          <div className="mb-2 text-blueGray-600 flex items-center justify-center">
+            <FaBriefcase className="mr-2 text-lg text-blueGray-400" />
+            {deviceData ? `${deviceData.DeviceBrand} - ${deviceData.ProductName}` : "Unknown"}
+          </div>
+          <div className="mb-2 text-blueGray-600 flex items-center justify-center">
+            <FaCode className="mr-2 text-lg text-blueGray-400" />
+            API Level: {deviceData ? deviceData.APILevel : "Unknown"}
+          </div>
+          <div className="mb-2 text-blueGray-600 flex items-center justify-center">
+            <BatteryInfo deviceData={deviceData} />
+          </div>
+          <div className="text-center font-extrabold text-black">&copy; Your Company Name</div>
         </div>
       </div>
     </div>

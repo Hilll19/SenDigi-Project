@@ -17,7 +17,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col md:flex-row">
       <Sidebar handleMenuClick={setSelectedComponent} />
-      <div className="flex flex-col flex-1 bg-gray-900 px-6 py-4 md:px-10 md:py-8 min-h-screen">
+      <div className="flex flex-col flex-1 bg-white px-6 py-4 md:px-10 md:py-8 min-h-screen">
         {selectedComponent === 'Dashboard' && <DetailDasboard />}
         {selectedComponent === 'ProfileDevice' && <ProfileDevice />}
         {selectedComponent === 'TimeUsage' && <TimeUsage />}
