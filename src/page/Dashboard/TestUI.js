@@ -22,25 +22,13 @@ const TestUI = () => {
 
   const fetchData = async () => {
     try {
-      const deviceResponse = await fetch(process.env.REACT_APP_API_DEVICES, {
-        credentials: "include",
-      });
-      const deviceData = await deviceResponse.json();
+      const [deviceData, appsData, activitiesData] = await Promise.all([
+        fetchDataFromAPI(process.env.REACT_APP_API_DEVICES),
+        fetchDataFromAPI(process.env.REACT_APP_API_APPS),
+        fetchDataFromAPI(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS),
+      ]);
       setDeviceInfo(deviceData.data[0]);
-
-      const appsResponse = await fetch(process.env.REACT_APP_API_APPS, {
-        credentials: "include",
-      });
-      const appsData = await appsResponse.json();
       setAppInfo(appsData.data);
-
-      const activitiesResponse = await fetch(
-        process.env.REACT_APP_API_APPS_ACTIVITY_STATUS,
-        {
-          credentials: "include",
-        }
-      );
-      const activitiesData = await activitiesResponse.json();
       setActivityInfo(activitiesData.data);
 
       calculateTotalTimeUsage(appsData.data);
@@ -49,6 +37,11 @@ const TestUI = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+  const fetchDataFromAPI = async (url) => {
+    const response = await fetch(url, { credentials: "include" });
+    return response.json();
   };
 
   const calculateTotalTimeUsage = (apps) => {
@@ -121,9 +114,7 @@ const TestUI = () => {
     }
 
     return (
-      <div
-        className={`mb-4 mt-6 text-blueGray-600 flex items-center justify-center`}
-      >
+      <div className="mb-4 mt-6 text-blueGray-600 flex items-center justify-center">
         {batteryIcon}
         <span className="ml-2 text-lg font-bold">Battery Level:</span>
         <span className={`ml-2 text-${batteryColor}-500 text-lg font-bold`}>
@@ -240,8 +231,6 @@ const TestUI = () => {
             className="md:col-span-2 md:row-span-2"
           >
             <div className="overflow-y-auto max-h-80">
-              {" "}
-              {/* Tambahkan className dengan overflow-y-auto dan max-h */}
               {activityInfo.slice(0, 4).map((activity) => (
                 <div
                   key={activity.ID}
