@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaBatteryFull, FaBatteryHalf, FaBatteryEmpty, FaAndroid, FaBriefcase, FaCode } from "react-icons/fa";
+import { FaBatteryFull, FaBatteryHalf, FaBatteryEmpty, FaBriefcase, FaCode } from "react-icons/fa";
 import Navbar from "../../components/Navbar";
 
 function BatteryInfo({ deviceData }) {
@@ -54,7 +54,11 @@ function ProfileDevice() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setDeviceData(data.data[0]);
+        if (data && data.data && data.data.length > 0) {
+          setDeviceData(data.data[0]);
+        } else {
+          setDeviceData(null);
+        }
         setLoading(false);
       })
       .catch((error) => {
@@ -91,6 +95,10 @@ function ProfileDevice() {
 
   if (error) {
     return <div>Error: {error.message}</div>;
+  }
+
+  if (!deviceData) {
+    return <div>Loading data...</div>;
   }
 
   return (
