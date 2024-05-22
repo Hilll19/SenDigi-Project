@@ -18,6 +18,7 @@ const Sidebar = ({ handleMenuClick }) => {
       <SidebarItem icon={<FaChartLine />} text="Schedule Application" onClick={() => handleMenuClick('Scheduling')} />
       <SidebarItem icon={<FaUniversalAccess />} text="Device Activity History" onClick={() => handleMenuClick('ActivityStatus')} />
       <SidebarItem icon={<FaBell />} text="Notifications" onClick={() => handleMenuClick('Notification')} />
+      <SidebarItem icon={<FaBell />} text="TestUI" onClick={() => handleMenuClick('TestUI')} />
     </ul>
   </nav>
 </div>

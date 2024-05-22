@@ -9,6 +9,7 @@ import Scheduling from '../Scheduling';
 import DetailDasboard from './DetailDashboard';
 import ActivityStatus from './ActivityStatus';
 import Notification from './Notification';
+import TestUI from './TestUI';
 
 const Dashboard = () => {
   const [selectedComponent, setSelectedComponent] = useState('Dashboard');
@@ -24,6 +25,7 @@ const Dashboard = () => {
         {selectedComponent === 'Scheduling' && <Scheduling />}
         {selectedComponent === 'ActivityStatus' && <ActivityStatus />}
         {selectedComponent === 'Notification' && <Notification />}
+        {selectedComponent === 'TestUI' && <TestUI />}
       </div>
     </div>
   );
