@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import Navbar from "../../components/Navbar";
-// import DatePicker from "react-multi-date-picker";
 
 const DetailDashboard = () => {
   const [showAnimation, setShowAnimation] = useState(false);
@@ -54,7 +53,7 @@ const DetailDashboard = () => {
           datasets: [
             {
               label: "Time Usage",
-              data: chartLabels.map((item) => item.hour),
+              data: chartLabels.map((item) => item.hour + item.minute / 60),
               fill: false,
               borderColor: "#00df9a",
             },
@@ -76,11 +75,11 @@ const DetailDashboard = () => {
           name: app.Name,
           packageName: app.PackageName,
           dateLocked: app.DateLocked.String,
-          timeStartLocked: app.TimeStartLocked.String, 
-          timeEndLocked: app.TimeEndLocked.String, 
+          timeStartLocked: app.TimeStartLocked.String,
+          timeEndLocked: app.TimeEndLocked.String,
         }));
         setScheduledApps(apps.filter((app) => app.dateLocked));
-        setScheduledTime(apps.filter((app) => app.timeStartLocked && app.timeEndLocked ));
+        setScheduledTime(apps.filter((app) => app.timeStartLocked && app.timeEndLocked));
       })
       .catch((error) => console.error("Error fetching scheduled apps data:", error));
   };
@@ -92,14 +91,14 @@ const DetailDashboard = () => {
           {scheduledApps.map((scheduledApp, index) => (
             <li key={index} className="mb-4">
               <div className="bg-gray-800 p-4 rounded-md">
-              {scheduledApp.icon && (
+                {scheduledApp.icon && (
                   <img
                     src={scheduledApp.icon}
                     alt={scheduledApp.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <br/>
+                <br />
                 <span className="font-semibold text-gray-400">App:</span> {scheduledApp.name}
                 <br />
                 {scheduledApp.dateLocked && (
@@ -114,14 +113,14 @@ const DetailDashboard = () => {
           {scheduledTime.map((scheduledTime, index) => (
             <li key={index} className="mb-4">
               <div className="bg-gray-800 p-4 rounded-md">
-              {scheduledTime.icon && (
+                {scheduledTime.icon && (
                   <img
                     src={scheduledTime.icon}
                     alt={scheduledTime.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <br/>
+                <br />
                 <span className="font-semibold text-gray-400">App:</span> {scheduledTime.name}
                 <br />
                 {scheduledTime.timeStartLocked && (
