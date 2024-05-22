@@ -22,13 +22,25 @@ const TestUI = () => {
 
   const fetchData = async () => {
     try {
-      const [deviceData, appsData, activitiesData] = await Promise.all([
-        fetchDataFromAPI(process.env.REACT_APP_API_DEVICES),
-        fetchDataFromAPI(process.env.REACT_APP_API_APPS),
-        fetchDataFromAPI(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS),
-      ]);
+      const deviceResponse = await fetch(process.env.REACT_APP_API_DEVICES, {
+        credentials: "include",
+      });
+      const deviceData = await deviceResponse.json();
       setDeviceInfo(deviceData.data[0]);
+
+      const appsResponse = await fetch(process.env.REACT_APP_API_APPS, {
+        credentials: "include",
+      });
+      const appsData = await appsResponse.json();
       setAppInfo(appsData.data);
+
+      const activitiesResponse = await fetch(
+        process.env.REACT_APP_API_APPS_ACTIVITY_STATUS,
+        {
+          credentials: "include",
+        }
+      );
+      const activitiesData = await activitiesResponse.json();
       setActivityInfo(activitiesData.data);
 
       calculateTotalTimeUsage(appsData.data);
@@ -37,11 +49,6 @@ const TestUI = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
-
-  const fetchDataFromAPI = async (url) => {
-    const response = await fetch(url, { credentials: "include" });
-    return response.json();
   };
 
   const calculateTotalTimeUsage = (apps) => {
@@ -114,7 +121,9 @@ const TestUI = () => {
     }
 
     return (
-      <div className="mb-4 mt-6 text-blueGray-600 flex items-center justify-center">
+      <div
+        className={`mb-4 mt-6 text-blueGray-600 flex items-center justify-center`}
+      >
         {batteryIcon}
         <span className="ml-2 text-lg font-bold">Battery Level:</span>
         <span className={`ml-2 text-${batteryColor}-500 text-lg font-bold`}>
@@ -125,7 +134,7 @@ const TestUI = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-900">
       <Navbar />
       <div className="flex">
         <main className="flex-1 p-4 grid md:grid-cols-3 gap-3">
@@ -230,28 +239,25 @@ const TestUI = () => {
             title="Last Device Activity"
             className="md:col-span-2 md:row-span-2"
           >
-            <div className="overflow-y-auto max-h-80">
-              {activityInfo.slice(0, 4).map((activity) => (
-                <div
-                  key={activity.ID}
-                  className="flex flex-col border-b border-gray-100 py-4"
-                >
-                  <p className="font-bold">{activity.Description.String}</p>
-                  <div className="flex items-center gap-2 mb-2">
-                    <img src={activity.Icon} alt={activity.Name} width="20" />
-                    <p className="font-semibold">{activity.Name}</p>
-                  </div>
-                  <p>
-                    {new Intl.DateTimeFormat("id-ID", {
-                      dateStyle: "full",
-                      timeStyle: "long",
-                    }).format(new Date(activity.CreatedAt))}
-                  </p>
+            {activityInfo.slice(0, 4).map((activity) => (
+              <div
+                key={activity.ID}
+                className="flex flex-col border-b border-gray-100 py-4"
+              >
+                <p className="font-bold">{activity.Description.String}</p>
+                <div className="flex items-center gap-2 mb-2">
+                  <img src={activity.Icon} alt={activity.Name} width="20" />
+                  <p className="font-semibold">{activity.Name}</p>
                 </div>
-              ))}
-            </div>
+                <p>
+                  {new Intl.DateTimeFormat("id-ID", {
+                    dateStyle: "full",
+                    timeStyle: "long",
+                  }).format(new Date(activity.CreatedAt))}
+                </p>
+              </div>
+            ))}
           </Card>
-
           <Card href="/activity" title="Total Opened Locked Application">
             {totalOpenedLockApplication.length} Times
           </Card>
@@ -272,10 +278,10 @@ const TestUI = () => {
 const Card = ({ href, title, children, className = "" }) => (
   <a
     href={href}
-    className={`bg-gray-200 p-4 rounded-lg shadow-md ${className}`}
+    className={`bg-gray-800 p-4 rounded-lg shadow-md ${className}`}
   >
-    <p className="text-sm text-black">{title}</p>
-    <h5 className="mt-2 text-2xl font-bold text-black">{children}</h5>
+    <p className="text-sm text-gray-400">{title}</p>
+    <h5 className="mt-2 text-2xl font-bold text-white">{children}</h5>
   </a>
 );
 
