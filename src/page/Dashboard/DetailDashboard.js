@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import Navbar from "../../components/Navbar";
+// import DatePicker from "react-multi-date-picker";
 
 const DetailDashboard = () => {
   const [showAnimation, setShowAnimation] = useState(false);
@@ -26,6 +27,15 @@ const DetailDashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data.data === null) {
+          setAppList([]);
+          setChartData({
+            labels: [],
+            datasets: [],
+          });
+          return;
+        }
+  
         const apps = data.data.map((app) => ({
           name: app.Name,
           locked: app.LockStatus,
@@ -53,7 +63,7 @@ const DetailDashboard = () => {
           datasets: [
             {
               label: "Time Usage",
-              data: chartLabels.map((item) => item.hour + item.minute / 60),
+              data: chartLabels.map((item) => item.hour),
               fill: false,
               borderColor: "#00df9a",
             },
@@ -69,6 +79,12 @@ const DetailDashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data.data === null) {
+          setScheduledApps([]);
+          setScheduledTime([]);
+          return;
+        }
+  
         const apps = data.data.map((app) => ({
           id: app.ID,
           icon: app.Icon,
@@ -85,20 +101,23 @@ const DetailDashboard = () => {
   };
 
   const renderScheduling = () => {
+    if (scheduledApps.length === 0 && scheduledTime.length === 0) {
+      return <div className="text-white">Loading data...</div>;
+    }
     return (
       <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-64">
         <ul className="list-disc list-inside text-white">
           {scheduledApps.map((scheduledApp, index) => (
             <li key={index} className="mb-4">
               <div className="bg-gray-800 p-4 rounded-md">
-                {scheduledApp.icon && (
+              {scheduledApp.icon && (
                   <img
                     src={scheduledApp.icon}
                     alt={scheduledApp.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <br />
+                <br/>
                 <span className="font-semibold text-gray-400">App:</span> {scheduledApp.name}
                 <br />
                 {scheduledApp.dateLocked && (
@@ -113,14 +132,14 @@ const DetailDashboard = () => {
           {scheduledTime.map((scheduledTime, index) => (
             <li key={index} className="mb-4">
               <div className="bg-gray-800 p-4 rounded-md">
-                {scheduledTime.icon && (
+              {scheduledTime.icon && (
                   <img
                     src={scheduledTime.icon}
                     alt={scheduledTime.name}
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <br />
+                <br/>
                 <span className="font-semibold text-gray-400">App:</span> {scheduledTime.name}
                 <br />
                 {scheduledTime.timeStartLocked && (
@@ -143,15 +162,15 @@ const DetailDashboard = () => {
   };
 
   const renderLockApp = () => {
+    if (appList.length === 0) {
+      return <div className="text-white">Loading data...</div>;
+    }
     return (
       <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-64">
-        <ul>
+        <ul className="list-disc list-inside text-white">
           {appList.map((app, index) => (
-            <li
-              key={index}
-              className="flex items-center justify-between py-2 border-b border-gray-700"
-            >
-              <div className="flex items-center">
+            <li key={index} className="mb-4">
+              <div className="bg-gray-800 p-4 rounded-md">
                 {app.icon && (
                   <img
                     src={app.icon}
@@ -159,30 +178,29 @@ const DetailDashboard = () => {
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <span className="text-white">{app.name}</span>
+                <br/>
+                <span className="font-semibold text-gray-400">App:</span> {app.name}
+                <br />
+                <span className="font-semibold text-gray-400">Locked:</span>{" "}
+                {app.locked ? "Yes" : "No"}
               </div>
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  app.locked ? "bg-red-500" : "bg-green-500"
-                }`}
-              ></div>
             </li>
           ))}
         </ul>
       </div>
     );
   };
-
+  
   const renderListApp = () => {
+    if (appList.length === 0) {
+      return <div className="text-white">Loading data...</div>;
+    }
     return (
-      <div className="mt-8 bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-72">
-        <ul>
+      <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto max-h-72">
+        <ul className="list-disc list-inside text-white">
           {appList.map((app, index) => (
-            <li
-              key={index}
-              className="flex items-center justify-between py-2 border-b border-gray-700"
-            >
-              <div className="flex items-center">
+            <li key={index} className="mb-4">
+              <div className="bg-gray-800 p-4 rounded-md">
                 {app.icon && (
                   <img
                     src={app.icon}
@@ -190,7 +208,8 @@ const DetailDashboard = () => {
                     className="h-8 w-8 mr-2 rounded-full"
                   />
                 )}
-                <span className="text-white">{app.name}</span>
+                <br/>
+                <span className="font-semibold text-gray-400">App:</span> {app.name}
               </div>
             </li>
           ))}
