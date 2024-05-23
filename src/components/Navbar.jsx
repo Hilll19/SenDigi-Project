@@ -78,7 +78,7 @@ const Navbar = () => {
   };
 
   // Determine the text color based on the current path
-  const textColor = location.pathname === '/' ? 'text-white' : 'text-black';
+  const textColor = (location.pathname === '/' || location.pathname === '/LoginPage') ? 'text-white' : 'text-black';
 
   return (
     <div className={`flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 ${textColor}`}>
