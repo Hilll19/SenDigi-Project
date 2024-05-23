@@ -18,6 +18,7 @@ const SchedulingByTime = () => {
           const apps = data.data.map((app) => ({
             id: app.ID,
             name: app.Name,
+            icon: app.Icon,
             packageName: app.PackageName,
             timeStartLocked: app.TimeStartLocked.String,
             timeEndLocked: app.TimeEndLocked.String,
@@ -144,11 +145,16 @@ const SchedulingByTime = () => {
       </div>
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800" style={{ fontFamily: 'Montserrat, sans-serif' }}>History Scheduling</h2>
-        <div className="bg-gray-100 p-4 rounded-md max-h-96 overflow-y-auto">
+        <div className="bg-white shadow p-4 rounded-md max-h-96 overflow-y-auto">
           <ul className="list-disc list-inside text-black">
-            {scheduledApps.map((scheduledApp, index) => (
-              <li key={index} className="mb-4">
-                <div className="bg-gray-100 p-4 rounded-md">
+          {scheduledApps.map((scheduledApp, index) => (
+              <li key={index} className="mb-4 flex items-center">
+                <img
+                  src={scheduledApp.icon}
+                  alt={scheduledApp.name}
+                  className="w-8 h-8 mr-3"
+                />
+                <div>
                   <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.name}
                   <br />
                   <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.timeStartLocked}
