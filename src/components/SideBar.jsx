@@ -1,27 +1,25 @@
-// Sidebar.jsx
-
 import React from 'react';
 import { FaChartLine, FaUser, FaLock, FaHome, FaUniversalAccess, FaBell } from 'react-icons/fa';
 
 const Sidebar = ({ handleMenuClick }) => {
   return (
     <div className="bg-gray-900 w-64 flex flex-col">
-  <div className="py-8 px-4 bg-gray-800">
-    <h2 className="text-[#00df9a] text-2xl font-bold">Dashboard</h2>
-  </div>
-  <nav>
-    <ul className="mt-4">
-      <SidebarItem icon={<FaHome />} text="Dashboard" onClick={() => handleMenuClick('Dashboard')} />
-      <SidebarItem icon={<FaUser />} text="Device Information" onClick={() => handleMenuClick('ProfileDevice')} />
-      <SidebarItem icon={<FaChartLine />} text="Time Usage" onClick={() => handleMenuClick('TimeUsage')} />
-      <SidebarItem icon={<FaLock />} text="Lock Application" onClick={() => handleMenuClick('LockApp')} />
-      <SidebarItem icon={<FaChartLine />} text="Schedule Application" onClick={() => handleMenuClick('Scheduling')} />
-      <SidebarItem icon={<FaUniversalAccess />} text="Device Activity History" onClick={() => handleMenuClick('ActivityStatus')} />
-      <SidebarItem icon={<FaBell />} text="Notifications" onClick={() => handleMenuClick('Notification')} />
-      {/* <SidebarItem icon={<FaBell />} text="TestUI" onClick={() => handleMenuClick('TestUI')} /> */}
-    </ul>
-  </nav>
-</div>
+      <div className="py-8 px-4 bg-gray-800">
+        <h2 className="text-[#00df9a] text-2xl font-bold">Dashboard</h2>
+      </div>
+      <nav>
+        <ul className="mt-4">
+          <SidebarItem icon={<FaHome />} text="Dashboard" onClick={() => handleMenuClick('Dashboard')} />
+          <SidebarItem icon={<FaUser />} text="Device Information" onClick={() => handleMenuClick('ProfileDevice')} />
+          <SidebarItem icon={<FaChartLine />} text="Time Usage" onClick={() => handleMenuClick('TimeUsage')} />
+          <SidebarItem icon={<FaLock />} text="Lock Application" onClick={() => handleMenuClick('LockApp')} />
+          <SidebarItem icon={<FaChartLine />} text="Schedule Application" onClick={() => handleMenuClick('Scheduling')} />
+          <SidebarItem icon={<FaUniversalAccess />} text="Device Activity History" onClick={() => handleMenuClick('ActivityStatus')} />
+          <SidebarItem icon={<FaBell />} text="Notifications" onClick={() => handleMenuClick('Notification')} />
+          {/* <SidebarItem icon={<FaBell />} text="TestUI" onClick={() => handleMenuClick('TestUI')} /> */}
+        </ul>
+      </nav>
+    </div>
   );
 };
 
