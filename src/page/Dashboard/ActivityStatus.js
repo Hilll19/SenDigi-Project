@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 function ActivityStatus() {
   const [showAnimation, setShowAnimation] = useState(false);
   const [activityStatusList, setActivityStatusList] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setShowAnimation(true);
@@ -22,22 +22,26 @@ function ActivityStatus() {
     })
       .then((response) => response.json())
       .then((data) => {
-        const activities = data.data.map((activity) => ({
-          id: activity.ID,
-          name: activity.Name,
-          icon: activity.Icon,
-          description: activity.Description.String,
-          packageName: activity.PackageName,
-          deviceId: activity.DeviceID,
-          createdAt: activity.CreatedAt,
-        }));
+        if (data.data) {
+          const activities = data.data.map((activity) => ({
+            id: activity.ID,
+            name: activity.Name,
+            icon: activity.Icon,
+            description: activity.Description.String,
+            packageName: activity.PackageName,
+            deviceId: activity.DeviceID,
+            createdAt: activity.CreatedAt,
+          }));
 
-        setActivityStatusList(activities);
-        setLoading(false); // Set loading to false after fetching data
+          setActivityStatusList(activities);
+        } else {
+          setActivityStatusList([]);
+        }
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching activity status data:", error);
-        setLoading(false); // Ensure loading is set to false even if there's an error
+        setLoading(false);
       });
   }
 
@@ -64,6 +68,14 @@ function ActivityStatus() {
   };
 
   const renderActivityStatus = () => {
+    if (loading) {
+      return <p>Loading data...</p>;
+    }
+
+    if (activityStatusList.length === 0) {
+      return <p>No activities found.</p>;
+    }
+
     return (
       <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-96">
         <ul>
@@ -102,15 +114,11 @@ function ActivityStatus() {
     <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">
+        <h1 className="text-2xl font-bold mb-4 text-white">
           Device Activity Status
         </h1>
-        <div className="bg-gray-200 p-4 rounded-lg shadow-md">
-          {loading ? (
-            <div className="text-white">Loading data...</div> // Show loading message while data is being fetched
-          ) : (
-            renderActivityStatus()
-          )}
+        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+          {showAnimation && renderActivityStatus()}
         </div>
       </div>
     </div>
