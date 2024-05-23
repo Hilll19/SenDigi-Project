@@ -9,14 +9,14 @@ function LoginPage() {
   const authRedirectUrl = process.env.REACT_APP_AUTH_REDIRECT_URL;
   // console.log("Auth Redirect URL:", authRedirectUrl);
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto px-4 py-8 lg:py-16">
-        <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-40">
+        <div className="max-w-lg mx-auto bg-gray shadow-lg rounded-lg overflow-hidden mt-40">
           <div className="px-6 py-8">
             <h1 className="text-2xl font-bold text-center mb-4">Welcome to Login Page!</h1>
             <p className="text-sm text-justify mb-6">We provide a seamless login process with your favorite providers that automatically registers new users, i.e. <strong>no password stored!</strong> <span role="img" aria-label="celebrate">🥳🎉</span></p>
-            <a href={authRedirectUrl} className="block w-full text-center py-2 px-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition duration-300">
+            <a href={authRedirectUrl} className="block w-full text-center py-2 px-4 bg-[#0197b2] text-white rounded transition duration-300">
               <FontAwesomeIcon icon={faGoogle} className="mr-2" /> Login with Google
             </a>
             <div className="flex justify-center mt-6">

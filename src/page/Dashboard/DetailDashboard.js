@@ -48,10 +48,7 @@ const DetailDashboard = ({ setSelectedComponent }) => {
       if (activityCheck.status === "fulfilled" && activityCheck.value.ok) {
         const activitiesData = await activityCheck.value.json();
         setActivityInfo(activitiesData.data);
-        calculateOpenedLockApplication(
-          activitiesData.data,
-          appCheck.value.data
-        );
+        calculateOpenedLockApplication(activitiesData.data);
       } else {
         console.error(
           "Activity check failed:",
@@ -88,34 +85,34 @@ const DetailDashboard = ({ setSelectedComponent }) => {
     setTotalScheduledApps(scheduledApps);
   };
 
-  const calculateOpenedLockApplication = (activities, apps) => {
+  const calculateOpenedLockApplication = (activities) => {
     const openedLockActivities = activities.filter((activity) =>
       activity.Description.String.startsWith("[Warning]")
     );
-  
+
     setTotalWarningActivities(openedLockActivities.length);
-  
+
     const occurrences = new Map();
-  
+
     openedLockActivities.forEach((activity) => {
       occurrences.set(
         activity.PackageName,
         (occurrences.get(activity.PackageName) || 0) + 1
       );
     });
-  
-    // const mostOpenedLockedPackageName = Array.from(
-    //   occurrences.entries()
-    // ).reduce(
-    //   (max, current) => (current[1] > max[1] ? current : max),
-    //   [null, 0]
-    // )[0];
-    // const mostOpenedLockedApp = apps.find(
-    //   (app) => app.PackageName === mostOpenedLockedPackageName
-    // );
-  
-    setTotalOpenedLockApplication(openedLockActivities);
+
+    const mostOpenedLockedPackageName = Array.from(
+      occurrences.entries()
+    ).reduce(
+      (max, current) => (current[1] > max[1] ? current : max),
+      [null, 0]
+    )[0];
+
+    const mostOpenedLockedApp = appInfo.find(
+      (app) => app.PackageName === mostOpenedLockedPackageName
+    );
     setMostOpenedLockedApp(mostOpenedLockedApp);
+    setTotalOpenedLockApplication(openedLockActivities);
   };
 
   const convertToHourMinute = (time) => {
@@ -165,28 +162,33 @@ const DetailDashboard = ({ setSelectedComponent }) => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
+    <div className="min-h-screen bg-white mt-12">
       <div className="flex">
         <main className="flex-1 p-4 grid md:grid-cols-3 gap-3">
           <Card
             onClick={() => setSelectedComponent("ProfileDevice")}
             title="Device Name"
           >
-            {deviceInfo ? deviceInfo.DeviceName : "No Device Info"}
+            <h5 class="mt-4 mb-2 text-lg font-bold">
+              {deviceInfo ? deviceInfo.DeviceName : "No Device Info"}
+            </h5>
           </Card>
           <Card
             onClick={() => setSelectedComponent("LockApp")}
             title="Total Installed Applications"
           >
-            {appInfo ? `${appInfo.length} Applications` : "0 Application"}
+            <h5 class="mt-4 mb-2 text-lg font-bold">
+              {appInfo ? `${appInfo.length} Applications` : "0 Application"}
+            </h5>
           </Card>
           <Card
             onClick={() => setSelectedComponent("TimeUsage")}
             title="Total Time Usage"
           >
-            {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
-            {convertToHourMinute(totalTimeUsage)[1]} Minutes
+            <h5 class="mt-4 mb-2 text-lg font-bold">
+              {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
+              {convertToHourMinute(totalTimeUsage)[1]} Minutes
+            </h5>
           </Card>
           <Card
             onClick={() => setSelectedComponent("TimeUsage")}
@@ -194,13 +196,13 @@ const DetailDashboard = ({ setSelectedComponent }) => {
             className="md:col-span-2"
           >
             {appInfo ? (
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 mt-6 items-center justify-center">
                 {appInfo.slice(0, 4).map((app) => (
                   <div
                     key={app.PackageName}
                     className="flex items-center gap-2"
                   >
-                    <img src={app.Icon} alt="icon" width="38" />
+                    <img src={app.Icon} alt="icon" width="40" />
                     <div>
                       <p className="text-sm font-semibold">{app.Name}</p>
                       <p className="text-xs">
@@ -225,9 +227,11 @@ const DetailDashboard = ({ setSelectedComponent }) => {
             onClick={() => setSelectedComponent("LockApp")}
             title="Total Locked Applications"
           >
-            {appInfo
-              ? `${totalLockedApps.length} Locked Applications`
-              : " 0 Locked Application"}
+            <h5 class="mt-4 mb-2 text-lg font-bold">
+              {appInfo
+                ? `${totalLockedApps.length} Locked Applications`
+                : " 0 Locked Application"}
+            </h5>
           </Card>
           <Card
             onClick={() => setSelectedComponent("LockApp")}
@@ -235,7 +239,7 @@ const DetailDashboard = ({ setSelectedComponent }) => {
             className="md:row-span-2"
           >
             {totalLockedApps.length ? (
-              <div className="overflow-y-auto max-h-40">
+              <div className="overflow-y-auto max-h-40 mt-4">
                 {totalLockedApps.map((app) => (
                   <div
                     key={app.PackageName}
@@ -265,7 +269,9 @@ const DetailDashboard = ({ setSelectedComponent }) => {
                     </div>
                     <div>
                       {app.DateLocked.String && (
-                        <Badge color="red">{app.DateLocked.String}</Badge>
+                        <Badge color="red">
+                          Dates: {app.DateLocked.String}
+                        </Badge>
                       )}
                       {app.TimeStartLocked.String && (
                         <Badge color="blue">
@@ -282,16 +288,22 @@ const DetailDashboard = ({ setSelectedComponent }) => {
                 ))}
               </div>
             ) : (
-              <p>You don't have any scheduled applications</p>
+              <div className="h-full flex items-center justify-center">
+                <p className="text-sm font-semibold">
+                  You don't have any scheduled applications
+                </p>
+              </div>
             )}
           </Card>
           <Card
             onClick={() => setSelectedComponent("Scheduling")}
             title="Total Scheduled Applications"
           >
-            {appInfo
-              ? `${totalScheduledApps.length} Scheduled Applications`
-              : " 0 Scheduled Applications"}
+            <h5 class="mt-4 mb-2 text-lg font-bold">
+              {appInfo
+                ? `${totalScheduledApps.length} Scheduled Applications`
+                : " 0 Scheduled Applications"}
+            </h5>
           </Card>
           <Card
             onClick={() => setSelectedComponent("ActivityStatus")}
@@ -299,21 +311,21 @@ const DetailDashboard = ({ setSelectedComponent }) => {
             className="md:col-span-2 md:row-span-2"
           >
             {activityInfo ? (
-              <div className="overflow-y-auto max-h-80 shadow">
+              <div className="overflow-y-auto max-h-40 shadow">
                 {activityInfo.slice(0, 4).map((activity) => (
                   <div
                     key={activity.ID}
                     className="flex flex-col border-b border-gray-100 py-4"
                   >
-                    <p className="ml-2 font-bold">
+                    <p className="ml-2 text-sm font-bold">
                       {activity.Description.String}
                     </p>
-                    <div className=" ml-2 flex items-center gap-2 mb-2">
+                    <div className=" ml-2 mt-2 flex items-center gap-2 mb-2">
                       <img src={activity.Icon} alt={activity.Name} width="20" />
-                      <p className=" mr-2font-semibold">{activity.Name}</p>
+                      <p className="text-sm font-semibold">{activity.Name}</p>
                     </div>
-                    <p className="ml-2">
-                      {new Intl.DateTimeFormat("id-ID", {
+                    <p className="ml-2 text-sm">
+                      {new Intl.DateTimeFormat("en-US", {
                         dateStyle: "full",
                         timeStyle: "long",
                       }).format(new Date(activity.CreatedAt))}
@@ -330,7 +342,9 @@ const DetailDashboard = ({ setSelectedComponent }) => {
             onClick={() => setSelectedComponent("ActivityStatus")}
             title="Total Opened Locked Application"
           >
-            {totalWarningActivities} Times
+            <h5 className="mt-4 mb-2 text-lg font-bold">
+              {totalWarningActivities} Times
+            </h5>
           </Card>
           <Card
             onClick={() => setSelectedComponent("ActivityStatus")}
@@ -340,9 +354,6 @@ const DetailDashboard = ({ setSelectedComponent }) => {
               <div className="flex items-center gap-2">
                 <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
                 <p className="text-lg font-bold">{mostOpenedLockedApp.Name}</p>
-                <p className="text-xs text-gray-500">
-                  {mostOpenedLockedApp.OpenCount} times
-                </p>
               </div>
             ) : (
               "Loading data..."
@@ -360,7 +371,7 @@ const Card = ({ onClick, title, children, className = "" }) => (
     className={`bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 cursor-pointer ${className}`}
   >
     <p className="text-sm text-gray-600">{title}</p>
-    <h5 className="mt-2 text-lg font-semibold text-gray-800">{children}</h5>
+    <div className="mt-2 h-full text-gray-800">{children}</div>
   </div>
 );
 
