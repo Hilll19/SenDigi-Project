@@ -117,7 +117,7 @@ function ActivityStatus() {
         <h1 className="text-2xl font-bold mb-4 text-white">
           Device Activity Status
         </h1>
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md">
           {showAnimation && renderActivityStatus()}
         </div>
       </div>

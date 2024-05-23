@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FaBatteryFull, FaBatteryHalf, FaBatteryEmpty } from "react-icons/fa";
 import Navbar from "../../components/Navbar";
 
@@ -11,30 +11,23 @@ const TestUI = () => {
   const [totalScheduledApps, setTotalScheduledApps] = useState([]);
   const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState([]);
   const [mostOpenedLockedApp, setMostOpenedLockedApp] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 60000); // Fetch data every minute
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [deviceCheck, appCheck, activityCheck] = await Promise.allSettled([
         fetch(process.env.REACT_APP_API_DEVICES, { credentials: "include" }),
         fetch(process.env.REACT_APP_API_APPS, { credentials: "include" }),
-        fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, { credentials: "include" })
+        fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, { credentials: "include" }),
       ]);
-  
-      // Check deviceCheck
+
       if (deviceCheck.status === "fulfilled" && deviceCheck.value.ok) {
         const deviceData = await deviceCheck.value.json();
         setDeviceInfo(deviceData.data[0]);
       } else {
         console.error("Device check failed:", deviceCheck.reason || "Unknown error");
       }
-  
-      // Check appCheck
+
       if (appCheck.status === "fulfilled" && appCheck.value.ok) {
         const appsData = await appCheck.value.json();
         setAppInfo(appsData.data);
@@ -43,8 +36,7 @@ const TestUI = () => {
       } else {
         console.error("App check failed:", appCheck.reason || "Unknown error");
       }
-  
-      // Check activityCheck
+
       if (activityCheck.status === "fulfilled" && activityCheck.value.ok) {
         const activitiesData = await activityCheck.value.json();
         setActivityInfo(activitiesData.data);
@@ -54,9 +46,16 @@ const TestUI = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
-  };
-  
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 60000); // Fetch data every minute
+    return () => clearInterval(interval);
+  }, [fetchData]);
 
   const calculateTotalTimeUsage = (apps) => {
     const totalTime = apps.reduce((acc, app) => acc + app.TimeUsage, 0);
@@ -138,13 +137,21 @@ const TestUI = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       <div className="flex">
         <main className="flex-1 p-4 grid md:grid-cols-3 gap-3">
           <Card href="/device" title="Device Name">
-            {deviceInfo ? deviceInfo.DeviceName : "Loading Data..."}
+            {deviceInfo ? deviceInfo.DeviceName : "No Device Info"}
           </Card>
           <Card href="/usage" title="Total Installed Applications">
             {appInfo.length} Applications
