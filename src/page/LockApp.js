@@ -87,7 +87,7 @@ function LockApp() {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg overflow-y-auto">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto" style={{ maxHeight: "500px" }}>
         <ul>
           {appList.map((app, index) => (
             <li
@@ -120,7 +120,7 @@ function LockApp() {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg overflow-y-auto">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto" style={{ maxHeight: "500px" }}>
         <ul>
           {appList.map((app, index) => (
             <li
