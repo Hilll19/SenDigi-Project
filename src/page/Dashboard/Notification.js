@@ -349,11 +349,7 @@ function Notification() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-8 text-center text-[#00df9a]">
-          Notification Settings
-        </h1>
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2 bg-gray-white rounded-lg shadow-lg">
             {showAnimation && renderNotificationSettings()}

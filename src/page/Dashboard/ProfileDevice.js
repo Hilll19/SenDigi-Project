@@ -103,9 +103,8 @@ function ProfileDevice() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
       <div className="container mx-auto mt-16 px-4 flex justify-center items-center">
-        <div className="bg-white rounded-3xl border-4 border-t-8 border-gray-900 px-4 py-6 shadow-2xl max-w-sm">
+        <div className="bg-white rounded-3xl border-4 border-t-8 border-gray-900 p-12 shadow-2xl max-w-sm">
           <div className="text-center">
             <img
               src={profilePicture}
@@ -131,7 +130,6 @@ function ProfileDevice() {
           <div className="mb-2 text-blueGray-600 flex items-center justify-center">
             <BatteryInfo deviceData={deviceData} />
           </div>
-          <div className="text-center font-extrabold text-black mt-5">By : SenDigi</div>
         </div>
       </div>
     </div>
