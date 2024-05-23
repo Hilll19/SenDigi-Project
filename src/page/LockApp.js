@@ -87,7 +87,7 @@ function LockApp() {
     }
 
     return (
-      <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-80">
         <ul>
           {appList.map((app, index) => (
             <li
@@ -104,11 +104,9 @@ function LockApp() {
                 )}
                 <span className="text-black">{app.name}</span>
               </div>
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  app.locked ? "bg-red-500" : "bg-green-500"
-                }`}
-              ></div>
+              <div className="text-black">
+                {app.locked ? "Locked" : "Unlocked"}
+              </div>
             </li>
           ))}
         </ul>
@@ -122,7 +120,7 @@ function LockApp() {
     }
 
     return (
-      <div className="bg-gray-200 p-4 rounded-lg shadow-md overflow-y-auto max-h-80">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-80">
         <ul>
           {appList.map((app, index) => (
             <li
@@ -159,15 +157,15 @@ function LockApp() {
     <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-black">
+        <h1 className="text-3xl font-bold mb-4 text-center text-[#00df9a]">
           Monitor Lock App System
         </h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-2 text-black">Lock App</h2>
             {showAnimation && renderAppList()}
           </div>
-          <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-2 text-black">
               App Status
             </h2>

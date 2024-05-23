@@ -278,7 +278,7 @@ const DetailDashboard = () => {
                 ))}
               </div>
             ) : (
-              "No activity device info"
+              "No activities found."
             )}
           </Card>
 
@@ -302,7 +302,7 @@ const DetailDashboard = () => {
 };
 
 const Card = ({ href, title, children, className = "" }) => (
-  <a href={href} className={`bg-white p-4 rounded-lg shadow-md hover:bg-gray-100 ${className}`}>
+  <a href={href} className={`bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 ${className}`}>
     <p className="text-sm text-gray-600">{title}</p>
     <h5 className="mt-2 text-lg font-semibold text-gray-800">{children}</h5>
   </a>

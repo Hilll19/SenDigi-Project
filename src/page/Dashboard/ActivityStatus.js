@@ -114,10 +114,10 @@ function ActivityStatus() {
     <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-white">
+        <h1 className="text-2xl font-bold mb-10 text-center text-[#00df9a]">
           Device Activity Status
         </h1>
-        <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+        <div className="bg-white p-4 rounded-lg shadow-lg">
           {showAnimation && renderActivityStatus()}
         </div>
       </div>

@@ -124,7 +124,7 @@ function TimeUsage() {
     return appList.map((app, index) => (
       <AnimatedDiv
         key={index}
-        className="bg-white p-4 rounded-lg shadow-md mb-4 text-black"
+        className="bg-white p-4 rounded-lg shadow-lg mb-4 text-black"
       >
         <div className="flex items-center mb-2">
           <div className="mr-2">
@@ -141,12 +141,12 @@ function TimeUsage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-  <h1 className="text-2xl font-bold mb-8 text-[#00df9a]">Application Usage Statistics</h1>
+  <h1 className="text-3xl font-bold mb-8 text-center text-[#00df9a]">Application Usage Statistics</h1>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
     {/* Bagian chart */}
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold mb-4 text-black">Analyze Data</h2>
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+      <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
         <h3 className="text-base font-semibold mb-2 text-[#00df9a]">Time</h3>
         <div className="mt-4">
           <canvas id="dailyChart"></canvas>
