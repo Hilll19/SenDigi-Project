@@ -110,20 +110,20 @@ function Notification() {
 
   const renderNotificationSettings = () => {
     return (
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold mb-2 text-white">
+      <div className="bg-white p-4 rounded-lg shadow-md">
+        <h2 className="text-lg font-semibold mb-2 text-black">
           Notification Settings
         </h2>
         <div className="mb-4">
-          <label className="block text-white mb-1">Send over Email</label>
+          <label className="block text-black mb-1">Send over Email</label>
           <input
             type="email"
             value={notificationSettings.Email}
             disabled
-            className="w-full p-2 rounded-md bg-gray-700 text-white cursor-not-allowed"
+            className="w-full p-2 rounded-md bg-gray-200 text-black cursor-not-allowed"
           />
           <div className="flex items-center justify-between mt-2">
-            <span className="text-white">
+            <span className="text-black">
               This is the email address for notifications, but changing it is
               currently unavailable.
             </span>
@@ -160,17 +160,17 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-white mb-1">Send over Whatsapp</label>
+          <label className="block text-black mb-1">Send over Whatsapp</label>
           <input
             type="text"
             value={whatsappInput}
             onChange={(e) => setWhatsappInput(e.target.value)}
-            className="w-full p-2 rounded-md bg-gray-700 text-white"
+            className="w-full p-2 rounded-md bg-gray-200 text-black"
             placeholder="Enter your WhatsApp number"
           />
           <div className="flex items-center justify-between mt-2">
             <button
-              className="px-3 py-1 rounded-md bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-300"
+              className="px-3 py-1 rounded-md bg-[#00df9a] hover:bg-[#50cba4] text-black transition-colors duration-300"
               onClick={() =>
                 updateNotificationSettings("Whatsapp", whatsappInput)
               }
@@ -211,8 +211,8 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-white mb-1">Send over Telegram</label>
-          <div className="bg-gray-700 p-4 rounded-md">
+          <label className="block text-black mb-1">Send over Telegram</label>
+          <div className="bg-gray-200 p-4 rounded-md">
           {notificationSettings.Telegram ? (
             <a
               href="javascript:void(0);"
@@ -227,7 +227,7 @@ function Notification() {
           ) : (
             <a
               href="https://t.me/SenDigi_bot"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md mt-4"
+              className="bg-[#00df9a] hover:bg-[#50cba4] text-black px-4 py-2 rounded-md mt-4"
               onClick={handleTelegramLinkClick}
             >
               Click here to copy command & set up Telegram
@@ -235,7 +235,7 @@ function Notification() {
           )}
         </div>
           <div className="flex items-center justify-between mt-2">
-            <span className="text-white">
+            <span className="text-black">
               You need to set up Telegram using a designated number before we
               are able to send notifications to you.
             </span>
@@ -285,8 +285,8 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-white mb-1">Notification Strategy</label>
-          <div className="bg-gray-700 p-4 rounded-md">
+          <label className="block text-black mb-1">Notification Strategy</label>
+          <div className="bg-gray-200 p-4 rounded-md">
             <div className="flex items-center mb-2">
               <input
                 type="radio"
@@ -299,11 +299,11 @@ function Notification() {
                 }
                 className="form-radio h-5 w-5 text-orange-500"
               />
-              <label htmlFor="locked-only" className="ml-2 text-white">
+              <label htmlFor="locked-only" className="ml-2 text-black">
                 Locked Only
               </label>
             </div>
-            <p className="text-gray-400 mb-2">
+            <p className="text-black mb-2">
               The notification will only be sent when the child opens a locked
               application (Recommended).
             </p>
@@ -317,11 +317,11 @@ function Notification() {
                 onChange={() => updateNotificationSettings("Strategy", "ALL")}
                 className="form-radio h-5 w-5 text-orange-500"
               />
-              <label htmlFor="all-activity" className="ml-2 text-white">
+              <label htmlFor="all-activity" className="ml-2 text-black">
                 All Activity
               </label>
             </div>
-            <p className="text-gray-400 mb-2">
+            <p className="text-black mb-2">
               You can opt to receive notifications for any app activity, but be
               aware this may result in spam notifications.
             </p>
@@ -335,11 +335,11 @@ function Notification() {
                 onChange={() => updateNotificationSettings("Strategy", "OFF")}
                 className="form-radio h-5 w-5 text-orange-500"
               />
-              <label htmlFor="off" className="ml-2 text-white">
+              <label htmlFor="off" className="ml-2 text-black">
                 Off
               </label>
             </div>
-            <p className="text-gray-400">
+            <p className="text-black">
               You can also disable notifications entirely while still tracking
               activity history.
             </p>
@@ -350,14 +350,14 @@ function Notification() {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen">
+    <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-white">
+        <h1 className="text-2xl font-bold mb-8 text-center text-[#00df9a]">
           Notification Settings
         </h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2 bg-gray-800 p-4 rounded-lg shadow-md">
+          <div className="col-span-2 bg-gray-white rounded-lg shadow-lg">
             {showAnimation && renderNotificationSettings()}
           </div>
         </div>
