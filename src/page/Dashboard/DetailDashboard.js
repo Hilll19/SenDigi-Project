@@ -257,18 +257,18 @@ const DetailDashboard = () => {
             className="md:col-span-2 md:row-span-2"
           >
             {activityInfo ? (
-              <div className="overflow-y-auto max-h-80 shadow-lg">
+              <div className="overflow-y-auto max-h-80 shadow-sm">
                 {activityInfo.slice(0, 4).map((activity) => (
                   <div
                     key={activity.ID}
                     className="flex flex-col border-b border-gray-100 py-4"
                   >
-                    <p className="font-bold">{activity.Description.String}</p>
-                    <div className="flex items-center gap-2 mb-2">
+                    <p className="mr-2 font-bold">{activity.Description.String}</p>
+                    <div className=" mr-2 flex items-center gap-2 mb-2">
                       <img src={activity.Icon} alt={activity.Name} width="20" />
-                      <p className="font-semibold">{activity.Name}</p>
+                      <p className=" mr-2font-semibold">{activity.Name}</p>
                     </div>
-                    <p>
+                    <p className="mr-2">
                       {new Intl.DateTimeFormat("id-ID", {
                         dateStyle: "full",
                         timeStyle: "long",
