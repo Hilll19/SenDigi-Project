@@ -171,7 +171,7 @@ const DetailDashboard = () => {
               <div className="flex flex-wrap gap-4">
                 {appInfo.slice(0, 4).map((app) => (
                   <div key={app.PackageName} className="flex items-center gap-2">
-                    <img src={app.Icon} alt="icon" width="40" />
+                    <img src={app.Icon} alt="icon" width="38" />
                     <div>
                       <p className="text-sm font-semibold">{app.Name}</p>
                       <p className="text-xs">
@@ -204,7 +204,7 @@ const DetailDashboard = () => {
                     key={app.PackageName}
                     className="flex items-center gap-2"
                   >
-                    <img src={app.Icon} alt="icon" width="35" />
+                    <img src={app.Icon} alt="icon" width="32" />
                     <p className="text-lg font-semibold">{app.Name}</p>
                   </div>
                 ))}
