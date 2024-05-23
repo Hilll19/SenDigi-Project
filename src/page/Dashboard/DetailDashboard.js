@@ -7,9 +7,12 @@ const DetailDashboard = () => {
   const [appInfo, setAppInfo] = useState(null);
   const [activityInfo, setActivityInfo] = useState(null);
   const [totalTimeUsage, setTotalTimeUsage] = useState(0);
+  const [mostOpenedApp, setMostOpenedApp] = useState(null);
   const [totalLockedApps, setTotalLockedApps] = useState([]);
   const [totalScheduledApps, setTotalScheduledApps] = useState([]);
-  const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState([]);
+  const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState(
+    []
+  );
   const [mostOpenedLockedApp, setMostOpenedLockedApp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalWarningActivities, setTotalWarningActivities] = useState(0);
@@ -19,14 +22,19 @@ const DetailDashboard = () => {
       const [deviceCheck, appCheck, activityCheck] = await Promise.allSettled([
         fetch(process.env.REACT_APP_API_DEVICES, { credentials: "include" }),
         fetch(process.env.REACT_APP_API_APPS, { credentials: "include" }),
-        fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, { credentials: "include" }),
+        fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, {
+          credentials: "include",
+        }),
       ]);
 
       if (deviceCheck.status === "fulfilled" && deviceCheck.value.ok) {
         const deviceData = await deviceCheck.value.json();
         setDeviceInfo(deviceData.data[0]);
       } else {
-        console.error("Device check failed:", deviceCheck.reason || "Unknown error");
+        console.error(
+          "Device check failed:",
+          deviceCheck.reason || "Unknown error"
+        );
       }
 
       if (appCheck.status === "fulfilled" && appCheck.value.ok) {
@@ -41,9 +49,15 @@ const DetailDashboard = () => {
       if (activityCheck.status === "fulfilled" && activityCheck.value.ok) {
         const activitiesData = await activityCheck.value.json();
         setActivityInfo(activitiesData.data);
-        calculateOpenedLockApplication(activitiesData.data, appCheck.value.data);
+        calculateOpenedLockApplication(
+          activitiesData.data,
+          appCheck.value.data
+        );
       } else {
-        console.error("Activity check failed:", activityCheck.reason || "Unknown error");
+        console.error(
+          "Activity check failed:",
+          activityCheck.reason || "Unknown error"
+        );
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -103,6 +117,31 @@ const DetailDashboard = () => {
 
     setTotalOpenedLockApplication(openedLockActivities);
     setMostOpenedLockedApp(mostOpenedLockedApp);
+
+    const openedAppActivities = activities.filter((activity) =>
+      activity.Description.String.includes("Info opening app")
+    );
+
+    const openedAppsOccurrences = new Map();
+
+    openedAppActivities.forEach((activity) => {
+      openedAppsOccurrences.set(
+        activity.PackageName,
+        (openedAppsOccurrences.get(activity.PackageName) || 0) + 1
+      );
+    });
+
+    const mostOpenedAppPackageName = Array.from(
+      openedAppsOccurrences.entries()
+    ).reduce(
+      (max, current) => (current[1] > max[1] ? current : max),
+      [null, 0]
+    )[0];
+    const mostOpenedApp = apps.find(
+      (app) => app.PackageName === mostOpenedAppPackageName
+    );
+
+    setMostOpenedApp(mostOpenedApp);
   };
 
   const convertToHourMinute = (time) => {
@@ -174,7 +213,10 @@ const DetailDashboard = () => {
             {appInfo ? (
               <div className="flex flex-wrap gap-4">
                 {appInfo.slice(0, 4).map((app) => (
-                  <div key={app.PackageName} className="flex items-center gap-2">
+                  <div
+                    key={app.PackageName}
+                    className="flex items-center gap-2"
+                  >
                     <img src={app.Icon} alt="icon" width="38" />
                     <div>
                       <p className="text-sm font-semibold">{app.Name}</p>
@@ -194,7 +236,9 @@ const DetailDashboard = () => {
             {renderBatteryIcon()}
           </Card>
           <Card href="/usage" title="Total Locked Applications">
-            {appInfo ? `${totalLockedApps.length} Locked Applications` : " 0 Locked Application"}
+            {appInfo
+              ? `${totalLockedApps.length} Locked Applications`
+              : " 0 Locked Application"}
           </Card>
           <Card
             href="/lock"
@@ -253,7 +297,9 @@ const DetailDashboard = () => {
             )}
           </Card>
           <Card href="/schedule" title="Total Scheduled Applications">
-            {appInfo ? `${totalScheduledApps.length} Scheduled Applications` : " 0 Scheduled Applications"}
+            {appInfo
+              ? `${totalScheduledApps.length} Scheduled Applications`
+              : " 0 Scheduled Applications"}
           </Card>
           <Card
             href="/activity"
@@ -267,7 +313,9 @@ const DetailDashboard = () => {
                     key={activity.ID}
                     className="flex flex-col border-b border-gray-100 py-4"
                   >
-                    <p className="ml-2 font-bold">{activity.Description.String}</p>
+                    <p className="ml-2 font-bold">
+                      {activity.Description.String}
+                    </p>
                     <div className=" ml-2 flex items-center gap-2 mb-2">
                       <img src={activity.Icon} alt={activity.Name} width="20" />
                       <p className=" mr-2font-semibold">{activity.Name}</p>
@@ -289,11 +337,11 @@ const DetailDashboard = () => {
           <Card href="/activity" title="Total Opened Locked Application">
             {totalWarningActivities} Times
           </Card>
-          <Card href="/activity" title="Most Opened Locked Application">
-            {mostOpenedLockedApp ? (
+          <Card href="/activity" title="Most Opened Application">
+            {mostOpenedApp ? (
               <div className="flex items-center gap-2">
-                <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
-                <p className="text-lg font-bold">{mostOpenedLockedApp.Name}</p>
+                <img src={mostOpenedApp.Icon} alt="icon" width="40" />
+                <p className="text-lg font-bold">{mostOpenedApp.Name}</p>
               </div>
             ) : (
               "Loading data..."
@@ -306,14 +354,19 @@ const DetailDashboard = () => {
 };
 
 const Card = ({ href, title, children, className = "" }) => (
-  <a href={href} className={`bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 ${className}`}>
+  <a
+    href={href}
+    className={`bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 ${className}`}
+  >
     <p className="text-sm text-gray-600">{title}</p>
     <h5 className="mt-2 text-lg font-semibold text-gray-800">{children}</h5>
   </a>
 );
 
 const Badge = ({ color, children }) => (
-  <span className={`inline-block bg-${color}-200 text-${color}-800 text-sm px-2 rounded-full`}>
+  <span
+    className={`inline-block bg-${color}-200 text-${color}-800 text-sm px-2 rounded-full`}
+  >
     {children}
   </span>
 );
