@@ -15,6 +15,7 @@ import DetailScheduling from './page/DetailScheduling';
 import ProfileDevice from './page/Dashboard/ProfileDevice';
 import ActivityStatus from './page/Dashboard/ActivityStatus';
 
+
 function App() {
   const [selectedComponent, setSelectedComponent] = useState('Dashboard');
 
@@ -27,8 +28,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/company" element={<ProfileDetail />} />
-        <Route path="/ProfileDevice" element={<ProfileDevice />} />
-        <Route path="/DetailUsage" element={<DetailUsage />} />
+        <Route path="/device" element={<ProfileDevice />} />
+        <Route path="/usage" element={<DetailUsage />} />
         <Route path="/Time-Usage" element={<TimeUsage />} />
         <Route path="/DetailLock" element={<DetailLock />} />
         <Route path="/Lock-App" element={<LockApp />} />
@@ -37,9 +38,9 @@ function App() {
         <Route path="/SchedulingByDates" element={<SchedulingByDates />} />
         <Route path="/SchedulingByTime" element={<SchedulingByTime />} />
         <Route path="/ActivityStatus" element={<ActivityStatus />} />
-        <Route path="/LoginPage" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/Dashboard"
+          path="/dashboard"
           element={<Dashboard selectedComponent={selectedComponent} handleComponentChange={handleComponentChange} />}
         />
       </Routes>

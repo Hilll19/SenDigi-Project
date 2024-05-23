@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FaBatteryFull, FaBatteryHalf, FaBatteryEmpty } from "react-icons/fa";
 import Navbar from "../../components/Navbar";
 
-const DetailDashboard = () => {
+const DetailDashboard = ({ setSelectedComponent }) => {
   const [deviceInfo, setDeviceInfo] = useState(null);
   const [appInfo, setAppInfo] = useState(null);
   const [activityInfo, setActivityInfo] = useState(null);
@@ -169,18 +169,27 @@ const DetailDashboard = () => {
       <Navbar />
       <div className="flex">
         <main className="flex-1 p-4 grid md:grid-cols-3 gap-3">
-          <Card href="/device" title="Device Name">
+          <Card
+            onClick={() => setSelectedComponent("ProfileDevice")}
+            title="Device Name"
+          >
             {deviceInfo ? deviceInfo.DeviceName : "No Device Info"}
           </Card>
-          <Card href="/usage" title="Total Installed Applications">
+          <Card
+            onClick={() => setSelectedComponent("LockApp")}
+            title="Total Installed Applications"
+          >
             {appInfo ? `${appInfo.length} Applications` : "0 Application"}
           </Card>
-          <Card href="/usage" title="Total Time Usage">
+          <Card
+            onClick={() => setSelectedComponent("TimeUsage")}
+            title="Total Time Usage"
+          >
             {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
             {convertToHourMinute(totalTimeUsage)[1]} Minutes
           </Card>
           <Card
-            href="/TimeUsage"
+            onClick={() => setSelectedComponent("TimeUsage")}
             title="Top Most Used Applications"
             className="md:col-span-2"
           >
@@ -206,16 +215,22 @@ const DetailDashboard = () => {
               "Loading data..."
             )}
           </Card>
-          <Card href="/device" title="Device Battery Level">
+          <Card
+            onClick={() => setSelectedComponent("ProfileDevice")}
+            title="Device Battery Level"
+          >
             {renderBatteryIcon()}
           </Card>
-          <Card href="/usage" title="Total Locked Applications">
+          <Card
+            onClick={() => setSelectedComponent("LockApp")}
+            title="Total Locked Applications"
+          >
             {appInfo
               ? `${totalLockedApps.length} Locked Applications`
               : " 0 Locked Application"}
           </Card>
           <Card
-            href="/lock"
+            onClick={() => setSelectedComponent("LockApp")}
             title="Locked Applications"
             className="md:row-span-2"
           >
@@ -236,7 +251,7 @@ const DetailDashboard = () => {
             )}
           </Card>
           <Card
-            href="/schedule"
+            onClick={() => setSelectedComponent("Scheduling")}
             title="Scheduled Applications"
             className="md:row-span-2"
           >
@@ -270,13 +285,16 @@ const DetailDashboard = () => {
               <p>You don't have any scheduled applications</p>
             )}
           </Card>
-          <Card href="/schedule" title="Total Scheduled Applications">
+          <Card
+            onClick={() => setSelectedComponent("Scheduling")}
+            title="Total Scheduled Applications"
+          >
             {appInfo
               ? `${totalScheduledApps.length} Scheduled Applications`
               : " 0 Scheduled Applications"}
           </Card>
           <Card
-            href="/activity"
+            onClick={() => setSelectedComponent("ActivityStatus")}
             title="Last Device Activity"
             className="md:col-span-2 md:row-span-2"
           >
@@ -308,10 +326,16 @@ const DetailDashboard = () => {
             )}
           </Card>
 
-          <Card href="/activity" title="Total Opened Locked Application">
+          <Card
+            onClick={() => setSelectedComponent("ActivityStatus")}
+            title="Total Opened Locked Application"
+          >
             {totalWarningActivities} Times
           </Card>
-          <Card href="/activity" title="Most Opened Locked Application">
+          <Card
+            onClick={() => setSelectedComponent("ActivityStatus")}
+            title="Most Opened Locked Application"
+          >
             {mostOpenedLockedApp ? (
               <div className="flex items-center gap-2">
                 <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
@@ -330,14 +354,14 @@ const DetailDashboard = () => {
   );
 };
 
-const Card = ({ href, title, children, className = "" }) => (
-  <a
-    href={href}
-    className={`bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 ${className}`}
+const Card = ({ onClick, title, children, className = "" }) => (
+  <div
+    onClick={onClick}
+    className={`bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 cursor-pointer ${className}`}
   >
     <p className="text-sm text-gray-600">{title}</p>
     <h5 className="mt-2 text-lg font-semibold text-gray-800">{children}</h5>
-  </a>
+  </div>
 );
 
 const Badge = ({ color, children }) => (

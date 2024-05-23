@@ -63,7 +63,7 @@ const Navbar = () => {
         if (response.ok) {
           localStorage.removeItem("isLoggedIn");
           setIsLoggedIn(false);
-          navigate("/LoginPage");
+          navigate("/login");
         } else {
           console.error("Logout failed");
         }
@@ -78,7 +78,7 @@ const Navbar = () => {
   };
 
   // Determine the text color based on the current path
-  const textColor = (location.pathname === '/' || location.pathname === '/LoginPage') ? 'text-white' : 'text-black';
+  const textColor = (location.pathname === '/' || location.pathname === '/login') ? 'text-white' : 'text-black';
 
   return (
     <div className={`flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 ${textColor}`}>
@@ -98,7 +98,7 @@ const Navbar = () => {
           {isLoggedIn ? (
             <button onClick={handleLogout}>Logout</button>
           ) : (
-            <Link to='/LoginPage'>Login</Link>
+            <Link to='/login'>Login</Link>
           )}
         </li>
         {isLoggedIn && profilePicture && (
@@ -138,7 +138,7 @@ const Navbar = () => {
             {isLoggedIn ? (
               <button onClick={handleLogout}>LOGOUT</button>
             ) : (
-              <Link to='/LoginPage'>Login</Link>
+              <Link to='/login'>Login</Link>
             )}
           </li>
         </ul>

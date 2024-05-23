@@ -5,11 +5,13 @@ import SchedulingPic from "../assets/schedulePic.jpg";
 import schedulePic1 from "../assets/schedulingPic1.png";
 import schedulePic2 from "../assets/schedulingPic2.png";
 import dashboardPic from "../assets/dashboardPic.png";
+import RefreshInterval from "../components/RefreshInterval";
 
 function DetailScheduling() {
   return (
     <div>
       <Navbar />
+      <RefreshInterval />
       <div className="w-full bg-white py-16 px-4">
         <div className="max-w-[1240px] mx-auto">
           <h1 className="text-[#00df9a] font-bold text-center text-4xl mb-8">

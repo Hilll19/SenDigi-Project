@@ -31,9 +31,9 @@ const Hero = () => {
 
   const handleGetStarted = () => {
     if (isLoggedIn) {
-      navigate("/Dashboard");
+      navigate("/dashboard");
     } else {
-      navigate("/LoginPage");
+      navigate("/login");
     }
   };
 
