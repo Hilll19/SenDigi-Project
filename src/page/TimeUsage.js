@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import styled, { keyframes } from "styled-components";
 import Chart from "chart.js/auto";
+import "tailwindcss/tailwind.css";
 
 const fadeInUpAnimation = keyframes`
   from {
@@ -69,15 +70,38 @@ function TimeUsage() {
           {
             label: "Daily Usage (hours)",
             data: appList.map((app) => app.dailyHour + app.dailyMinute / 60),
-            backgroundColor: "blue",
+            backgroundColor: "#00df9a",
             borderWidth: 1,
           },
         ],
       },
       options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "top",
+            labels: {
+              color: "#fff",
+            },
+          },
+        },
         scales: {
           y: {
             beginAtZero: true,
+            ticks: {
+              color: "#fff",
+            },
+            grid: {
+              color: "#444",
+            },
+          },
+          x: {
+            ticks: {
+              color: "#fff",
+            },
+            grid: {
+              color: "#444",
+            },
           },
         },
       },
@@ -100,7 +124,7 @@ function TimeUsage() {
     return appList.map((app, index) => (
       <AnimatedDiv
         key={index}
-        className="bg-white p-4 rounded-lg shadow-md mb-4"
+        className="bg-gray-700 p-4 rounded-lg shadow-md mb-4 text-white"
       >
         <div className="flex items-center mb-2">
           <div className="mr-2">
@@ -117,14 +141,14 @@ function TimeUsage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-black">
+        <h1 className="text-2xl font-bold mb-4 text-[#00df9a]">
           Application Usage Statistics
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-800 p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-2 text-white">Analyze Data</h2>
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold mb-2">Time</h2>
+            <div className="bg-gray-700 p-4 rounded-lg shadow-md">
+              <h2 className="text-lg font-semibold mb-2 text-[#00df9a]">Time</h2>
               <div className="mt-4">
                 <canvas id="dailyChart"></canvas>
               </div>

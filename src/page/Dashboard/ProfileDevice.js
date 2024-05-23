@@ -131,7 +131,7 @@ function ProfileDevice() {
           <div className="mb-2 text-blueGray-600 flex items-center justify-center">
             <BatteryInfo deviceData={deviceData} />
           </div>
-          <div className="text-center font-extrabold text-black">&copy; Your Company Name</div>
+          <div className="text-center font-extrabold text-black mt-5">By : SenDigi</div>
         </div>
       </div>
     </div>
