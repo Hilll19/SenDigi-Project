@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar";
 
 function ActivityStatus() {
   const [showAnimation, setShowAnimation] = useState(false);
@@ -77,7 +76,7 @@ function ActivityStatus() {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-96">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-[36rem]">
         <ul>
           {activityStatusList.map((activity, index) => (
             <li
@@ -112,16 +111,19 @@ function ActivityStatus() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-10 text-center text-[#00df9a]">
-          Device Activity History
-        </h1>
-        <div className="bg-white p-4 rounded-lg shadow-lg">
-          <h2 className="font-bold">Device Activities History (Last 24 Hours)</h2>
-          <p className="mb-4">This page shows logs of your device's app activity for 24 hours, allowing you to analyze your child's usage before the data is automatically deleted to maintain privacy.</p>
-          {showAnimation && renderActivityStatus()}
+        <div className="mb-10 flex flex-col items-center">
+          <h1 className="text-2xl font-bold text-center">
+            Device Activity History
+          </h1>
+          <p className="mt-1 text-center max-w-4xl">
+            This page shows logs of your device's app activity for 24 hours,
+            allowing you to analyze your child's usage before the data is
+            automatically deleted to maintain privacy.
+          </p>
         </div>
+
+          {showAnimation && renderActivityStatus()}
       </div>
     </div>
   );
