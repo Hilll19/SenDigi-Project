@@ -12,6 +12,7 @@ const DetailDashboard = () => {
   const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState([]);
   const [mostOpenedLockedApp, setMostOpenedLockedApp] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [totalWarningActivities, setTotalWarningActivities] = useState(0);
 
   const fetchData = useCallback(async () => {
     try {
@@ -78,6 +79,9 @@ const DetailDashboard = () => {
     const openedLockActivities = activities.filter((activity) =>
       activity.Description.String.startsWith("[Warning]")
     );
+
+    setTotalWarningActivities(openedLockActivities.length);
+
     const occurrences = new Map();
 
     openedLockActivities.forEach((activity) => {
@@ -283,7 +287,7 @@ const DetailDashboard = () => {
           </Card>
 
           <Card href="/activity" title="Total Opened Locked Application">
-            {activityInfo ? `${totalOpenedLockApplication.length} Times` : "Loading data..."}
+            {totalWarningActivities} Times
           </Card>
           <Card href="/activity" title="Most Opened Locked Application">
             {mostOpenedLockedApp ? (
