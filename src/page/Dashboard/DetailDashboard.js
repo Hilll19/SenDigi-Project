@@ -223,7 +223,7 @@ const DetailDashboard = () => {
                 {totalScheduledApps.map((app) => (
                   <div key={app.PackageName} className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
-                      <img src={app.Icon} alt="icon" width="20" />
+                      <img src={app.Icon} alt="icon" width="32" />
                       <p className="font-bold">{app.Name}</p>
                     </div>
                     <div>
