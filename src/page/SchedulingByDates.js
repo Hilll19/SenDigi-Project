@@ -6,7 +6,7 @@ const SchedulingByDates = () => {
   const [selectedAppId, setSelectedAppId] = useState('');
   const [scheduledApps, setScheduledApps] = useState([]);
   const [dates, setDates] = useState([]);
-  const [loading, setLoading] = useState(true); // New state for loading indicator
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_APPS, {
@@ -14,20 +14,19 @@ const SchedulingByDates = () => {
     })
       .then(response => response.json())
       .then(data => {
-        const apps = data.data.map(app => ({
-          id: app.ID,
-          name: app.Name,
-          packageName: app.PackageName,
-          dateLocked: app.DateLocked.String,
-        }));
-        setAppList(apps);
-        setScheduledApps(apps.filter(app => app.dateLocked));
-        setLoading(false); // Set loading to false when data is fetched
+        if (data.data) {
+          const apps = data.data.map(app => ({
+            id: app.ID,
+            name: app.Name,
+            packageName: app.PackageName,
+            dateLocked: app.DateLocked.String,
+          }));
+          setAppList(apps);
+          setScheduledApps(apps.filter(app => app.dateLocked));
+        }
       })
-      .catch(error => {
-        console.error("Error fetching app data:", error);
-        setLoading(false); // Set loading to false if there's an error
-      });
+      .catch(error => console.error("Error fetching app data:", error))
+      .finally(() => setLoading(false)); // Set loading to false after fetching data
   }, []);
 
   const handleAppChange = event => {
@@ -66,47 +65,45 @@ const SchedulingByDates = () => {
     }
   };
 
+  if (loading) {
+    return <div>Loading data...</div>; // Show loading message while data is being fetched
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div className="bg-gray-200 p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Lock App by Dates</h2>
-        {loading ? ( // Display loading message if data is still loading
-          <p>Loading app data...</p>
-        ) : (
-          <div>
-            <div className="mb-6">
-              <label htmlFor="app-select" className="block text-base font-medium text-gray-700 mb-2">Select App:</label>
-              <select
-                id="app-select"
-                name="app-select"
-                value={selectedAppId}
-                onChange={handleAppChange}
-                className="mt-1 p-3 border rounded-md w-full text-black"
-              >
-                <option value="">Select App</option>
-                {appList.map((app, index) => (
-                  <option key={index} value={app.id}>{app.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-6 text-black">
-              <label htmlFor="dates" className="block text-base font-medium text-gray-700 mb-2">Select Dates:</label>
-              <DatePicker
-                multiple
-                format="YYYY-MM-DD"
-                value={dates}
-                onChange={setDates}
-                className="mt-1 p-3 border rounded-md w-full text-black"
-              />
-            </div>
-            <button
-              onClick={SaveState}
-              className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors font-semibold"
-            >
-              Save Schedule
-            </button>
-          </div>
-        )}
+        <div className="mb-6">
+          <label htmlFor="app-select" className="block text-base font-medium text-gray-700 mb-2">Select App:</label>
+          <select
+            id="app-select"
+            name="app-select"
+            value={selectedAppId}
+            onChange={handleAppChange}
+            className="mt-1 p-3 border rounded-md w-full text-black"
+          >
+            <option value="">Select App</option>
+            {appList.map((app, index) => (
+              <option key={index} value={app.id}>{app.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-6 text-black">
+          <label htmlFor="dates" className="block text-base font-medium text-gray-700 mb-2">Select Dates:</label>
+          <DatePicker
+            multiple
+            format="YYYY-MM-DD"
+            value={dates}
+            onChange={setDates}
+            className="mt-1 p-3 border rounded-md w-full text-black"
+          />
+        </div>
+        <button
+          onClick={SaveState}
+          className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition-colors font-semibold"
+        >
+          Save Schedule
+        </button>
       </div>
       <div className="bg-gray-200 p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">History Scheduling</h2>

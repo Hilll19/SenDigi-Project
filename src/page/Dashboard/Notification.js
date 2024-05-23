@@ -27,7 +27,6 @@ function Notification() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Fetched data:", data); // Log the fetched data
         setNotificationSettings({
           ...data.data,
           Whatsapp: data.data.Whatsapp.String,
