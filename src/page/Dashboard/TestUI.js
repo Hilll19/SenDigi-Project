@@ -108,7 +108,9 @@ const TestUI = () => {
   };
 
   const renderBatteryIcon = () => {
-    if (!deviceInfo || !deviceInfo.BatteryLevel) return null;
+    if (!deviceInfo || !deviceInfo.BatteryLevel) {
+      return <p>Loading data...</p>;
+    }
 
     const { BatteryLevel, IsCharging } = deviceInfo;
 
@@ -190,26 +192,18 @@ const TestUI = () => {
               "Loading data..."
             )}
           </Card>
-
           <Card href="/device" title="Device Battery Level">
             {renderBatteryIcon()}
           </Card>
           <Card href="/usage" title="Total Locked Applications">
             {appInfo ? `${totalLockedApps.length} Locked Applications` : "Loading data..."}
           </Card>
-          <Card
-            href="/lock"
-            title="Locked Applications"
-            className="md:row-span-2"
-          >
+          <Card href="/lock" title="Locked Applications" className="md:row-span-2">
             {appInfo ? (
               totalLockedApps.length ? (
                 <div className="overflow-y-auto max-h-40">
                   {totalLockedApps.map((app) => (
-                    <div
-                      key={app.PackageName}
-                      className="flex items-center gap-2"
-                    >
+                    <div key={app.PackageName} className="flex items-center gap-2">
                       <img src={app.Icon} alt="icon" width="40" />
                       <p className="text-lg font-semibold">{app.Name}</p>
                     </div>
@@ -222,11 +216,7 @@ const TestUI = () => {
               "Loading data..."
             )}
           </Card>
-          <Card
-            href="/schedule"
-            title="Scheduled Applications"
-            className="md:row-span-2"
-          >
+          <Card href="/schedule" title="Scheduled Applications" className="md:row-span-2">
             {appInfo ? (
               totalScheduledApps.length ? (
                 <div className="overflow-y-auto max-h-40">
