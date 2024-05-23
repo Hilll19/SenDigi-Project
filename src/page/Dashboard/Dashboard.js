@@ -7,7 +7,7 @@ import Scheduling from '../Scheduling';
 import DetailDashboard from './DetailDashboard';
 import ActivityStatus from './ActivityStatus';
 import Notification from './Notification';
-// import TestUI from './TestUI';
+import DownloadPage from './DownloadPage';
 
 const Dashboard = () => {
   const [selectedComponent, setSelectedComponent] = useState('Dashboard');
@@ -22,8 +22,8 @@ const Dashboard = () => {
         {selectedComponent === 'LockApp' && <LockApp />}
         {selectedComponent === 'Scheduling' && <Scheduling />}
         {selectedComponent === 'ActivityStatus' && <ActivityStatus />}
+        {selectedComponent === 'DownloadPage' && <DownloadPage />}
         {selectedComponent === 'Notification' && <Notification />}
-        {/* {selectedComponent === 'TestUI' && <TestUI />} */}
       </div>
     </div>
   );

@@ -232,7 +232,7 @@ function Notification() {
                   handleUnlinkTelegram();
                 }}
               >
-                [Connected]Unlink telegram from SenDigi
+                [Connected] Unlink telegram from SenDigi
               </a>
             ) : (
               <a

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaChartLine, FaUser, FaLock, FaHome, FaUniversalAccess, FaBell } from 'react-icons/fa';
+import { FaChartLine, FaUser, FaLock, FaHome, FaUniversalAccess, FaBell, FaDownload } from 'react-icons/fa';
 
 const Sidebar = ({ handleMenuClick }) => {
   return (
@@ -15,8 +15,8 @@ const Sidebar = ({ handleMenuClick }) => {
           <SidebarItem icon={<FaLock />} text="Lock Application" onClick={() => handleMenuClick('LockApp')} />
           <SidebarItem icon={<FaChartLine />} text="Schedule Application" onClick={() => handleMenuClick('Scheduling')} />
           <SidebarItem icon={<FaUniversalAccess />} text="Device Activity History" onClick={() => handleMenuClick('ActivityStatus')} />
+          <SidebarItem icon={<FaDownload />} text="Download Release" onClick={() => handleMenuClick('DownloadPage')} />
           <SidebarItem icon={<FaBell />} text="Notifications" onClick={() => handleMenuClick('Notification')} />
-          {/* <SidebarItem icon={<FaBell />} text="TestUI" onClick={() => handleMenuClick('TestUI')} /> */}
         </ul>
       </nav>
     </div>
