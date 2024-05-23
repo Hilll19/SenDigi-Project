@@ -249,7 +249,7 @@ const TestUI = () => {
             )}
           </Card>
           <Card href="/schedule" title="Total Scheduled Applications">
-            {appInfo ? `${totalScheduledApps.length} Scheduled Applications` : "Loading data..."}
+            {appInfo ? `${totalScheduledApps.length} Scheduled Applications` : " 0 Scheduled Applications"}
           </Card>
           <Card
             href="/activity"
@@ -278,7 +278,7 @@ const TestUI = () => {
                 ))}
               </div>
             ) : (
-              "Loading data..."
+              "No activity device info"
             )}
           </Card>
 
