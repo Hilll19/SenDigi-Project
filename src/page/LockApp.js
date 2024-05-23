@@ -87,7 +87,7 @@ function LockApp() {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-80">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto">
         <ul>
           {appList.map((app, index) => (
             <li
@@ -120,7 +120,7 @@ function LockApp() {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-80">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto">
         <ul>
           {appList.map((app, index) => (
             <li
@@ -155,11 +155,16 @@ function LockApp() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar />
-      <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-3xl font-bold mb-4 text-center text-[#00df9a]">
-          Monitor Lock App System
-        </h1>
+      <div className="container mx-auto mt-6 px-4">
+        <div className="mb-10 flex flex-col items-center">
+          <h1 className="text-3xl font-bold text-center">
+            Lock Specific Application
+          </h1>
+          <p className="text-sm mt-1">
+            Here you can lock or unlock which application that needs to be
+            controlled
+          </p>
+        </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-2 text-black">Lock App</h2>

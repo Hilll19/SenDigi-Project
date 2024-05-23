@@ -5,16 +5,14 @@ import SchedulingPic from "../assets/schedulePic.jpg";
 import schedulePic1 from "../assets/schedulingPic1.png";
 import schedulePic2 from "../assets/schedulingPic2.png";
 import dashboardPic from "../assets/dashboardPic.png";
-import RefreshInterval from "../components/RefreshInterval";
 
 function DetailScheduling() {
   return (
     <div>
       <Navbar />
-      <RefreshInterval />
       <div className="w-full bg-white py-16 px-4">
         <div className="max-w-[1240px] mx-auto">
-          <h1 className="text-[#00df9a] font-bold text-center text-4xl mb-8">
+          <h1 className="text-[#0197b2] font-bold text-center text-4xl mb-8">
             Scheduling Lock App feature
           </h1>
           <div className="w-full bg-white py-16 px-4">
@@ -44,12 +42,12 @@ function DetailScheduling() {
           </div>
         </div>
       </div>
-      <div className="w-full bg-black py-16 px-4">
+      <div className="w-full bg-white py-16 px-4">
         <div className="max-w-[1240px] mx-auto">
-          <h1 className="text-[#00df9a] font-bold text-center text-4xl mb-8">
+          <h1 className="text-[#0197b2] font-bold text-center text-4xl mb-8">
             Benefit
           </h1>
-          <div className="w-full bg-white py-16 px-4 rounded-lg">
+          <div className="w-full bg-[#FAF9F6] py-16 px-4 rounded-lg">
             <div className="max-w-[1240px] mx-auto grid md:grid-cols-2">
               <p className="md:text-4xl sm:text-3xl text-2xl font-bold py-2 pt-8">
                 Scheduling Lock <br />
@@ -87,7 +85,7 @@ function DetailScheduling() {
       </div>
 
       <div className="w-full py-[10rem] px-4 bg-white">
-        <h1 className="text-[#00df9a] font-bold text-center text-4xl mb-20">
+        <h1 className="text-[#0197b2] font-bold text-center text-4xl mb-20">
           Main Feature
         </h1>
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3 gap-8">

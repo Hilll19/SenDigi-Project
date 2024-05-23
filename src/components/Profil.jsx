@@ -9,7 +9,7 @@ function Profil() {
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
         <img className='w-[500PX] mx-auto my-4' src={Pic2} alt='/' />
         <div className='flex flex-col justify-center'>
-          <p className='text-[#00df9a] font-bold'>PROFILE</p>
+          <p className='text-[#0197b2] font-bold'>PROFILE</p>
           <p className='md:text-4xl sm:text-3xl text-2xl font-bold py-2'>SenDigi</p>
           <p>
             We are your trusted solution for parents to monitor and manage children's gadget usage in the digital age.
@@ -20,7 +20,7 @@ function Profil() {
           </p>
           {/* Ganti button dengan Link */}
           <Link to='/company' className='my-6 mr-auto'>
-            <button className='bg-black text-[#00df9a] w-full rounded-md font-medium md:mx-0 py-3 px-6'>
+            <button className='bg-[#0197b2] text-white w-full rounded-md font-medium md:mx-0 py-3 px-6'>
               More Details
             </button>
           </Link>

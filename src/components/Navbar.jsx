@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, /*useLocation*/ } from "react-router-dom";
 import logoSendigi from "../assets/logoSendigi.png";
 
 const Navbar = () => {
@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to get current location
+  //const location = useLocation(); // Hook to get current location
 
   useEffect(() => {
     checkLoginStatus();
@@ -78,27 +78,28 @@ const Navbar = () => {
   };
 
   // Determine the text color based on the current path
-  const textColor = (location.pathname === '/' || location.pathname === '/login') ? 'text-white' : 'text-black';
+ // const textColor = (location.pathname === '/' || location.pathname === '/login') ? 'text-white' : 'text-black';
 
   return (
-    <div className={`flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 ${textColor}`}>
-      <h1 className='w-full text-3xl font-bold text-[#00df9a] flex items-center'>
+
+    <div className={`flex justify-between items-center h-24 w-full mx-auto px-4 text-black bg-white`}>
+      <h1 className='w-full text-3xl font-bold text-[#0197b2] flex gap-2 items-center md:ml-[25%] '>
         <img
-          className="w-[80px]"
+          className="w-[50px]"
           src={logoSendigi}
           alt="SenDigi"
         />
-        <h1 className='text-3xl font-bold text-[#00df9a]'>SenDigi</h1>
+        <h1 className='text-3xl font-bold text-[#0197b2]'>SenDigi</h1>
       </h1>
-      <ul className='hidden md:flex'>
-        <li className='p-4'>
-          <Link to='/'>Home</Link>
+      <ul className='hidden md:flex md:mr-[25%]'>
+        <li className='p-4 '>
+          <Link to='/' className="hover:text-[#0197b2]">Home</Link>
         </li>
         <li className='p-4'>
           {isLoggedIn ? (
             <button onClick={handleLogout}>Logout</button>
           ) : (
-            <Link to='/login'>Login</Link>
+            <Link to='/login' className="hover:text-[#0197b2]">Login</Link>
           )}
         </li>
         {isLoggedIn && profilePicture && (
@@ -121,24 +122,24 @@ const Navbar = () => {
       <div
         className={
           !nav
-            ? "fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-[#000300] ease-in-out duration-500"
+            ? "fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-white ease-in-out duration-500 z-50"
             : "fixed left-[-100%]"
         }>
-        <h1 className='w-full text-3xl font-bold text-[#00df9a] m-4'>SenDigi</h1>
+        <h1 className='w-full text-3xl font-bold text-[#0197b2] m-4'>SenDigi</h1>
         <ul className='p-4 uppercase'>
-          <li className='p-4 border-b border-gray-600'>
-            <Link to='/'>Home</Link>
+          <li className='p-4 border-b border-gray-600 '>
+            <Link to='/' className="text-black hover:text-[#0197b2]">Home</Link>
           </li>
           <li className='p-4 border-b border-gray-600'>
-            <Link to='/company'>Company</Link>
+            <Link to='/company' className="text-black hover:text-[#0197b2]">Company</Link>
           </li>
-          <li className='p-4 border-b border-gray-600'>About</li>
-          <li className='p-4 border-b border-gray-600'>Contact</li>
+          <li className='p-4 border-b border-gray-600 text-black hover:text-[#0197b2] hover:cursor-pointer'>About</li>
+          <li className='p-4 border-b border-gray-600 text-black hover:text-[#0197b2] hover:cursor-pointer'>Contact</li>
           <li className='p-4'>
             {isLoggedIn ? (
-              <button onClick={handleLogout}>LOGOUT</button>
+              <button className="text-black hover:text-[#0197b2]" onClick={handleLogout}>LOGOUT</button>
             ) : (
-              <Link to='/login'>Login</Link>
+              <Link to='/login' className="text-black hover:text-[#0197b2]">Login</Link>
             )}
           </li>
         </ul>

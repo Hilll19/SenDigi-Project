@@ -12,7 +12,7 @@ function DetailUsage() {
       <Navbar />
       <div className='w-full bg-white py-16 px-4'>
         <div className='max-w-[1240px] mx-auto'>
-          <h1 className='text-[#00df9a] font-bold text-center text-4xl mb-8'>Time Usage feature</h1>
+          <h1 className='text-[#0197b2] font-bold text-center text-4xl mb-8'>Time Usage feature</h1>
           <div className='w-full bg-white py-16 px-4'>
             <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
               <img className='w-[500PX] mx-auto my-4' src={timePic} alt='/' />
@@ -31,10 +31,10 @@ function DetailUsage() {
           </div>
         </div>
       </div>
-      <div className='w-full bg-black py-16 px-4'>
+      <div className='w-full bg-white py-16 px-4'>
         <div className='max-w-[1240px] mx-auto'>
-          <h1 className='text-[#00df9a] font-bold text-center text-4xl mb-8'>Benefit</h1>
-          <div className='w-full bg-white py-16 px-4 rounded-lg'>
+          <h1 className='text-[#0197b2] font-bold text-center text-4xl mb-8'>Benefit</h1>
+          <div className='w-full bg-[#FAF9F6] py-16 px-4 rounded-lg'>
             <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
               <p className='md:text-4xl sm:text-3xl text-2xl font-bold py-2 pt-8'>Time Usage Benefit</p>
               <ol className='list-decimal pt-8'>
@@ -70,7 +70,7 @@ function DetailUsage() {
       </div>
 
       <div className='w-full py-[10rem] px-4 bg-white'>
-        <h1 className='text-[#00df9a] font-bold text-center text-4xl mb-20'>Main Feature</h1>
+        <h1 className='text-[#0197b2] font-bold text-center text-4xl mb-20'>Main Feature</h1>
         <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-8'>
           <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
             <img className='w-30 h-80 mx-auto mt-[-3rem] bg-white' src={dashboardPic} alt='#' />

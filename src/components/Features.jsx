@@ -16,7 +16,7 @@ function Features() {
             <p className='mx-8 mt-8 px-20'>Monitor your kids app usage on gadget</p>
           </div>
           <Link to='/DetailUsage' className='justify-center items-center text-center'>
-            <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>
+            <button className='bg-[#0197b2] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-white'>
               Details
             </button>
           </Link>
@@ -29,7 +29,7 @@ function Features() {
             <p className='mx-8 mt-8 px-16'>Lock specific app to secure your kids from app addiction</p>
           </div>
           <Link to='/DetailLock' className='justify-center items-center text-center'>
-            <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>
+            <button className='bg-[#0197b2] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-white'>
               Details
             </button>
           </Link>
@@ -42,7 +42,7 @@ function Features() {
             <p className='mx-8 mt-8 px-16'>Set app time scheduling for your kids</p>
           </div>
           <Link to='/DetailScheduling' className='justify-center items-center text-center'>
-            <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-black'>
+            <button className='bg-[#0197b2] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3 text-white'>
               Details
             </button>
           </Link>
