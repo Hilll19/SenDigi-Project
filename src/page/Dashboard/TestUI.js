@@ -4,8 +4,8 @@ import Navbar from "../../components/Navbar";
 
 const TestUI = () => {
   const [deviceInfo, setDeviceInfo] = useState(null);
-  const [appInfo, setAppInfo] = useState([]);
-  const [activityInfo, setActivityInfo] = useState([]);
+  const [appInfo, setAppInfo] = useState(null);
+  const [activityInfo, setActivityInfo] = useState(null);
   const [totalTimeUsage, setTotalTimeUsage] = useState(0);
   const [totalLockedApps, setTotalLockedApps] = useState([]);
   const [totalScheduledApps, setTotalScheduledApps] = useState([]);
@@ -154,58 +154,72 @@ const TestUI = () => {
             {deviceInfo ? deviceInfo.DeviceName : "No Device Info"}
           </Card>
           <Card href="/usage" title="Total Installed Applications">
-            {appInfo.length} Applications
+            {appInfo ? `${appInfo.length} Applications` : "Loading data..."}
           </Card>
           <Card href="/usage" title="Total Time Usage">
-            {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
-            {convertToHourMinute(totalTimeUsage)[1]} Minutes
+            {appInfo ? (
+              <>
+                {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
+                {convertToHourMinute(totalTimeUsage)[1]} Minutes
+              </>
+            ) : (
+              "Loading data..."
+            )}
           </Card>
           <Card
             href="/TimeUsage"
             title="Top Most Used Applications"
             className="md:col-span-2"
           >
-            <div className="flex flex-wrap gap-4">
-              {appInfo.slice(0, 4).map((app) => (
-                <div key={app.PackageName} className="flex items-center gap-2">
-                  <img src={app.Icon} alt="icon" width="20" />
-                  <div>
-                    <p className="text-sm font-semibold">{app.Name}</p>
-                    <p className="text-xs">
-                      {convertToHourMinute(app.TimeUsage)[0]} Hours{" "}
-                      {convertToHourMinute(app.TimeUsage)[1]} Minutes
-                    </p>
+            {appInfo ? (
+              <div className="flex flex-wrap gap-4">
+                {appInfo.slice(0, 4).map((app) => (
+                  <div key={app.PackageName} className="flex items-center gap-2">
+                    <img src={app.Icon} alt="icon" width="20" />
+                    <div>
+                      <p className="text-sm font-semibold">{app.Name}</p>
+                      <p className="text-xs">
+                        {convertToHourMinute(app.TimeUsage)[0]} Hours{" "}
+                        {convertToHourMinute(app.TimeUsage)[1]} Minutes
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              "Loading data..."
+            )}
           </Card>
 
           <Card href="/device" title="Device Battery Level">
             {renderBatteryIcon()}
           </Card>
           <Card href="/usage" title="Total Locked Applications">
-            {totalLockedApps.length} Locked Applications
+            {appInfo ? `${totalLockedApps.length} Locked Applications` : "Loading data..."}
           </Card>
           <Card
             href="/lock"
             title="Locked Applications"
             className="md:row-span-2"
           >
-            {totalLockedApps.length ? (
-              <div className="overflow-y-auto max-h-40">
-                {totalLockedApps.map((app) => (
-                  <div
-                    key={app.PackageName}
-                    className="flex items-center gap-2"
-                  >
-                    <img src={app.Icon} alt="icon" width="40" />
-                    <p className="text-lg font-semibold">{app.Name}</p>
-                  </div>
-                ))}
-              </div>
+            {appInfo ? (
+              totalLockedApps.length ? (
+                <div className="overflow-y-auto max-h-40">
+                  {totalLockedApps.map((app) => (
+                    <div
+                      key={app.PackageName}
+                      className="flex items-center gap-2"
+                    >
+                      <img src={app.Icon} alt="icon" width="40" />
+                      <p className="text-lg font-semibold">{app.Name}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>You don't have any locked applications</p>
+              )
             ) : (
-              <p>You don't have any locked applications</p>
+              "Loading data..."
             )}
           </Card>
           <Card
@@ -213,75 +227,85 @@ const TestUI = () => {
             title="Scheduled Applications"
             className="md:row-span-2"
           >
-            {totalScheduledApps.length ? (
-              <div className="overflow-y-auto max-h-40">
-                {totalScheduledApps.map((app) => (
-                  <div key={app.PackageName} className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <img src={app.Icon} alt="icon" width="20" />
-                      <p className="font-bold">{app.Name}</p>
+            {appInfo ? (
+              totalScheduledApps.length ? (
+                <div className="overflow-y-auto max-h-40">
+                  {totalScheduledApps.map((app) => (
+                    <div key={app.PackageName} className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        <img src={app.Icon} alt="icon" width="20" />
+                        <p className="font-bold">{app.Name}</p>
+                      </div>
+                      <div>
+                        {app.DateLocked.String && (
+                          <Badge color="red">{app.DateLocked.String}</Badge>
+                        )}
+                        {app.TimeStartLocked.String && (
+                          <Badge color="blue">
+                            Start Time: {app.TimeStartLocked.String}
+                          </Badge>
+                        )}
+                        {app.TimeEndLocked.String && (
+                          <Badge color="blue">
+                            End Time: {app.TimeEndLocked.String}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      {app.DateLocked.String && (
-                        <Badge color="red">{app.DateLocked.String}</Badge>
-                      )}
-                      {app.TimeStartLocked.String && (
-                        <Badge color="blue">
-                          Start Time: {app.TimeStartLocked.String}
-                        </Badge>
-                      )}
-                      {app.TimeEndLocked.String && (
-                        <Badge color="blue">
-                          End Time: {app.TimeEndLocked.String}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p>You don't have any scheduled applications</p>
+              )
             ) : (
-              <p>You don't have any scheduled applications</p>
+              "Loading data..."
             )}
           </Card>
           <Card href="/schedule" title="Total Scheduled Applications">
-            {totalScheduledApps.length} Scheduled Applications
+            {appInfo ? `${totalScheduledApps.length} Scheduled Applications` : "Loading data..."}
           </Card>
           <Card
             href="/activity"
             title="Last Device Activity"
             className="md:col-span-2 md:row-span-2"
           >
-            <div className="overflow-y-auto max-h-80">
-              {activityInfo && activityInfo.slice(0, 4).map((activity) => (
-                <div
-                  key={activity.ID}
-                  className="flex flex-col border-b border-gray-100 py-4"
-                >
-                  <p className="font-bold">{activity.Description.String}</p>
-                  <div className="flex items-center gap-2 mb-2">
-                    <img src={activity.Icon} alt={activity.Name} width="20" />
-                    <p className="font-semibold">{activity.Name}</p>
+            {activityInfo ? (
+              <div className="overflow-y-auto max-h-80">
+                {activityInfo.slice(0, 4).map((activity) => (
+                  <div
+                    key={activity.ID}
+                    className="flex flex-col border-b border-gray-100 py-4"
+                  >
+                    <p className="font-bold">{activity.Description.String}</p>
+                    <div className="flex items-center gap-2 mb-2">
+                      <img src={activity.Icon} alt={activity.Name} width="20" />
+                      <p className="font-semibold">{activity.Name}</p>
+                    </div>
+                    <p>
+                      {new Intl.DateTimeFormat("id-ID", {
+                        dateStyle: "full",
+                        timeStyle: "long",
+                      }).format(new Date(activity.CreatedAt))}
+                    </p>
                   </div>
-                  <p>
-                    {new Intl.DateTimeFormat("id-ID", {
-                      dateStyle: "full",
-                      timeStyle: "long",
-                    }).format(new Date(activity.CreatedAt))}
-                  </p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              "Loading data..."
+            )}
           </Card>
 
           <Card href="/activity" title="Total Opened Locked Application">
-            {totalOpenedLockApplication.length} Times
+            {activityInfo ? `${totalOpenedLockApplication.length} Times` : "Loading data..."}
           </Card>
           <Card href="/activity" title="Most Opened Locked Application">
-            {mostOpenedLockedApp && (
+            {mostOpenedLockedApp ? (
               <div className="flex items-center gap-2">
                 <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
                 <p className="text-lg font-bold">{mostOpenedLockedApp.Name}</p>
               </div>
+            ) : (
+              "Loading data..."
             )}
           </Card>
         </main>
