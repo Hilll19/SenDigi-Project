@@ -3,13 +3,13 @@ import { FaAndroid } from "react-icons/fa";
 
 function Connect() {
   const handleDownload = () => {
-    // Simulasi URL download APK
-    const apkDownloadUrl = 'https://example.com/apk/file.apk';
+    // URL download APK yang ditentukan
+    const apkDownloadUrl = 'https://github.com/resqiar/sendigi-app/releases/download/v1.1-beta/sendigi-release.apk';
 
     // Buat elemen <a> untuk memicu unduhan
     const downloadLink = document.createElement('a');
     downloadLink.href = apkDownloadUrl;
-    downloadLink.setAttribute('download', 'child_monitoring_app.apk');
+    downloadLink.setAttribute('download', 'sendigi-release.apk');
 
     // Sembunyikan elemen link dari tampilan
     downloadLink.style.display = 'none';
@@ -37,7 +37,7 @@ function Connect() {
             Download APK
           </button>
           <p className="text-gray-400 mt-2">
-            Dwonload APK to try <span className='text-[#00df9a]'>SenDigi Project</span>
+            Download APK to try <span className='text-[#00df9a]'>SenDigi Project</span>
           </p>
         </div>
       </div>
