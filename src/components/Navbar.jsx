@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
-import logoSendigi from "../assets/logoSendigi.png"
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import logoSendigi from "../assets/logoSendigi.png";
 
 const Navbar = () => {
   const [nav, setNav] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to get current location
 
   useEffect(() => {
     checkLoginStatus();
@@ -76,8 +77,11 @@ const Navbar = () => {
     setNav(!nav);
   };
 
+  // Determine the text color based on the current path
+  const textColor = location.pathname === '/' ? 'text-white' : 'text-black';
+
   return (
-    <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-black'>
+    <div className={`flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 ${textColor}`}>
       <h1 className='w-full text-3xl font-bold text-[#00df9a] flex items-center'>
         <img
           className="w-[80px]"
@@ -105,8 +109,8 @@ const Navbar = () => {
             style={{
               objectFit: 'cover',
               objectPosition: '50% 50%',
-              width: '40px', // Atur lebar gambar secara eksplisit
-              height: '40px' // Atur tinggi gambar secara eksplisit
+              width: '40px',
+              height: '40px'
             }}
           />
         )}
