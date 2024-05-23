@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
+import { FaEnvelope, FaWhatsapp, FaTelegram } from "react-icons/fa";
 
 function Notification() {
   const [showAnimation, setShowAnimation] = useState(false);
@@ -88,7 +89,7 @@ function Notification() {
 
   const handleUnlinkTelegram = () => {
     const updatedSettings = { ...notificationSettings, Telegram: "" };
-  
+
     fetch(process.env.REACT_APP_API_APPS_NOTIFICATION_UPDATE, {
       method: "POST",
       headers: {
@@ -115,7 +116,10 @@ function Notification() {
           Notification Settings
         </h2>
         <div className="mb-4">
-          <label className="block text-black mb-1">Send over Email</label>
+          <label className="flex items-center mb-2">
+            <FaEnvelope className="text-gray-500 mr-2" />
+            {`Send over Email (${notificationSettings.EmailStatus ? 'ON' : 'OFF'})`}
+          </label>
           <input
             type="email"
             value={notificationSettings.Email}
@@ -160,7 +164,10 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-black mb-1">Send over Whatsapp</label>
+          <label className="flex items-center mb-2">
+            <FaWhatsapp className="text-green-500 mr-2" />
+            {`Send over WhatsApp (${notificationSettings.WhatsappStatus ? 'ON' : 'OFF'})`}
+          </label>
           <input
             type="text"
             value={whatsappInput}
@@ -211,48 +218,39 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-black mb-1">Send over Telegram</label>
+          <label className="flex items-center mb-2">
+            <FaTelegram className="text-blue-500 mr-2" />
+            {`Send over Telegram  (${notificationSettings.TelegramStatus ? 'ON' : 'OFF'})`}
+          </label>
           <div className="bg-gray-200 p-4 rounded-md">
-          {notificationSettings.Telegram ? (
-            <a
-              href="javascript:void(0);"
-              className="bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-md mt-4"
-              onClick={(e) => {
-                e.preventDefault();
-                handleUnlinkTelegram();
-              }}
-            >
-              Unlink telegram from SenDigi
-            </a>
-          ) : (
-            <a
-              href="https://t.me/SenDigi_bot"
-              className="bg-[#00df9a] hover:bg-[#50cba4] text-black px-4 py-2 rounded-md mt-4"
-              onClick={handleTelegramLinkClick}
-            >
-              Click here to copy command & set up Telegram
-            </a>
-          )}
-        </div>
+            {notificationSettings.Telegram ? (
+              <a
+                href="javascript:void(0);"
+                className="bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-md mt-4"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleUnlinkTelegram();
+                }}
+              >
+                [Connected]Unlink telegram from SenDigi
+              </a>
+            ) : (
+              <a
+                href="https://t.me/SenDigi_bot"
+                className="bg-[#00df9a] hover:bg-[#50cba4] text-black px-4 py-2 rounded-md mt-4"
+                onClick={handleTelegramLinkClick}
+              >
+                Click here to copy command & set up Telegram
+              </a>
+            )}
+          </div>
           <div className="flex items-center justify-between mt-2">
             <span className="text-black">
               You need to set up Telegram using a designated number before we
               are able to send notifications to you.
             </span>
             <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-              {/* <input
-                type="checkbox"
-                name="toggleTelegram"
-                id="toggleTelegram"
-                className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                disabled
-              />
-              <label
-                htmlFor="toggleTelegram"
-                className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
-              ></label>
-               */}
-               <input
+              <input
                 type="checkbox"
                 name="toggleTelegram"
                 id="toggleTelegram"
