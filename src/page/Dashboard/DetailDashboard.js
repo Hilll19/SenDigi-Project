@@ -257,7 +257,7 @@ const DetailDashboard = () => {
             className="md:col-span-2 md:row-span-2"
           >
             {activityInfo ? (
-              <div className="overflow-y-auto max-h-80">
+              <div className="overflow-y-auto max-h-80 shadow-lg">
                 {activityInfo.slice(0, 4).map((activity) => (
                   <div
                     key={activity.ID}
