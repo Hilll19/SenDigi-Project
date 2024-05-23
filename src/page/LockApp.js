@@ -1,21 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import styled, { keyframes } from "styled-components";
-
-const fadeInUpAnimation = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const AnimatedDiv = styled.div`
-  animation: 1s ${fadeInUpAnimation};
-`;
 
 function LockApp() {
   const [showAnimation, setShowAnimation] = useState(false);

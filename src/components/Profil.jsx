@@ -19,7 +19,7 @@ function Profil() {
             SenDigi and be part of the effort to safeguard the digital well-being of the next generation!.
           </p>
           {/* Ganti button dengan Link */}
-          <Link to='/Profile-Detail' className='my-6 mr-auto'>
+          <Link to='/company' className='my-6 mr-auto'>
             <button className='bg-black text-[#00df9a] w-full rounded-md font-medium md:mx-0 py-3 px-6'>
               More Details
             </button>

@@ -130,7 +130,7 @@ const Navbar = () => {
             <Link to='/'>Home</Link>
           </li>
           <li className='p-4 border-b border-gray-600'>
-            <Link to='/Profile-Detail'>Company</Link>
+            <Link to='/company'>Company</Link>
           </li>
           <li className='p-4 border-b border-gray-600'>About</li>
           <li className='p-4 border-b border-gray-600'>Contact</li>

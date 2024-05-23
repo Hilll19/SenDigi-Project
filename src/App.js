@@ -26,7 +26,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Profile-Detail" element={<ProfileDetail />} />
+        <Route path="/company" element={<ProfileDetail />} />
         <Route path="/ProfileDevice" element={<ProfileDevice />} />
         <Route path="/DetailUsage" element={<DetailUsage />} />
         <Route path="/Time-Usage" element={<TimeUsage />} />
