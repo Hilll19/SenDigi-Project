@@ -115,7 +115,7 @@ function ActivityStatus() {
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
         <h1 className="text-2xl font-bold mb-10 text-center text-[#00df9a]">
-          Device Activity Status
+          Device Activity History
         </h1>
         <div className="bg-white p-4 rounded-lg shadow-lg">
           <h2 className="font-bold">Device Activities History (Last 24 Hours)</h2>
