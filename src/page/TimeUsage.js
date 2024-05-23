@@ -81,7 +81,7 @@ function TimeUsage() {
           legend: {
             position: "top",
             labels: {
-              color: "#fff",
+              color: "#000",
             },
           },
         },
@@ -89,18 +89,18 @@ function TimeUsage() {
           y: {
             beginAtZero: true,
             ticks: {
-              color: "#fff",
+              color: "#000",
             },
             grid: {
-              color: "#444",
+              color: "#F3F4F6",
             },
           },
           x: {
             ticks: {
-              color: "#fff",
+              color: "#000",
             },
             grid: {
-              color: "#444",
+              color: "#F3F4F6",
             },
           },
         },
@@ -124,11 +124,11 @@ function TimeUsage() {
     return appList.map((app, index) => (
       <AnimatedDiv
         key={index}
-        className="bg-gray-700 p-4 rounded-lg shadow-md mb-4 text-white"
+        className="bg-white p-4 rounded-lg shadow-md mb-4 text-black"
       >
         <div className="flex items-center mb-2">
           <div className="mr-2">
-            <img src={app.icon} alt={app.name} width="35" />
+            <img src={app.icon} alt={app.name} width="40" />
           </div>
           <h2 className="text-lg font-semibold">{app.name}</h2>
         </div>
@@ -141,25 +141,27 @@ function TimeUsage() {
     <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-[#00df9a]">
-          Application Usage Statistics
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 text-white">Analyze Data</h2>
-            <div className="bg-gray-700 p-4 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold mb-2 text-[#00df9a]">Time</h2>
-              <div className="mt-4">
-                <canvas id="dailyChart"></canvas>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md overflow-y-auto" style={{ maxHeight: "500px" }}>
-            <h2 className="text-lg font-semibold mb-2 text-white">App Usage</h2>
-            {renderUsageStatistics()}
-          </div>
+  <h1 className="text-2xl font-bold mb-8 text-[#00df9a]">Application Usage Statistics</h1>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {/* Bagian chart */}
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold mb-4 text-black">Analyze Data</h2>
+      <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+        <h3 className="text-base font-semibold mb-2 text-[#00df9a]">Time</h3>
+        <div className="mt-4">
+          <canvas id="dailyChart"></canvas>
         </div>
       </div>
+    </div>
+
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold mb-4 text-black">App Usage</h2>
+      <div className="overflow-y-auto max-h-96">
+        {renderUsageStatistics()}
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   );
 }
