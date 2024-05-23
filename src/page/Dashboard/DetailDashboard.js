@@ -7,7 +7,6 @@ const DetailDashboard = () => {
   const [appInfo, setAppInfo] = useState(null);
   const [activityInfo, setActivityInfo] = useState(null);
   const [totalTimeUsage, setTotalTimeUsage] = useState(0);
-  const [mostOpenedApp, setMostOpenedApp] = useState(null);
   const [totalLockedApps, setTotalLockedApps] = useState([]);
   const [totalScheduledApps, setTotalScheduledApps] = useState([]);
   const [totalOpenedLockApplication, setTotalOpenedLockApplication] = useState(
@@ -93,55 +92,30 @@ const DetailDashboard = () => {
     const openedLockActivities = activities.filter((activity) =>
       activity.Description.String.startsWith("[Warning]")
     );
-
+  
     setTotalWarningActivities(openedLockActivities.length);
-
+  
     const occurrences = new Map();
-
+  
     openedLockActivities.forEach((activity) => {
       occurrences.set(
         activity.PackageName,
         (occurrences.get(activity.PackageName) || 0) + 1
       );
     });
-
-    const mostOpenedLockedPackageName = Array.from(
-      occurrences.entries()
-    ).reduce(
-      (max, current) => (current[1] > max[1] ? current : max),
-      [null, 0]
-    )[0];
-    const mostOpenedLockedApp = apps.find(
-      (app) => app.PackageName === mostOpenedLockedPackageName
-    );
-
+  
+    // const mostOpenedLockedPackageName = Array.from(
+    //   occurrences.entries()
+    // ).reduce(
+    //   (max, current) => (current[1] > max[1] ? current : max),
+    //   [null, 0]
+    // )[0];
+    // const mostOpenedLockedApp = apps.find(
+    //   (app) => app.PackageName === mostOpenedLockedPackageName
+    // );
+  
     setTotalOpenedLockApplication(openedLockActivities);
     setMostOpenedLockedApp(mostOpenedLockedApp);
-
-    const openedAppActivities = activities.filter((activity) =>
-      activity.Description.String.includes("Info opening app")
-    );
-
-    const openedAppsOccurrences = new Map();
-
-    openedAppActivities.forEach((activity) => {
-      openedAppsOccurrences.set(
-        activity.PackageName,
-        (openedAppsOccurrences.get(activity.PackageName) || 0) + 1
-      );
-    });
-
-    const mostOpenedAppPackageName = Array.from(
-      openedAppsOccurrences.entries()
-    ).reduce(
-      (max, current) => (current[1] > max[1] ? current : max),
-      [null, 0]
-    )[0];
-    const mostOpenedApp = apps.find(
-      (app) => app.PackageName === mostOpenedAppPackageName
-    );
-
-    setMostOpenedApp(mostOpenedApp);
   };
 
   const convertToHourMinute = (time) => {
@@ -337,11 +311,14 @@ const DetailDashboard = () => {
           <Card href="/activity" title="Total Opened Locked Application">
             {totalWarningActivities} Times
           </Card>
-          <Card href="/activity" title="Most Opened Application">
-            {mostOpenedApp ? (
+          <Card href="/activity" title="Most Opened Locked Application">
+            {mostOpenedLockedApp ? (
               <div className="flex items-center gap-2">
-                <img src={mostOpenedApp.Icon} alt="icon" width="40" />
-                <p className="text-lg font-bold">{mostOpenedApp.Name}</p>
+                <img src={mostOpenedLockedApp.Icon} alt="icon" width="40" />
+                <p className="text-lg font-bold">{mostOpenedLockedApp.Name}</p>
+                <p className="text-xs text-gray-500">
+                  {mostOpenedLockedApp.OpenCount} times
+                </p>
               </div>
             ) : (
               "Loading data..."
