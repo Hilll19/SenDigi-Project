@@ -156,17 +156,11 @@ const TestUI = () => {
             {deviceInfo ? deviceInfo.DeviceName : "No Device Info"}
           </Card>
           <Card href="/usage" title="Total Installed Applications">
-            {appInfo ? `${appInfo.length} Applications` : "Loading data..."}
+            {appInfo ? `${appInfo.length} Applications` : "0 Application"}
           </Card>
           <Card href="/usage" title="Total Time Usage">
-            {appInfo ? (
-              <>
-                {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
-                {convertToHourMinute(totalTimeUsage)[1]} Minutes
-              </>
-            ) : (
-              "Loading data..."
-            )}
+            {convertToHourMinute(totalTimeUsage)[0]} Hours{" "}
+            {convertToHourMinute(totalTimeUsage)[1]} Minutes
           </Card>
           <Card
             href="/TimeUsage"
