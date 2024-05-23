@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 function ActivityStatus() {
   const [showAnimation, setShowAnimation] = useState(false);
   const [activityStatusList, setActivityStatusList] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     setShowAnimation(true);
@@ -32,8 +33,12 @@ function ActivityStatus() {
         }));
 
         setActivityStatusList(activities);
+        setLoading(false); // Set loading to false after fetching data
       })
-      .catch((error) => console.error("Error fetching activity status data:", error));
+      .catch((error) => {
+        console.error("Error fetching activity status data:", error);
+        setLoading(false); // Ensure loading is set to false even if there's an error
+      });
   }
 
   const formatDateTime = (isoString) => {
@@ -97,11 +102,15 @@ function ActivityStatus() {
     <div className="bg-white min-h-screen">
       <Navbar />
       <div className="container mx-auto mt-10 px-4">
-        <h1 className="text-2xl font-bold mb-4 text-white">
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">
           Device Activity Status
         </h1>
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          {showAnimation && renderActivityStatus()}
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md">
+          {loading ? (
+            <div className="text-white">Loading data...</div> // Show loading message while data is being fetched
+          ) : (
+            renderActivityStatus()
+          )}
         </div>
       </div>
     </div>
