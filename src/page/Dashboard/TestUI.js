@@ -196,59 +196,62 @@ const TestUI = () => {
             {renderBatteryIcon()}
           </Card>
           <Card href="/usage" title="Total Locked Applications">
-            {appInfo ? `${totalLockedApps.length} Locked Applications` : "Loading data..."}
+            {appInfo ? `${totalLockedApps.length} Locked Applications` : " 0 Locked Application"}
           </Card>
-          <Card href="/lock" title="Locked Applications" className="md:row-span-2">
-            {appInfo ? (
-              totalLockedApps.length ? (
-                <div className="overflow-y-auto max-h-40">
-                  {totalLockedApps.map((app) => (
-                    <div key={app.PackageName} className="flex items-center gap-2">
-                      <img src={app.Icon} alt="icon" width="40" />
-                      <p className="text-lg font-semibold">{app.Name}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>You don't have any locked applications</p>
-              )
+          <Card
+            href="/lock"
+            title="Locked Applications"
+            className="md:row-span-2"
+          >
+            {totalLockedApps.length ? (
+              <div className="overflow-y-auto max-h-40">
+                {totalLockedApps.map((app) => (
+                  <div
+                    key={app.PackageName}
+                    className="flex items-center gap-2"
+                  >
+                    <img src={app.Icon} alt="icon" width="40" />
+                    <p className="text-lg font-semibold">{app.Name}</p>
+                  </div>
+                ))}
+              </div>
             ) : (
-              "Loading data..."
+              <p>You don't have any locked applications</p>
             )}
           </Card>
-          <Card href="/schedule" title="Scheduled Applications" className="md:row-span-2">
-            {appInfo ? (
-              totalScheduledApps.length ? (
-                <div className="overflow-y-auto max-h-40">
-                  {totalScheduledApps.map((app) => (
-                    <div key={app.PackageName} className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <img src={app.Icon} alt="icon" width="20" />
-                        <p className="font-bold">{app.Name}</p>
-                      </div>
-                      <div>
-                        {app.DateLocked.String && (
-                          <Badge color="red">{app.DateLocked.String}</Badge>
-                        )}
-                        {app.TimeStartLocked.String && (
-                          <Badge color="blue">
-                            Start Time: {app.TimeStartLocked.String}
-                          </Badge>
-                        )}
-                        {app.TimeEndLocked.String && (
-                          <Badge color="blue">
-                            End Time: {app.TimeEndLocked.String}
-                          </Badge>
-                        )}
-                      </div>
+          <Card
+            href="/schedule"
+            title="Scheduled Applications"
+            className="md:row-span-2"
+          >
+            {totalScheduledApps.length ? (
+              <div className="overflow-y-auto max-h-40">
+                {totalScheduledApps.map((app) => (
+                  <div key={app.PackageName} className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <img src={app.Icon} alt="icon" width="20" />
+                      <p className="font-bold">{app.Name}</p>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p>You don't have any scheduled applications</p>
-              )
+                    <div>
+                      {app.DateLocked.String && (
+                        <Badge color="red">{app.DateLocked.String}</Badge>
+                      )}
+                      {app.TimeStartLocked.String && (
+                        <Badge color="blue">
+                          Start Time: {app.TimeStartLocked.String}
+                        </Badge>
+                      )}
+                      {app.TimeEndLocked.String && (
+                        <Badge color="blue">
+                          End Time: {app.TimeEndLocked.String}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
-              "Loading data..."
+              <p>You don't have any scheduled applications</p>
             )}
           </Card>
           <Card href="/schedule" title="Total Scheduled Applications">
