@@ -77,7 +77,7 @@ function ActivityStatus() {
     }
 
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md overflow-y-auto max-h-96">
+      <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-96">
         <ul>
           {activityStatusList.map((activity, index) => (
             <li
