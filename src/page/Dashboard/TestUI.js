@@ -302,21 +302,16 @@ const TestUI = () => {
 };
 
 const Card = ({ href, title, children, className = "" }) => (
-  <a
-    href={href}
-    className={`bg-gray-200 p-4 rounded-lg shadow-md ${className}`}
-  >
-    <p className="text-sm text-black">{title}</p>
-    <h5 className="mt-2 text-2xl font-bold text-black">{children}</h5>
+  <a href={href} className={`bg-white p-4 rounded-lg shadow-md ${className}`}>
+  <p className="text-sm text-gray-600">{title}</p>
+    <h5 className="mt-2 text-lg font-semibold text-gray-800">{children}</h5>
   </a>
 );
 
 const Badge = ({ color, children }) => (
-  <span
-    className={`inline-block bg-${color}-200 text-${color}-800 text-xs px-2 rounded-full`}
-  >
-    {children}
-  </span>
+  <span className={`inline-block bg-${color}-200 text-${color}-800 text-sm px-2 rounded-full`}>
+  {children}
+</span>
 );
 
 export default TestUI;
