@@ -118,6 +118,8 @@ function ActivityStatus() {
           Device Activity Status
         </h1>
         <div className="bg-white p-4 rounded-lg shadow-lg">
+          <h2 className="font-bold">Device Activities History (Last 24 Hours)</h2>
+          <p className="mb-4">This page shows logs of your device's app activity for 24 hours, allowing you to analyze your child's usage before the data is automatically deleted to maintain privacy.</p>
           {showAnimation && renderActivityStatus()}
         </div>
       </div>
