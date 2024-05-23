@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-multi-date-picker";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const SchedulingByDates = () => {
   const [appList, setAppList] = useState([]);
   const [selectedAppId, setSelectedAppId] = useState("");
   const [scheduledApps, setScheduledApps] = useState([]);
   const [dates, setDates] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_APPS, {
@@ -27,7 +29,7 @@ const SchedulingByDates = () => {
         }
       })
       .catch((error) => console.error("Error fetching app data:", error))
-      .finally(() => setLoading(false)); // Set loading to false after fetching data
+      .finally(() => setLoading(false));
   }, []);
 
   const handleAppChange = (event) => {
@@ -71,8 +73,36 @@ const SchedulingByDates = () => {
     }
   };
 
+  const deleteScheduledApp = (appId) => {
+    const appToDelete = scheduledApps.find((app) => app.id === appId);
+    if (appToDelete) {
+      const updatedAppData = {
+        ...appToDelete,
+        lockStatus: false,
+        dateLocked: "",
+      };
+      fetch(process.env.REACT_APP_API_APPS_UPDATE, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedAppData),
+        credentials: "include",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          setScheduledApps(scheduledApps.filter((app) => app.id !== appId));
+        })
+        .catch((error) =>
+          console.error("Error deleting lock status:", error.message)
+        );
+    }
+  };
+
   if (loading) {
-    return <div>Loading data...</div>; // Show loading message while data is being fetched
+    return <div>Loading data...</div>;
   }
 
   return (
@@ -130,7 +160,7 @@ const SchedulingByDates = () => {
           History Scheduling
         </h2>
         <div className="bg-white shadow p-4 rounded-md max-h-96 overflow-y-auto">
-          <ul className=" text-black">
+          <ul className="text-black">
             {scheduledApps.map((scheduledApp, index) => (
               <li key={index} className="mb-4">
                 <div className="bg-white p-4 rounded-md flex items-center">
@@ -138,9 +168,8 @@ const SchedulingByDates = () => {
                     src={scheduledApp.icon}
                     alt={scheduledApp.name}
                     className="w-8 h-8 mr-3"
-                  />{" "}
-                  {/* Add icon */}
-                  <div>
+                  />
+                  <div className="flex-grow">
                     <span className="font-semibold text-gray-700">App:</span>{" "}
                     {scheduledApp.name}
                     <br />
@@ -153,6 +182,12 @@ const SchedulingByDates = () => {
                       </>
                     )}
                   </div>
+                  <button
+                    onClick={() => deleteScheduledApp(scheduledApp.id)}
+                    className="text-red-600 hover:text-red-800 ml-4"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 </div>
               </li>
             ))}

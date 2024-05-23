@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const SchedulingByTime = () => {
   const [appList, setAppList] = useState([]);
@@ -6,7 +8,7 @@ const SchedulingByTime = () => {
   const [endTime, setEndTime] = useState('');
   const [selectedAppId, setSelectedAppId] = useState('');
   const [scheduledApps, setScheduledApps] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_APPS, {
@@ -28,7 +30,7 @@ const SchedulingByTime = () => {
         }
       })
       .catch((error) => console.error("Error fetching app data:", error))
-      .finally(() => setLoading(false)); // Set loading to false after fetching data
+      .finally(() => setLoading(false));
   }, []);
   
   const handleStartTimeChange = (event) => {
@@ -66,13 +68,11 @@ const SchedulingByTime = () => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          // Handle success by adding the app to the scheduledApps list
           setScheduledApps([...scheduledApps, {
-            name: selectedApp.name,
+            ...selectedApp,
             timeStartLocked: startTime,
             timeEndLocked: endTime,
           }]);
-          // Clear the selection
           setSelectedAppId('');
           setStartTime('');
           setEndTime('');
@@ -83,8 +83,37 @@ const SchedulingByTime = () => {
     }
   };
 
+  const deleteScheduledApp = (appId) => {
+    const appToDelete = scheduledApps.find((app) => app.id === appId);
+    if (appToDelete) {
+      const updatedAppData = {
+        ...appToDelete,
+        lockStatus: false,
+        timeStartLocked: '',
+        timeEndLocked: '',
+      };
+      fetch(process.env.REACT_APP_API_APPS_UPDATE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedAppData),
+        credentials: 'include',
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          setScheduledApps(scheduledApps.filter((app) => app.id !== appId));
+        })
+        .catch((error) => {
+          console.error('Error deleting lock status:', error.message);
+        });
+    }
+  };
+
   if (loading) {
-    return <div>Loading data...</div>; // Show loading message while data is being fetched
+    return <div>Loading data...</div>;
   }
 
   return (
@@ -154,13 +183,19 @@ const SchedulingByTime = () => {
                   alt={scheduledApp.name}
                   className="w-8 h-8 mr-3"
                 />
-                <div>
+                <div className="flex-grow">
                   <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>App:</span> {scheduledApp.name}
                   <br />
                   <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>Start Time:</span> {scheduledApp.timeStartLocked}
                   <br />
                   <span className="font-semibold text-gray-700" style={{ fontFamily: 'Roboto, sans-serif' }}>End Time:</span> {scheduledApp.timeEndLocked}
                 </div>
+                <button
+                  onClick={() => deleteScheduledApp(scheduledApp.id)}
+                  className="text-red-600 hover:text-red-800 ml-4"
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </li>
             ))}
           </ul>
