@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 
-function LockApp() {
+function LockApp({ refreshInterval }) {
   const [showAnimation, setShowAnimation] = useState(false);
   const [appList, setAppList] = useState(null);
 
   useEffect(() => {
     setShowAnimation(true);
     showListOfInstalledApplication();
-    const interval = setInterval(showListOfInstalledApplication, 60000); // Set interval to 1 minute
+    const interval = setInterval(showListOfInstalledApplication, refreshInterval); 
     return () => clearInterval(interval); // Cleanup interval on unmount
-  }, []);
+  }, [refreshInterval]);
 
   function showListOfInstalledApplication() {
     fetch(process.env.REACT_APP_API_APPS, {

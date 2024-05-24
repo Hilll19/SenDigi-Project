@@ -115,8 +115,8 @@ function Notification() {
         <h2 className="text-lg font-semibold mb-2 text-black">
           Notification Settings
         </h2>
-        <div className="mb-4">
-          <label className="flex items-center mb-2">
+        <div className="my-4">
+          <label className="flex items-center mb-2 font-bold">
             <FaEnvelope className="text-gray-500 mr-2" />
             {`Send over Email (${notificationSettings.EmailStatus ? 'ON' : 'OFF'})`}
           </label>
@@ -164,7 +164,7 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="flex items-center mb-2">
+          <label className="flex items-center mb-2 font-bold">
             <FaWhatsapp className="text-green-500 mr-2" />
             {`Send over WhatsApp (${notificationSettings.WhatsappStatus ? 'ON' : 'OFF'})`}
           </label>
@@ -218,7 +218,7 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="flex items-center mb-2">
+          <label className="flex items-center mb-2 font-bold">
             <FaTelegram className="text-blue-500 mr-2" />
             {`Send over Telegram  (${notificationSettings.TelegramStatus ? 'ON' : 'OFF'})`}
           </label>
@@ -283,7 +283,7 @@ function Notification() {
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-black mb-1">Notification Strategy</label>
+          <label className="block text-black mb-1 font-bold">Notification Strategy</label>
           <div className="bg-gray-200 p-4 rounded-md">
             <div className="flex items-center mb-2">
               <input

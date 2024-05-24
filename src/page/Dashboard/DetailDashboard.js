@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FaBatteryFull, FaBatteryHalf, FaBatteryEmpty } from "react-icons/fa";
-import Navbar from "../../components/Navbar";
 
-const DetailDashboard = ({ setSelectedComponent }) => {
+const DetailDashboard = ({ refreshInterval, setSelectedComponent }) => {
   const [deviceInfo, setDeviceInfo] = useState(null);
   const [appInfo, setAppInfo] = useState(null);
   const [activityInfo, setActivityInfo] = useState(null);
@@ -17,6 +16,36 @@ const DetailDashboard = ({ setSelectedComponent }) => {
   const [totalWarningActivities, setTotalWarningActivities] = useState(0);
 
   const fetchData = useCallback(async () => {
+    const calculateOpenedLockApplication = (activities) => {
+      const openedLockActivities = activities.filter((activity) =>
+        activity.Description.String.startsWith("[Warning]")
+      );
+
+      setTotalWarningActivities(openedLockActivities.length);
+
+      const occurrences = new Map();
+
+      openedLockActivities.forEach((activity) => {
+        occurrences.set(
+          activity.PackageName,
+          (occurrences.get(activity.PackageName) || 0) + 1
+        );
+      });
+
+      const mostOpenedLockedPackageName = Array.from(
+        occurrences.entries()
+      ).reduce(
+        (max, current) => (current[1] > max[1] ? current : max),
+        [null, 0]
+      )[0];
+
+      const mostOpenedLockedApp = appInfo.find(
+        (app) => app.PackageName === mostOpenedLockedPackageName
+      );
+      setMostOpenedLockedApp(mostOpenedLockedApp);
+      setTotalOpenedLockApplication(openedLockActivities);
+    };
+
     try {
       const [deviceCheck, appCheck, activityCheck] = await Promise.allSettled([
         fetch(process.env.REACT_APP_API_DEVICES, { credentials: "include" }),
@@ -60,13 +89,13 @@ const DetailDashboard = ({ setSelectedComponent }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [appInfo]);
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
+    const interval = setInterval(fetchData, refreshInterval);
     return () => clearInterval(interval);
-  }, [fetchData]);
+  }, [fetchData, refreshInterval]);
 
   const calculateTotalTimeUsage = (apps) => {
     const totalTime = apps.reduce((acc, app) => acc + app.TimeUsage, 0);
@@ -83,36 +112,6 @@ const DetailDashboard = ({ setSelectedComponent }) => {
     );
     setTotalLockedApps(lockedApps);
     setTotalScheduledApps(scheduledApps);
-  };
-
-  const calculateOpenedLockApplication = (activities) => {
-    const openedLockActivities = activities.filter((activity) =>
-      activity.Description.String.startsWith("[Warning]")
-    );
-
-    setTotalWarningActivities(openedLockActivities.length);
-
-    const occurrences = new Map();
-
-    openedLockActivities.forEach((activity) => {
-      occurrences.set(
-        activity.PackageName,
-        (occurrences.get(activity.PackageName) || 0) + 1
-      );
-    });
-
-    const mostOpenedLockedPackageName = Array.from(
-      occurrences.entries()
-    ).reduce(
-      (max, current) => (current[1] > max[1] ? current : max),
-      [null, 0]
-    )[0];
-
-    const mostOpenedLockedApp = appInfo.find(
-      (app) => app.PackageName === mostOpenedLockedPackageName
-    );
-    setMostOpenedLockedApp(mostOpenedLockedApp);
-    setTotalOpenedLockApplication(openedLockActivities);
   };
 
   const convertToHourMinute = (time) => {
@@ -197,11 +196,8 @@ const DetailDashboard = ({ setSelectedComponent }) => {
           >
             {appInfo ? (
               <div className="flex flex-wrap gap-4 mt-6 items-center justify-center">
-                {appInfo.slice(0, 4).map((app) => (
-                  <div
-                    key={app.PackageName}
-                    className="flex items-center gap-2"
-                  >
+                {appInfo.slice(0, 4).map((app, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
                     <img src={app.Icon} alt="icon" width="40" />
                     <div>
                       <p className="text-sm font-semibold">{app.Name}</p>

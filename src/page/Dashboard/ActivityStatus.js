@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ActivityStatus() {
+function ActivityStatus({ refreshInterval }) {
   const [showAnimation, setShowAnimation] = useState(false);
   const [activityStatusList, setActivityStatusList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,10 +10,10 @@ function ActivityStatus() {
     showActivityStatus();
     const interval = setInterval(() => {
       showActivityStatus();
-    }, 10000);
+    }, refreshInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [refreshInterval]);
 
   function showActivityStatus() {
     fetch(process.env.REACT_APP_API_APPS_ACTIVITY_STATUS, {

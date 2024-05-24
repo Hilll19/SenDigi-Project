@@ -24,44 +24,44 @@ const ScrollContainer = styled.div`
   overflow-y: auto;
 `;
 
-function TimeUsage() {
+function TimeUsage({ refreshInterval }) {
   const [appList, setAppList] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    ShowChartOfDeviceUsage();
-    const interval = setInterval(ShowChartOfDeviceUsage, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const ShowChartOfDeviceUsage = () => {
-    fetch(process.env.REACT_APP_API_APPS, {
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.data) {
-          const apps = data.data.map((app) => ({
-            name: app.Name,
-            dailyHour: convertToHourMinute(app.TimeUsage)[0].toFixed(0),
-            dailyMinute: convertToHourMinute(app.TimeUsage)[1],
-            icon: app.Icon,
-          }));
-
-          apps.sort((a, b) => b.dailyHour - a.dailyHour);
-
-          setAppList(apps);
-        } else {
-          setAppList([]);
-        }
-        setLoading(false);
+    const ShowChartOfDeviceUsage = () => {
+      fetch(process.env.REACT_APP_API_APPS, {
+        credentials: "include",
       })
-      .catch((error) => {
-        console.error("Error fetching app data:", error);
-        setAppList([]);
-        setLoading(false);
-      });
-  };
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.data) {
+            const apps = data.data.map((app) => ({
+              name: app.Name,
+              dailyHour: convertToHourMinute(app.TimeUsage)[0].toFixed(0),
+              dailyMinute: convertToHourMinute(app.TimeUsage)[1],
+              icon: app.Icon,
+            }));
+
+            apps.sort((a, b) => b.dailyHour - a.dailyHour);
+
+            setAppList(apps);
+          } else {
+            setAppList([]);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching app data:", error);
+          setAppList([]);
+          setLoading(false);
+        });
+    };
+
+    ShowChartOfDeviceUsage();
+    const interval = setInterval(ShowChartOfDeviceUsage, refreshInterval);
+    return () => clearInterval(interval);
+  }, [refreshInterval]);
 
   useEffect(() => {
     if (!appList) return;
@@ -74,7 +74,9 @@ function TimeUsage() {
         datasets: [
           {
             label: "Daily Usage (minutes)",
-            data: appList.map((app) => convertToMinutes(app.dailyHour, app.dailyMinute)),
+            data: appList.map((app) =>
+              convertToMinutes(app.dailyHour, app.dailyMinute)
+            ),
             backgroundColor: "#0197b2",
             borderWidth: 1,
           },
