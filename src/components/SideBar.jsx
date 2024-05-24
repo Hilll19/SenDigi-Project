@@ -5,7 +5,7 @@ import logoSendigi from "../assets/logoSendigi.png";
 import {React, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Sidebar = ({ handleMenuClick, activeItem, setSelectedComponent }) => {
+const Sidebar = ({ handleMenuClick, activeItem, setSelectedComponent, refreshInterval, setRefreshInterval }) => {
   const handleItemClick = (item) => {
     setSelectedComponent(item);
   };
@@ -141,7 +141,7 @@ const Sidebar = ({ handleMenuClick, activeItem, setSelectedComponent }) => {
         </ul>
       </nav>
       <div className="py-4 px-4">
-        <RefreshInterval />
+        <RefreshInterval refreshInterval={refreshInterval} setRefreshInterval={setRefreshInterval} />
       </div>
     </div>
   );

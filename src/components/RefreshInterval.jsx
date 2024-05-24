@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const RefreshInterval = () => {
-  const [interval, setInterval] = useState(10); // Default interval adalah 10 detik
-
+const RefreshInterval = ({refreshInterval, setRefreshInterval}) => {
   const handleIntervalChange = (e) => {
-    setInterval(parseInt(e.target.value));
+    setRefreshInterval(parseInt(e.target.value));
   };
 
   return (
-    <div className="mb-4 ml-8 mt-4">
+    <div className="px-2">
       <div className="flex items-center">
         <select
-          value={interval}
+          value={refreshInterval}
           onChange={handleIntervalChange}
-          className="border border-gray-300 rounded px-2 py-1"
+          className="border border-gray-300 rounded px-2 py-1 w-full"
         >
-          <option value={1} disabled>Refresh Time</option>
-          <option value={1}>1 Second</option>
-          <option value={5}>5 Seconds</option>
-          <option value={10}>10 Seconds</option>
-          <option value={30}>30 Seconds</option>
-          <option value={60}>1 Minute</option>
-          <option value={300}>5 Minutes</option>
+          <option disabled>Refresh Time</option>
+          <option value={1 * 1000}>1 Second</option>
+          <option value={5 * 1000}>5 Seconds</option>
+          <option value={10 * 1000}>10 Seconds</option>
+          <option value={30 * 1000}>30 Seconds</option>
+          <option value={60 * 1000}>1 Minute</option>
+          <option value={5 * 60 * 1000}>5 Minutes</option>
         </select>
       </div>
     </div>
