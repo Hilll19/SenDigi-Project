@@ -38,7 +38,7 @@ function TimeUsage({ refreshInterval }) {
           if (data && data.data) {
             const apps = data.data.map((app) => ({
               name: app.Name,
-              dailyHour: convertToHourMinute(app.TimeUsage)[0].toFixed(0),
+              dailyHour: convertToHourMinute(app.TimeUsage)[0],
               dailyMinute: convertToHourMinute(app.TimeUsage)[1],
               icon: app.Icon,
             }));
@@ -148,7 +148,7 @@ function TimeUsage({ refreshInterval }) {
   }, [appList]);
 
   function convertToHourMinute(time) {
-    const hour = time / 60;
+    const hour = Math.floor(time / 60);
     const minute = time % 60;
     return [hour, minute];
   }
