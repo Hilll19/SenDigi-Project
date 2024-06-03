@@ -103,14 +103,14 @@ function ChildRequest() {
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">Respond Back</h3>
                 <textarea
-                  className="w-full p-3 border border-gray-300 rounded-lg"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                   rows="4"
                   placeholder="Leave a message"
                   value={responseMessage}
                   onChange={handleResponseChange}
                 ></textarea>
                 <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700 transition"
                   onClick={handleSendResponse}
                 >
                   Send Message
@@ -125,12 +125,12 @@ function ChildRequest() {
                     checked={selectedRequest.locked}
                     onChange={handleLockToggle}
                   />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:bg-blue-600"></div>
-                  <div className="w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-full peer-focus:ring-2 peer-focus:ring-blue-300"></div>
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:bg-blue-600 transition duration-300"></div>
+                  <div className="w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-full peer-focus:ring-2 peer-focus:ring-blue-300 transition duration-300"></div>
                 </label>
               </div>
               <button
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
                 onClick={handleLockToggle}
               >
                 Toggle Lock
