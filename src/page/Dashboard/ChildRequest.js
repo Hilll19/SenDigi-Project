@@ -11,9 +11,10 @@ function ChildRequest() {
 
   const fetchRequestData = async () => {
     try {
-      const response = await fetch("https://server.sendigi.id/api/message", {
+      const response = await fetch(process.env.REACT_APP_REQUEST_MESSAGE, {
         credentials: "include",
       });
+      console.log(response);
       const data = await response.json();
       if (data && data.data) {
         const formattedData = data.data.map((item) => ({
