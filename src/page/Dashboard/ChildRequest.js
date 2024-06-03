@@ -71,13 +71,8 @@ function ChildRequest() {
           unlock the app.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div
-            className="bg-white p-6 rounded-lg shadow-md"
-            style={{ maxHeight: "600px", overflowY: "auto" }}
-          >
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              Requests
-            </h2>
+          <div className="bg-white p-6 rounded-lg shadow-md" style={{ maxHeight: "600px", overflowY: "auto" }}>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Requests</h2>
             <ul className="space-y-4">
               {requestList.map((request) => (
                 <li
@@ -93,13 +88,9 @@ function ChildRequest() {
                         className="w-10 h-10 mr-3 rounded-full"
                       />
                     )}
-                    <span className="text-gray-700">
-                      {request.appName} Unlock Request
-                    </span>
+                    <span className="text-gray-700">{request.appName} Unlock Request</span>
                   </div>
-                  <span className="text-gray-500 text-sm">
-                    {request.timestamp}
-                  </span>
+                  <span className="text-gray-500 text-sm">{request.timestamp}</span>
                 </li>
               ))}
             </ul>
@@ -107,19 +98,13 @@ function ChildRequest() {
 
           {selectedRequest && (
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                Messages
-              </h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Messages</h2>
               <div className="mb-6" style={{ maxHeight: "400px", overflowY: "auto" }}>
                 <p className="text-gray-700 mb-4">{selectedRequest.message}</p>
-                <p className="text-gray-500 text-sm mb-6">
-                  {selectedRequest.timestamp}
-                </p>
+                <p className="text-gray-500 text-sm mb-6">{selectedRequest.timestamp}</p>
               </div>
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Respond Back
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Respond Back</h3>
                 <textarea
                   className="w-full p-3 border border-gray-300 rounded-lg"
                   rows="4"
@@ -135,9 +120,7 @@ function ChildRequest() {
                 </button>
               </div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-gray-800">
-                  {selectedRequest.appName} Lock Status
-                </span>
+                <span className="text-gray-800">{selectedRequest.appName} Lock Status</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
