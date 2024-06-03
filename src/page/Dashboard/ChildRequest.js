@@ -103,7 +103,6 @@ function ChildRequest() {
   };
 
   const handleLockToggle = async () => {
-    const newLockStatus = !selectedRequest.locked;
     try {
       const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
         method: "POST",
@@ -112,50 +111,26 @@ function ChildRequest() {
         },
         body: JSON.stringify({
           packageName: selectedRequest.packageName,
-          lockStatus: newLockStatus,
+          lockStatus: !selectedRequest.locked,
         }),
         credentials: "include",
       });
 
       if (response.ok) {
-        toast.success('Lock status updated successfully', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        setSelectedRequest({ ...selectedRequest, locked: newLockStatus });
+        console.log("Lock status updated successfully");
+        setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
+        fetchRequestData(); // Fetch the updated data to ensure the LockApp gets the updated status
       } else {
-        toast.error('Failed to update lock status', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        console.error("Failed to update lock status");
       }
     } catch (error) {
       console.error("Error updating lock status:", error);
-      toast.error('Error updating lock status', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
     }
   };
 
   return (
     <div className="bg-white min-h-screen py-6">
-        <ToastContainer />
+      <ToastContainer />
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">Request Messages</h1>
         <p className="text-gray-600 mb-8">
