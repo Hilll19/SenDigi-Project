@@ -173,7 +173,7 @@ function ChildRequest() {
                       )}
                       <div>
                         <span className="block font-semibold text-gray-800">
-                          {request.appName}
+                          {request.appName} Request Unlock
                         </span>
                         <span className="block text-sm text-gray-500">
                           {request.timestamp}
