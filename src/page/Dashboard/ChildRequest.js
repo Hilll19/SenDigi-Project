@@ -157,7 +157,9 @@ function ChildRequest() {
                       )}
                       <span className="text-gray-700">{request.appName} Unlock Request</span>
                     </div>
-                    <span className="text-gray-500 text-sm">{request.timestamp}</span>
+                    <div className="text-gray-500">
+                      {request.locked ? "Locked" : "Unlocked"}
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -189,23 +191,22 @@ function ChildRequest() {
               </div>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-gray-800">{selectedRequest.appName} Lock Status</span>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="toggle-switch">
                   <input
                     type="checkbox"
                     className="sr-only"
                     checked={selectedRequest.locked}
                     onChange={handleLockToggle}
                   />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:bg-blue-600"></div>
-                  <div className="w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-full peer-focus:ring-2 peer-focus:ring-blue-300"></div>
+                  <span className="toggle-slider"></span>
                 </label>
               </div>
-              <button
+              {/* <button
                 className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                 onClick={handleLockToggle}
               >
                 Toggle Lock
-              </button>
+              </button> */}
             </div>
           )}
         </div>
