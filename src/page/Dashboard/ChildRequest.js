@@ -103,6 +103,7 @@ function ChildRequest() {
   };
 
   const handleLockToggle = async () => {
+    const newLockStatus = !selectedRequest.locked;
     try {
       const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
         method: "POST",
@@ -111,21 +112,44 @@ function ChildRequest() {
         },
         body: JSON.stringify({
           packageName: selectedRequest.packageName,
-          lockStatus: !selectedRequest.locked,
+          lockStatus: newLockStatus,
         }),
         credentials: "include",
       });
 
       if (response.ok) {
-        // Tampilkan pesan sukses kepada pengguna
-        console.log("Lock status updated successfully");
-        setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
+        toast.success('Lock status updated successfully', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setSelectedRequest({ ...selectedRequest, locked: newLockStatus });
       } else {
-        // Tampilkan pesan error kepada pengguna
-        console.error("Failed to update lock status");
+        toast.error('Failed to update lock status', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (error) {
       console.error("Error updating lock status:", error);
+      toast.error('Error updating lock status', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
