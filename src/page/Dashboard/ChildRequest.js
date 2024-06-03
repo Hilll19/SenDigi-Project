@@ -77,6 +77,26 @@ function ChildRequest() {
         });
         setSelectedRequest(null);
         setResponseMessage("");
+        
+        // Update the lock status
+        const updateLockResponse = await fetch(process.env.REACT_APP_API_APPS_UPDATE, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            packageName: selectedRequest.packageName,
+            lockStatus: !selectedRequest.locked,
+          }),
+          credentials: "include",
+        });
+
+        if (updateLockResponse.ok) {
+          setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
+          fetchRequestData(); // Fetch the updated data to ensure the list reflects the new status
+        } else {
+          console.error("Failed to update lock status");
+        }
       } else {
         toast.error('Failed to send response', {
           position: "top-right",
@@ -104,7 +124,7 @@ function ChildRequest() {
 
   const handleLockToggle = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
+      const response = await fetch(process.env.REACT_APP_API_APPS_UPDATE, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
