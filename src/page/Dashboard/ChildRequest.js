@@ -79,7 +79,7 @@ function ChildRequest() {
                     {request.appIcon && (
                       <img src={request.appIcon} alt={request.appName} className="w-10 h-10 mr-3 rounded-full" />
                     )}
-                    <span className="text-gray-700">{request.message}</span>
+                    <span className="text-2xl font-semibold text-gray-800">{request.appName} Unlock Request</span>
                   </div>
                   <span className="text-gray-500 text-sm">{request.timestamp}</span>
                 </li>
@@ -88,7 +88,7 @@ function ChildRequest() {
           </div>
           {selectedRequest && (
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">{selectedRequest.appName}</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Messages</h2>
               <p className="text-gray-700 mb-4">{selectedRequest.message}</p>
               <p className="text-gray-500 text-sm mb-6">{selectedRequest.timestamp}</p>
               <div className="mb-6">
