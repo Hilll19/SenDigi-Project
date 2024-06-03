@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ChildRequest() {
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -62,18 +64,41 @@ function ChildRequest() {
         }),
         credentials: "include",
       });
-
+  
       if (response.ok) {
-        // Tampilkan pesan sukses kepada pengguna
-        console.log("Response sent successfully");
+        toast.success('Response sent successfully', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         setSelectedRequest(null);
         setResponseMessage("");
       } else {
-        // Tampilkan pesan error kepada pengguna
-        console.error("Failed to send response");
+        toast.error('Failed to send response', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (error) {
       console.error("Error sending response:", error);
+      toast.error('Error sending response', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -106,6 +131,7 @@ function ChildRequest() {
 
   return (
     <div className="bg-white min-h-screen py-6">
+        <ToastContainer />
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">Request Messages</h1>
         <p className="text-gray-600 mb-8">
