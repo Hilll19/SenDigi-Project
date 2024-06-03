@@ -31,7 +31,7 @@ function ChildRequest() {
             second: "2-digit",
           }),
           locked: item.LockStatus,
-          packageName: item.PackageName, // Added packageName for toggle function
+          packageName: item.PackageName,
         }));
         setRequestList(formattedData);
       }
@@ -49,80 +49,58 @@ function ChildRequest() {
   };
 
   const handleSendResponse = async () => {
-    if (selectedRequest && responseMessage) {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_REQUEST_MESSAGE}/send`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            message: responseMessage,
-            packageName: selectedRequest.packageName,
-            lockStatus: selectedRequest.locked,
-          }),
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          console.log("Response sent successfully");
-          setSelectedRequest(null);
-          setResponseMessage("");
-          fetchRequestData(); // Refresh the request list after sending the response
-        } else {
-          console.error("Error sending response:", response.status);
-        }
-      } catch (error) {
-        console.error("Error sending response:", error);
-      }
-    }
-  };
-
-  const SaveState = (packageName, newLockStatus) => {
-    const updatedRequestList = requestList.map((request) =>
-      request.packageName === packageName ? { ...request, locked: newLockStatus } : request
-    );
-    setRequestList(updatedRequestList);
-
-    const requestToUpdate = requestList.find((request) => request.packageName === packageName);
-
-    if (!requestToUpdate) {
-      console.error(`Request with packageName ${packageName} not found.`);
-      return;
-    }
-
-    const updatedRequestData = {
-      ...requestToUpdate,
-      lockStatus: newLockStatus,
-    };
-
-    fetch(process.env.REACT_APP_API_APPS_UPDATE, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedRequestData),
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating lock status:", error.message);
-
-        const revertedRequestList = requestList.map((request) =>
-          request.packageName === packageName ? { ...request, locked: !newLockStatus } : request
-        );
-        setRequestList(revertedRequestList);
+    try {
+      const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: responseMessage,
+          packageName: selectedRequest.packageName,
+          lockStatus: selectedRequest.locked,
+        }),
+        credentials: "include",
       });
+
+      if (response.ok) {
+        // Tampilkan pesan sukses kepada pengguna
+        console.log("Response sent successfully");
+        setSelectedRequest(null);
+        setResponseMessage("");
+      } else {
+        // Tampilkan pesan error kepada pengguna
+        console.error("Failed to send response");
+      }
+    } catch (error) {
+      console.error("Error sending response:", error);
+    }
   };
 
-  const handleLockToggle = (packageName) => {
-    const request = requestList.find((request) => request.packageName === packageName);
-    if (request) {
-      SaveState(packageName, !request.locked);
+  const handleLockToggle = async () => {
+    try {
+      const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          packageName: selectedRequest.packageName,
+          lockStatus: !selectedRequest.locked,
+        }),
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        // Tampilkan pesan sukses kepada pengguna
+        console.log("Lock status updated successfully");
+        setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
+      } else {
+        // Tampilkan pesan error kepada pengguna
+        console.error("Failed to update lock status");
+      }
+    } catch (error) {
+      console.error("Error updating lock status:", error);
     }
   };
 
@@ -171,14 +149,14 @@ function ChildRequest() {
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">Respond Back</h3>
                 <textarea
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  className="w-full p-3 border border-gray-300 rounded-lg"
                   rows="4"
                   placeholder="Leave a message"
                   value={responseMessage}
                   onChange={handleResponseChange}
                 ></textarea>
                 <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700 transition"
+                  className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
                   onClick={handleSendResponse}
                 >
                   Send Message
@@ -186,19 +164,20 @@ function ChildRequest() {
               </div>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-gray-800">{selectedRequest.appName} Lock Status</span>
-                <label className="toggle-switch">
+                <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={selectedRequest.locked}
-                    onChange={() => handleLockToggle(selectedRequest.packageName)}
                     className="sr-only"
+                    checked={selectedRequest.locked}
+                    onChange={handleLockToggle}
                   />
-                  <span className="toggle-slider"></span>
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:bg-blue-600"></div>
+                  <div className="w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-full peer-focus:ring-2 peer-focus:ring-blue-300"></div>
                 </label>
               </div>
               <button
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                onClick={() => handleLockToggle(selectedRequest.packageName)}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                onClick={handleLockToggle}
               >
                 Toggle Lock
               </button>
