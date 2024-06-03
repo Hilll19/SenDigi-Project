@@ -67,7 +67,7 @@ function ChildRequest() {
           credentials: "include",
         }
       );
-  
+
       if (response.ok) {
         toast.success("Response sent successfully", {
           position: "top-right",
@@ -78,10 +78,7 @@ function ChildRequest() {
           draggable: true,
           progress: undefined,
         });
-        
-        // Filter out the request with LockStatus false after sending the response
-        setRequestList(requestList.filter((request) => request.id !== selectedRequest.id && request.locked));
-        
+        setRequestList(requestList.filter((request) => request.id !== selectedRequest.id));
         setSelectedRequest(null);
         setResponseMessage("");
       } else {
