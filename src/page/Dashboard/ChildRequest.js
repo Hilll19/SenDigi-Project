@@ -180,9 +180,6 @@ function ChildRequest() {
                         </span>
                       </div>
                     </div>
-                    <span className="text-gray-700">
-                      {request.locked ? "Locked" : "Unlocked"}
-                    </span>
                   </li>
                 ))}
               </ul>
