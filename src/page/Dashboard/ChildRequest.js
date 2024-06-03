@@ -78,6 +78,7 @@ function ChildRequest() {
           draggable: true,
           progress: undefined,
         });
+        setRequestList(requestList.filter(request => request.id !== selectedRequest.id));
         setSelectedRequest(null);
         setResponseMessage("");
       } else {
