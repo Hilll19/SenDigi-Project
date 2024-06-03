@@ -176,12 +176,12 @@ function ChildRequest() {
                 {requestList.map((request) => (
                   <li
                     key={request.id}
-                    className={`flex items-center py-4 cursor-pointer hover:bg-gray-50 ${
+                    className={`flex items-center py-4 cursor-pointer ${
                       request.status === "success"
                         ? "bg-green-100"
                         : request.status === "failed"
                         ? "bg-red-100"
-                        : ""
+                        : "hover:bg-gray-50"
                     }`}
                     onClick={() => handleRequestClick(request)}
                   >
