@@ -218,26 +218,6 @@ function ChildRequest() {
                   Send Message
                 </button>
               </div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-gray-800">
-                  {selectedRequest.appName} Lock Status
-                </span>
-                <label className="toggle-switch">
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={selectedRequest.locked}
-                    onChange={handleLockToggle}
-                  />
-                  <span className="toggle-slider"></span>
-                </label>
-              </div>
-              {/* <button
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                onClick={handleLockToggle}
-              >
-                Toggle Lock
-              </button> */}
             </div>
           )}
         </div>
