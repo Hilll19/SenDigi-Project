@@ -71,37 +71,38 @@ function ChildRequest() {
           unlock the app.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div
+            className="bg-white p-6 rounded-lg shadow-md"
+            style={{ maxHeight: "600px", overflowY: "auto" }}
+          >
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Requests
             </h2>
-            <div style={{ maxHeight: "600px", overflowY: "auto" }}>
-              <ul className="space-y-4">
-                {requestList.map((request) => (
-                  <li
-                    key={request.id}
-                    className="flex items-center justify-between py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
-                    onClick={() => handleRequestClick(request)}
-                  >
-                    <div className="flex items-center">
-                      {request.appIcon && (
-                        <img
-                          src={request.appIcon}
-                          alt={request.appName}
-                          className="w-10 h-10 mr-3 rounded-full"
-                        />
-                      )}
-                      <span className="text-gray-700">
-                        {request.appName} Unlock Request
-                      </span>
-                    </div>
-                    <span className="text-gray-500 text-sm">
-                      {request.timestamp}
+            <ul className="space-y-4">
+              {requestList.map((request) => (
+                <li
+                  key={request.id}
+                  className="flex items-center justify-between py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+                  onClick={() => handleRequestClick(request)}
+                >
+                  <div className="flex items-center">
+                    {request.appIcon && (
+                      <img
+                        src={request.appIcon}
+                        alt={request.appName}
+                        className="w-10 h-10 mr-3 rounded-full"
+                      />
+                    )}
+                    <span className="text-gray-700">
+                      {request.appName} Unlock Request
                     </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                  </div>
+                  <span className="text-gray-500 text-sm">
+                    {request.timestamp}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {selectedRequest && (
@@ -109,10 +110,12 @@ function ChildRequest() {
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                 Messages
               </h2>
-              <p className="text-gray-700 mb-4">{selectedRequest.message}</p>
-              <p className="text-gray-500 text-sm mb-6">
-                {selectedRequest.timestamp}
-              </p>
+              <div className="mb-6" style={{ maxHeight: "400px", overflowY: "auto" }}>
+                <p className="text-gray-700 mb-4">{selectedRequest.message}</p>
+                <p className="text-gray-500 text-sm mb-6">
+                  {selectedRequest.timestamp}
+                </p>
+              </div>
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   Respond Back
