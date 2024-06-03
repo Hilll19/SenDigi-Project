@@ -78,7 +78,7 @@ function ChildRequest() {
           draggable: true,
           progress: undefined,
         });
-        setRequestList(requestList.filter(request => request.id !== selectedRequest.id));
+        setRequestList(requestList.filter((request) => request.id !== selectedRequest.id));
         setSelectedRequest(null);
         setResponseMessage("");
       } else {
@@ -218,6 +218,20 @@ function ChildRequest() {
                 >
                   Send Message
                 </button>
+              </div>
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  Lock/Unlock Application
+                </h3>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={selectedRequest.locked}
+                    onChange={handleLockToggle}
+                    className="sr-only"
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
               </div>
             </div>
           )}
