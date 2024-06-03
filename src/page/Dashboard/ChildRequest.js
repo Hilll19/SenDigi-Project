@@ -157,9 +157,9 @@ function ChildRequest() {
                       )}
                       <span className="text-gray-700">{request.appName} Unlock Request</span>
                     </div>
-                    {/* <div className="text-gray-500">
+                    <div className="text-gray-500">
                       {request.locked ? "Locked" : "Unlocked"}
-                    </div> */}
+                    </div>
                   </li>
                 ))}
               </ul>
