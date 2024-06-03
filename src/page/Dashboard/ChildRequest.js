@@ -31,6 +31,7 @@ function ChildRequest() {
             second: "2-digit",
           }),
           locked: item.LockStatus,
+          packageName: item.PackageName, // Added packageName for toggle function
         }));
         setRequestList(formattedData);
       }
@@ -53,9 +54,52 @@ function ChildRequest() {
     setResponseMessage("");
   };
 
-  const handleLockToggle = () => {
-    console.log("Toggle lock for:", selectedRequest.appName);
-    setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
+  const SaveState = (packageName, newLockStatus) => {
+    const updatedRequestList = requestList.map((request) =>
+      request.packageName === packageName ? { ...request, locked: newLockStatus } : request
+    );
+    setRequestList(updatedRequestList);
+
+    const requestToUpdate = requestList.find((request) => request.packageName === packageName);
+
+    if (!requestToUpdate) {
+      console.error(`Request with packageName ${packageName} not found.`);
+      return;
+    }
+
+    const updatedRequestData = {
+      ...requestToUpdate,
+      lockStatus: newLockStatus,
+    };
+
+    fetch(process.env.REACT_APP_API_APPS_UPDATE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedRequestData),
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating lock status:", error.message);
+
+        const revertedRequestList = requestList.map((request) =>
+          request.packageName === packageName ? { ...request, locked: !newLockStatus } : request
+        );
+        setRequestList(revertedRequestList);
+      });
+  };
+
+  const handleLockToggle = (packageName) => {
+    const request = requestList.find((request) => request.packageName === packageName);
+    if (request) {
+      SaveState(packageName, !request.locked);
+    }
   };
 
   return (
@@ -118,20 +162,19 @@ function ChildRequest() {
               </div>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-gray-800">{selectedRequest.appName} Lock Status</span>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="toggle-switch">
                   <input
                     type="checkbox"
-                    className="sr-only"
                     checked={selectedRequest.locked}
-                    onChange={handleLockToggle}
+                    onChange={() => handleLockToggle(selectedRequest.packageName)}
+                    className="sr-only"
                   />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:bg-blue-600 transition duration-300"></div>
-                  <div className="w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-full peer-focus:ring-2 peer-focus:ring-blue-300 transition duration-300"></div>
+                  <span className="toggle-slider"></span>
                 </label>
               </div>
               <button
                 className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                onClick={handleLockToggle}
+                onClick={() => handleLockToggle(selectedRequest.packageName)}
               >
                 Toggle Lock
               </button>
