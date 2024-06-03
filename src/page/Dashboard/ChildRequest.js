@@ -70,39 +70,38 @@ function ChildRequest() {
           unlock certain apps. You can respond to them by message or directly
           unlock the app.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8" >
-          <div className="bg-white p-6 rounded-lg shadow-md" style={{ maxHeight: "500px", overflowY: "auto" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Requests
             </h2>
-            <ul
-              className="space-y-4"
-            //   style={{ maxHeight: "500px", overflowY: "auto" }}
-            >
-              {requestList.map((request) => (
-                <li
-                  key={request.id}
-                  className="flex items-center justify-between py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleRequestClick(request)}
-                >
-                  <div className="flex items-center">
-                    {request.appIcon && (
-                      <img
-                        src={request.appIcon}
-                        alt={request.appName}
-                        className="w-10 h-10 mr-3 rounded-full"
-                      />
-                    )}
-                    <span className="text-gray-700">
-                      {request.appName} Unlock Request
+            <div style={{ maxHeight: "600px", overflowY: "auto" }}>
+              <ul className="space-y-4">
+                {requestList.map((request) => (
+                  <li
+                    key={request.id}
+                    className="flex items-center justify-between py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleRequestClick(request)}
+                  >
+                    <div className="flex items-center">
+                      {request.appIcon && (
+                        <img
+                          src={request.appIcon}
+                          alt={request.appName}
+                          className="w-10 h-10 mr-3 rounded-full"
+                        />
+                      )}
+                      <span className="text-gray-700">
+                        {request.appName} Unlock Request
+                      </span>
+                    </div>
+                    <span className="text-gray-500 text-sm">
+                      {request.timestamp}
                     </span>
-                  </div>
-                  <span className="text-gray-500 text-sm">
-                    {request.timestamp}
-                  </span>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {selectedRequest && (
