@@ -68,7 +68,7 @@ function ChildRequest() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Requests</h2>
-            <div style={{ maxHeight: "600px", overflowY: "auto" }}>
+            <div style={{ maxHeight: "550px", overflowY: "auto" }}>
               <ul className="space-y-4">
                 {requestList.map((request) => (
                   <li
