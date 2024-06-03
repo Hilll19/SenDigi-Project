@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ChildRequest() {
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -52,21 +52,24 @@ function ChildRequest() {
 
   const handleSendResponse = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: responseMessage,
-          packageName: selectedRequest.packageName,
-          lockStatus: selectedRequest.locked,
-        }),
-        credentials: "include",
-      });
-  
+      const response = await fetch(
+        process.env.REACT_APP_API_REQUEST_MESSAGE_SEND,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: responseMessage,
+            packageName: selectedRequest.packageName,
+            lockStatus: selectedRequest.locked,
+          }),
+          credentials: "include",
+        }
+      );
+
       if (response.ok) {
-        toast.success('Response sent successfully', {
+        toast.success("Response sent successfully", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -78,7 +81,7 @@ function ChildRequest() {
         setSelectedRequest(null);
         setResponseMessage("");
       } else {
-        toast.error('Failed to send response', {
+        toast.error("Failed to send response", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -90,7 +93,7 @@ function ChildRequest() {
       }
     } catch (error) {
       console.error("Error sending response:", error);
-      toast.error('Error sending response', {
+      toast.error("Error sending response", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -104,21 +107,27 @@ function ChildRequest() {
 
   const handleLockToggle = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_REQUEST_MESSAGE_SEND, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          packageName: selectedRequest.packageName,
-          lockStatus: !selectedRequest.locked,
-        }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        process.env.REACT_APP_API_REQUEST_MESSAGE_SEND,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            packageName: selectedRequest.packageName,
+            lockStatus: !selectedRequest.locked,
+          }),
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         console.log("Lock status updated successfully");
-        setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
+        setSelectedRequest({
+          ...selectedRequest,
+          locked: !selectedRequest.locked,
+        });
         fetchRequestData(); // Fetch the updated data to ensure the LockApp gets the updated status
       } else {
         console.error("Failed to update lock status");
@@ -132,35 +141,48 @@ function ChildRequest() {
     <div className="bg-white min-h-screen py-6">
       <ToastContainer />
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-gray-800 mb-6">Request Messages</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-6">
+          Request Messages
+        </h1>
         <p className="text-gray-600 mb-8">
-          This page lists requests to unlock applications from the mobile app. Pay attention here, your child might send you a message requesting to unlock certain apps. You can respond to them by message or directly unlock the app.
+          This page lists requests to unlock applications from the mobile app.
+          Pay attention here, your child might send you a message requesting to
+          unlock certain apps. You can respond to them by message or directly
+          unlock the app.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Requests</h2>
-            <div style={{ maxHeight: "500px", overflowY: "auto" }}>
-              <ul className="space-y-4">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              Requests
+            </h2>
+            <div className="overflow-auto max-h-96">
+              <ul className="divide-y divide-gray-200">
                 {requestList.map((request) => (
                   <li
                     key={request.id}
-                    className="flex items-center justify-between py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+                    className="flex items-center py-4 cursor-pointer hover:bg-gray-50"
                     onClick={() => handleRequestClick(request)}
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-grow">
                       {request.appIcon && (
                         <img
                           src={request.appIcon}
                           alt={request.appName}
-                          className="w-10 h-10 mr-3 rounded-full"
+                          className="w-12 h-12 mr-4 rounded-lg"
                         />
                       )}
-                      <span className="text-gray-700">{request.appName} Unlock Request</span>
+                      <div>
+                        <span className="block font-semibold text-gray-800">
+                          {request.appName}
+                        </span>
+                        <span className="block text-sm text-gray-500">
+                          {request.timestamp}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-gray-700">{request.timestamp}</span>
-                    {/* <div className="text-gray-500">
+                    <span className="text-gray-700">
                       {request.locked ? "Locked" : "Unlocked"}
-                    </div> */}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -169,13 +191,22 @@ function ChildRequest() {
 
           {selectedRequest && (
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Messages</h2>
-              <div className="mb-6" style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Messages
+              </h2>
+              <div
+                className="mb-6"
+                style={{ maxHeight: "400px", overflowY: "auto" }}
+              >
                 <p className="text-gray-700 mb-4">{selectedRequest.message}</p>
-                <p className="text-gray-500 text-sm mb-6">{selectedRequest.timestamp}</p>
+                <p className="text-gray-500 text-sm mb-6">
+                  {selectedRequest.timestamp}
+                </p>
               </div>
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Respond Back</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  Respond Back
+                </h3>
                 <textarea
                   className="w-full p-3 border border-gray-300 rounded-lg"
                   rows="4"
@@ -191,7 +222,9 @@ function ChildRequest() {
                 </button>
               </div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-gray-800">{selectedRequest.appName} Lock Status</span>
+                <span className="text-gray-800">
+                  {selectedRequest.appName} Lock Status
+                </span>
                 <label className="toggle-switch">
                   <input
                     type="checkbox"
