@@ -8,6 +8,7 @@ import DetailDashboard from './DetailDashboard';
 import ActivityStatus from './ActivityStatus';
 import Notification from './Notification';
 import DownloadPage from './DownloadPage';
+import ChildRequest from './ChildRequest';
 
 const Dashboard = () => {
   const [selectedComponent, setSelectedComponent] = useState('Dashboard');
@@ -23,6 +24,7 @@ const Dashboard = () => {
         {selectedComponent === 'LockApp' && <LockApp refreshInterval={refreshInterval} />}
         {selectedComponent === 'Scheduling' && <Scheduling />}
         {selectedComponent === 'ActivityStatus' && <ActivityStatus refreshInterval={refreshInterval} />}
+        {selectedComponent === 'ChildRequest' && <ChildRequest refreshInterval={refreshInterval} />}
         {selectedComponent === 'DownloadPage' && <DownloadPage />}
         {selectedComponent === 'Notification' && <Notification />}
       </div>

@@ -14,6 +14,7 @@ import DetailLock from './page/DetailLock';
 import DetailScheduling from './page/DetailScheduling';
 import ProfileDevice from './page/Dashboard/ProfileDevice';
 import ActivityStatus from './page/Dashboard/ActivityStatus';
+import ChildRequest from './page/Dashboard/ChildRequest';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/SchedulingByDates" element={<SchedulingByDates />} />
         <Route path="/SchedulingByTime" element={<SchedulingByTime />} />
         <Route path="/ActivityStatus" element={<ActivityStatus />} />
+        <Route path="/ChildRequest" element={<ChildRequest />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/dashboard"

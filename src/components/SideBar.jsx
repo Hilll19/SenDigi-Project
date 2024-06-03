@@ -1,4 +1,4 @@
-import { FaChartLine, FaUser, FaLock, FaHome, FaUniversalAccess, FaBell, FaDownload } from 'react-icons/fa';
+import { FaChartLine, FaUser, FaLock, FaHome, FaUniversalAccess, FaBell, FaDownload, FaCommentAlt } from 'react-icons/fa';
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import RefreshInterval from './RefreshInterval';
 import logoSendigi from "../assets/logoSendigi.png";
@@ -120,6 +120,12 @@ const Sidebar = ({ handleMenuClick, activeItem, setSelectedComponent, refreshInt
             text="Device Activity History"
             active={activeItem === "ActivityStatus"}
             onClick={() => handleItemClick("ActivityStatus")}
+          />
+          <SidebarItem
+            icon={<FaCommentAlt />}
+            text="Child Request"
+            active={activeItem === "ChildRequest"}
+            onClick={() => handleItemClick("ChildRequest")}
           />
           <SidebarItem
             icon={<FaDownload />}
