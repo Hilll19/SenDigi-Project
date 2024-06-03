@@ -48,10 +48,34 @@ function ChildRequest() {
     setResponseMessage(event.target.value);
   };
 
-  const handleSendResponse = () => {
-    console.log("Sending response:", responseMessage);
-    setSelectedRequest(null);
-    setResponseMessage("");
+  const handleSendResponse = async () => {
+    if (selectedRequest && responseMessage) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_REQUEST_MESSAGE}/send`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: responseMessage,
+            packageName: selectedRequest.packageName,
+            lockStatus: selectedRequest.locked,
+          }),
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          console.log("Response sent successfully");
+          setSelectedRequest(null);
+          setResponseMessage("");
+          fetchRequestData(); // Refresh the request list after sending the response
+        } else {
+          console.error("Error sending response:", response.status);
+        }
+      } catch (error) {
+        console.error("Error sending response:", error);
+      }
+    }
   };
 
   const SaveState = (packageName, newLockStatus) => {
