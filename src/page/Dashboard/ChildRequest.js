@@ -92,8 +92,8 @@ function ChildRequest() {
         });
 
         if (updateLockResponse.ok) {
-          setSelectedRequest({ ...selectedRequest, locked: !selectedRequest.locked });
-          fetchRequestData(); // Fetch the updated data to ensure the list reflects the new status
+            setSelectedRequest({ ...selectedRequest, locked: false }); // Set locked to false
+            fetchRequestData(); // Fetch the updated data to ensure the list reflects the new status
         } else {
           console.error("Failed to update lock status");
         }
