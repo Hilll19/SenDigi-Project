@@ -78,7 +78,9 @@ function ChildRequest() {
           draggable: true,
           progress: undefined,
         });
-        setRequestList(requestList.filter((request) => request.id !== selectedRequest.id));
+        setRequestList(
+          requestList.filter((request) => request.id !== selectedRequest.id)
+        );
         setSelectedRequest(null);
         setResponseMessage("");
       } else {
@@ -221,7 +223,8 @@ function ChildRequest() {
               </div>
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Lock/Unlock Application
+                  {selectedRequest.appName}{" "}
+                  {selectedRequest.locked ? "Unlock" : "Lock"}
                 </h3>
                 <label className="toggle-switch">
                   <input
