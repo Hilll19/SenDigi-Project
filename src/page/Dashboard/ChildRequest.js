@@ -199,7 +199,7 @@ function ChildRequest() {
                 style={{ maxHeight: "400px", overflowY: "auto" }}
               >
                 <p className="text-gray-700 mb-2">{selectedRequest.message}</p>
-                <div>
+                <div className="mb-4">
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     {selectedRequest.appName}{" "}
                     {selectedRequest.locked ? "Lock" : "Unlock"}
