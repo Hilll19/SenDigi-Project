@@ -199,9 +199,24 @@ function ChildRequest() {
                 style={{ maxHeight: "400px", overflowY: "auto" }}
               >
                 <p className="text-gray-700 mb-4">{selectedRequest.message}</p>
-                <p className="text-gray-500 text-sm mb-6">
+                {/* <p className="text-gray-500 text-sm mb-6">
                   {selectedRequest.timestamp}
-                </p>
+                </p> */}
+                <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {selectedRequest.appName}{" "}
+                  {selectedRequest.locked ? "Unlock" : "Lock"}
+                </h3>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={selectedRequest.locked}
+                    onChange={handleLockToggle}
+                    className="sr-only"
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
+              </div>
               </div>
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
@@ -221,7 +236,7 @@ function ChildRequest() {
                   Send Message
                 </button>
               </div>
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {selectedRequest.appName}{" "}
                   {selectedRequest.locked ? "Unlock" : "Lock"}
@@ -235,7 +250,7 @@ function ChildRequest() {
                   />
                   <span className="toggle-slider"></span>
                 </label>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
