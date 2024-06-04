@@ -78,11 +78,11 @@ function ChildRequest() {
           draggable: true,
           progress: undefined,
         });
-        setRequestList(
-          requestList.filter((request) => request.id !== selectedRequest.id)
-        );
-        setSelectedRequest(null);
-        setResponseMessage("");
+        // setRequestList(
+        //   requestList.filter((request) => request.id !== selectedRequest.id)
+        // );
+        // setSelectedRequest(null);
+        // setResponseMessage("");
       } else {
         toast.error("Failed to send response", {
           position: "top-right",
