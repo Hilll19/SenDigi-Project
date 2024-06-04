@@ -202,7 +202,7 @@ function ChildRequest() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     {selectedRequest.appName}{" "}
-                    {selectedRequest.locked ? "Unlock" : "Lock"}
+                    {selectedRequest.locked ? "Lock" : "Unlock"}
                   </h3>
                   <label className="toggle-switch">
                     <input
